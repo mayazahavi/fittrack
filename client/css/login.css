@@ -1,0 +1,110 @@
+/* Reset בסיסי */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+body, html {
+  height: 100%;
+}
+
+/* רקע על כל המסך */
+body {
+  background: url("../images/login_background.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* עטיפת תוכן ההתחברות */
+.login-wrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* תיבת התחברות */
+.login-box {
+  background-color: rgba(255, 255, 255, 0.88); /* לבן שקוף */
+  padding: 32px;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 8px 20px rgba(102, 204, 255, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-logo {
+  width: 60px;
+  margin-bottom: 24px;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #a6dfff;  /* קו תכלת */
+  border-radius: 6px;
+  background-color: #f0faff;
+  color: #333;
+}
+
+.login-box input::placeholder {
+  color: #7fbfd6;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  background-color: #66ccff; /* תכלת */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-box button:hover {
+  background-color: #4bb8e6; /* תכלת כהה */
+}
+
+.forgot-password {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #3399cc;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+/* תיבת בחירה של תפקיד */
+.login-select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #a6dfff;
+  border-radius: 6px;
+  background-color: #f0faff;
+  color: #333;
+  font-size: 16px;
+}
+.login-heading {
+  font-size: 28px;
+  font-weight: 700;
+  color: #66ccff; /* תכלת */
+  margin-bottom: 12px;
+  text-align: center;
+}
+.error-msg {
+  color: #cc0000;
+  font-size: 14px;
+  margin: -12px 0 8px 0;
+  display: none;
+  width: 100%;
+  text-align: left;
+}
