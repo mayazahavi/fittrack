@@ -1,48 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - FitTrack</title>
-  <link rel="stylesheet" href="css/login.css" />
+  <meta charset="UTF-8">
+  <title>FitTrack</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
 </head>
 <body>
+  <section class="wrapper">
+    <header>
+      <a href="index.html" class="logo-container">
+        <img src="images/fittrack_icon.webp" alt="FitTrack logo" class="logo-img">
+        <span class="logo-text">FitTrack</span>
+      </a>
+      <nav>
+        <ul>
+          <li class="curr-page"><a href="index.html">Home</a></li>
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Login</a></li>
+          <li><a href="#">Register</a></li>
+        </ul>
+      </nav>
+    </header>
+  </section>
 
-  <!-- קישור חזרה למסך הבית בפינה שמאלית עליונה -->
-  <a href="index.html" class="back-home-link">
-    <img src="images/backtohome.webp" alt="Back Home" class="home-icon" />
-    <span>Back to Home</span>
-  </a>
+  <section class="hero-section">
+    <section class="hero-text-container">
+      <h1 class="hero-title">Welcome!</h1>
+      <p class="hero-subtext">
+        Track your workouts, meals, and progress.<br>
+        FitTrack helps you stay on top of your fitness goals.
+      </p>
+    </section>
+  </section>
 
-  <div class="login-wrapper">
-    <form class="login-box" id="loginForm" autocomplete="off">
-      <h2 class="login-heading">Welcome to FitTrack</h2>
+  <section class="wrapper">
+    <main>
+      <section class="about-section">
+        <h2>About FitTrack</h2>
+        <section class="about-text">
+          <p>
+            FitTrack is your all-in-one platform for tracking fitness and nutrition. Whether you're a beginner or an athlete, our tools are designed to help you reach your health goals.
+          </p>
+          <p>
+            We offer daily tracking, personalized recommendations from trainers, and insights into your performance. All your data is stored securely and available anytime.
+          </p>
+          <p>
+            Built with the latest technologies, FitTrack is responsive, clean, and easy to use – because your health deserves the best experience.
+          </p>
+        </section>
+      </section>
+    </main>
+  </section>
 
-      <img src="images/fittrack_icon.webp" alt="FitTrack Logo" class="login-logo" />
-
-      <!-- Select role -->
-      <select name="role" id="role" class="login-select">
-        <option value="" disabled selected>Select Role</option>
-        <option value="trainee">Trainee</option>
-        <option value="coach">Coach</option>
-      </select>
-      <p class="error-msg" id="role-error"></p>
-
-      <!-- Username -->
-      <input type="text" id="username" placeholder="Username" />
-      <p class="error-msg" id="username-error"></p>
-
-      <!-- Password -->
-      <input type="password" id="password" placeholder="Password" />
-      <p class="error-msg" id="password-error"></p>
-
-      <!-- Submit -->
-      <button type="submit">Login</button>
-
-      <a href="#" class="forgot-password">Forgot Password?</a>
-    </form>
-  </div>
-
-  <script src="js/login.js"></script>
+  <footer class="footer">
+    <section class="wrapper">
+      <section class="footer-container">
+        <section class="footer-group footer-left">
+          <h3 class="footer-title">ABOUT</h3>
+          <ul class="footer-links">
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Team</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+          <section class="footer-icons">
+            <a href="https://twitter.com" target="_blank">
+              <img src="images/twitter.svg" alt="Twitter" class="social-icon">
+            </a>
+            <a href="https://facebook.com" target="_blank">
+              <img src="images/facebook.svg" alt="Facebook" class="social-icon">
+            </a>
+            <a href="https://instagram.com" target="_blank">
+              <img src="images/instagram.svg" alt="Instagram" class="social-icon">
+            </a>
+          </section>
+          <p class="footer-copy">© 2025 FitTrack</p>
+        </section>
+        <section class="footer-group footer-right">
+          <h3 class="footer-title">FOLLOW US</h3>
+          <ul class="footer-links">
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Instagram</a></li>
+          </ul>
+        </section>
+      </section>
+    </section>
+  </footer>
 </body>
 </html>
+

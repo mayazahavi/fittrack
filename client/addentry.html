@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Entry - FitTrack</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/addentry.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <section class="wrapper">
+    <header>
+      <a href="index.html" class="logo-container">
+        <img src="images/fittrack_icon.webp" alt="FitTrack logo" class="logo-img" />
+        <span class="logo-text">FitTrack</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li class="curr-page"><a href="#">Add Entry</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
+  </section>
+
+  <!-- Main Form Section -->
+  <section class="wrapper">
+    <main class="entry-form-section">
+      <h2 class="form-title">Add Daily Entry</h2>
+
+      <form id="entryForm" class="entry-form" autocomplete="off">
+        
+        <!-- Dynamic Meal Selects -->
+        <section id="meal-group">
+          <label for="meal-0">What did you eat?</label>
+          <select id="meal-0" name="meal[]" required>
+            <option value="" disabled selected>Select a meal</option>
+            <option value="grilled chicken">Grilled Chicken</option>
+            <option value="green salad">Green Salad</option>
+            <option value="brown rice">Brown Rice</option>
+            <option value="avocado toast">Avocado Toast</option>
+            <option value="eggs">2 Eggs</option>
+          </select>
+        </section>
+
+        <button type="button" id="add-meal-btn">+ Add another meal</button>
+
+        <!-- Workout + Date + Time -->
+        <label for="workout">What workout did you do?</label>
+        <select id="workout" name="workout" required>
+          <option value="" disabled selected>Select a workout</option>
+          <option value="running">Running</option>
+          <option value="yoga">Yoga</option>
+          <option value="strength">Strength Training</option>
+          <option value="none">No workout today</option>
+        </select>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required />
+
+        <label for="time">Time:</label>
+        <input type="time" id="time" name="time" required />
+
+        <button type="submit">Submit Entry</button>
+        <p id="form-error" class="form-error"></p>
+      </form>
+    </main>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <section class="wrapper">
+      <section class="footer-container">
+        <section class="footer-group footer-left">
+          <h3 class="footer-title">ABOUT</h3>
+          <ul class="footer-links">
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Team</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+          <section class="footer-icons">
+            <a href="https://twitter.com" target="_blank"><img src="images/twitter.svg" alt="Twitter" class="social-icon" /></a>
+            <a href="https://facebook.com" target="_blank"><img src="images/facebook.svg" alt="Facebook" class="social-icon" /></a>
+            <a href="https://instagram.com" target="_blank"><img src="images/instagram.svg" alt="Instagram" class="social-icon" /></a>
+          </section>
+          <p class="footer-copy">© 2025 FitTrack</p>
+        </section>
+        <section class="footer-group footer-right">
+          <h3 class="footer-title">FOLLOW US</h3>
+          <ul class="footer-links">
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Instagram</a></li>
+          </ul>
+        </section>
+      </section>
+    </section>
+  </footer>
+
+  <!-- External Script -->
+  <script src="js/addentry.js"></script>
+</body>
+</html>
