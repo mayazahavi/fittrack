@@ -5,21 +5,30 @@
   <title>Add Entry - FitTrack</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/addentry.css" />
+  <link rel="stylesheet" href="css/navbar-dropdown.css" />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet" />
 </head>
 <body>
   <!-- Header -->
   <section class="wrapper">
-    <header>
-      <a href="index.html" class="logo-container">
+    <header class="navbar">
+      <a href="dashboard.html" class="logo-container">
         <img src="images/fittrack_icon.webp" alt="FitTrack logo" class="logo-img" />
         <span class="logo-text">FitTrack</span>
       </a>
       <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li class="curr-page"><a href="#">Add Entry</a></li>
+        <ul class="nav-links">
+           <li><a href="index.html">Home</a></li>
+          <li class="dropdown curr-page">
+            <a href="#" class="dropdown-toggle">Add Entry</a>
+            <ul class="dropdown-menu">
+              <li><a href="dashboard.html">Dashboard</a></li>
+              <li><a href="viewdata.html">View History</a></li>
+              <li><a href="calories.html">Calories Summary</a></li>
+              <li><a href="coach.html">Coach Feedback</a></li>
+            </ul>
+          </li>
           <li><a href="#">Logout</a></li>
         </ul>
       </nav>
@@ -32,18 +41,10 @@
       <h2 class="form-title">Add Daily Entry</h2>
 
       <form id="entryForm" class="entry-form" autocomplete="off">
-        
-        <!-- Dynamic Meal Selects -->
+        <!-- Dynamic Meal Inputs -->
         <section id="meal-group">
           <label for="meal-0">What did you eat?</label>
-          <select id="meal-0" name="meal[]" required>
-            <option value="" disabled selected>Select a meal</option>
-            <option value="grilled chicken">Grilled Chicken</option>
-            <option value="green salad">Green Salad</option>
-            <option value="brown rice">Brown Rice</option>
-            <option value="avocado toast">Avocado Toast</option>
-            <option value="eggs">2 Eggs</option>
-          </select>
+          <!-- Created via JS -->
         </section>
 
         <button type="button" id="add-meal-btn">+ Add another meal</button>
@@ -63,6 +64,9 @@
 
         <label for="time">Time:</label>
         <input type="time" id="time" name="time" required />
+
+        <!-- קלוריות -->
+        <p id="calories-display" class="calorie-output"></p>
 
         <button type="submit">Submit Entry</button>
         <p id="form-error" class="form-error"></p>
@@ -100,7 +104,8 @@
     </section>
   </footer>
 
-  <!-- External Script -->
+  <!-- Scripts -->
+  <script src="js/navbar-dropdown.js"></script>
   <script src="js/addentry.js"></script>
 </body>
 </html>

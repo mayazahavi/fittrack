@@ -5,11 +5,13 @@
   <title>FitTrack - Dashboard</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/navbar-dropdown.css">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
 </head>
 <body>
+
   <!-- Header + Navigation -->
   <section class="wrapper">
     <header>
@@ -20,78 +22,81 @@
       <nav>
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li class="curr-page"><a href="#">Dashboard</a></li>
-          <li><a href="#">Login</a></li>
-          <li><a href="#">Register</a></li>
+          <li class="dropdown">
+            <a href="#" class="curr-page dropdown-toggle">Dashboard</a>
+            <ul class="dropdown-menu">
+              <li><a href="addentry.html">Add Entry</a></li>
+              <li><a href="entries.html">View History</a></li>
+              <li><a href="entrydetails.html">Calories Summary</a></li>
+              <li><a href="feedback.html">Coach Feedback</a></li>
+            </ul>
+          </li>
+          <li><a href="logout.html">Logout</a></li>
         </ul>
       </nav>
     </header>
   </section>
 
   <!-- Main Dashboard Content -->
- <section class="wrapper">
-  <main>
-    <section class="dashboard-cards">
-      
-      <!-- Card 1: Add Daily Entry -->
-      <article class="dashboard-card">
-        <img src="images/card_fitness_image_optimized.jpg" alt="Add Entry" class="card-img" />
-        <section class="card-content">
-          <header>
-            <h3 class="card-title">Add Daily Entry</h3>
-          </header>
-          <p class="card-desc">Log today’s meals and workout.</p>
-          <footer>
-            <a href="addentry.html" class="card-btn">Go</a>
-          </footer>
-        </section>
-      </article>
+  <section class="wrapper">
+    <main>
+      <section class="dashboard-cards">
 
-      <!-- Card 2: View My History -->
-      <article class="dashboard-card">
-        <img src="images/history_card_image_optimized.jpg" alt="View History" class="card-img" />
-        <section class="card-content">
-          <header>
-            <h3 class="card-title">View My History</h3>
-          </header>
-          <p class="card-desc">See past entries and track progress.</p>
-          <footer>
-            <a href="entries.html" class="card-btn">Go</a>
-          </footer>
-        </section>
-      </article>
+        <article class="dashboard-card">
+          <img src="images/card_fitness_image_optimized.jpg" alt="Add Entry" class="card-img" />
+          <section class="card-content">
+            <header>
+              <h3 class="card-title">Add Daily Entry</h3>
+            </header>
+            <p class="card-desc">Log today’s meals and workout.</p>
+            <footer>
+              <a href="addentry.html" class="card-btn">Go</a>
+            </footer>
+          </section>
+        </article>
 
-      <!-- Card 3: Calories Summary -->
-      <article class="dashboard-card">
-        <img src="images/calorie_card_image_optimized.jpg" alt="Calories Summary" class="card-img" />
-        <section class="card-content">
-          <header>
-            <h3 class="card-title">Calories Summary</h3>
-          </header>
-          <p class="card-desc">Track calories consumed and burned.</p>
-          <footer>
-            <a href="entry-details.html" class="card-btn">Go</a>
-          </footer>
-        </section>
-      </article>
+        <article class="dashboard-card">
+          <img src="images/history_card_image_optimized.jpg" alt="View History" class="card-img" />
+          <section class="card-content">
+            <header>
+              <h3 class="card-title">View My History</h3>
+            </header>
+            <p class="card-desc">See past entries and track progress.</p>
+            <footer>
+              <a href="entries.html" class="card-btn">Go</a>
+            </footer>
+          </section>
+        </article>
 
-      <!-- Card 4: Coach Feedback -->
-      <article class="dashboard-card">
-        <img src="images/coach_feedback_card_optimized.jpg" alt="Coach Feedback" class="card-img" />
-        <section class="card-content">
-          <header>
-            <h3 class="card-title">Coach Feedback</h3>
-          </header>
-          <p class="card-desc">Read your coach's recommendations.</p>
-          <footer>
-            <a href="feedback.html" class="card-btn">Go</a>
-          </footer>
-        </section>
-      </article>
+        <article class="dashboard-card">
+          <img src="images/calorie_card_image_optimized.jpg" alt="Calories Summary" class="card-img" />
+          <section class="card-content">
+            <header>
+              <h3 class="card-title">Calories Summary</h3>
+            </header>
+            <p class="card-desc">Track calories consumed and burned.</p>
+            <footer>
+              <a href="entrydetails.html" class="card-btn">Go</a>
+            </footer>
+          </section>
+        </article>
 
-    </section>
-  </main>
-</section>
+        <article class="dashboard-card">
+          <img src="images/coach_feedback_card_optimized.jpg" alt="Coach Feedback" class="card-img" />
+          <section class="card-content">
+            <header>
+              <h3 class="card-title">Coach Feedback</h3>
+            </header>
+            <p class="card-desc">Read your coach's recommendations.</p>
+            <footer>
+              <a href="feedback.html" class="card-btn">Go</a>
+            </footer>
+          </section>
+        </article>
+
+      </section>
+    </main>
+  </section>
 
   <!-- Footer -->
   <footer class="footer">
@@ -128,5 +133,7 @@
       </section>
     </section>
   </footer>
+
+  <script src="js/navbar-dropdown.js"></script>
 </body>
 </html>

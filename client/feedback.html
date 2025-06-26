@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>My History - FitTrack</title>
+  <title>Coach Feedback - FitTrack</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/entries.css" />
+  <link rel="stylesheet" href="css/feedback.css" />
   <link rel="stylesheet" href="css/navbar-dropdown.css" />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet" />
 </head>
 <body>
   <!-- Header -->
@@ -16,16 +17,16 @@
         <img src="images/fittrack_icon.webp" alt="FitTrack logo" class="logo-img" />
         <span class="logo-text">FitTrack</span>
       </a>
-      <nav class="dropdown-nav">
+      <nav class="nav-menu">
         <ul>
           <li><a href="index.html">Home</a></li>
           <li class="dropdown">
-            <a href="#" class="dropbtn dropdown-toggle curr-page">My History</a>
+            <a href="#" class="dropdown-toggle curr-page">Feedback</a>
             <ul class="dropdown-menu">
               <li><a href="dashboard.html">Dashboard</a></li>
               <li><a href="addentry.html">Add Entry</a></li>
-              <li><a href="summary.html">Calories Summary</a></li>
-              <li><a href="feedback.html">Coach Feedback</a></li>
+              <li><a href="entries.html">My History</a></li>
+              <li><a href="entrydetails.html">Calories Summary</a></li>
             </ul>
           </li>
           <li><a href="#">Logout</a></li>
@@ -34,24 +35,13 @@
     </header>
   </section>
 
-  <!-- Main Table -->
+  <!-- Main Content -->
   <section class="wrapper">
-    <main class="history-section">
-      <h2 class="section-title">My History</h2>
-      <table class="history-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Meals</th>
-            <th>Workout</th>
-            <th>Calories</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="entriesTable">
-          <tr><td colspan="5">Loading...</td></tr>
-        </tbody>
-      </table>
+    <main class="feedback-section">
+      <h2 class="feedback-title">Feedback from Your Coach</h2>
+      <section id="feedbackList" class="feedback-list">
+        <!-- Feedback messages will be injected here -->
+      </section>
     </main>
   </section>
 
@@ -85,8 +75,7 @@
     </section>
   </footer>
 
-  <!-- Scripts -->
+  <script src="js/feedback.js"></script>
   <script src="js/navbar-dropdown.js"></script>
-  <script src="js/entries.js"></script>
 </body>
 </html>

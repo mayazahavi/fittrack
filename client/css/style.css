@@ -204,3 +204,22 @@ nav a:hover {
   color: #000000;
   margin-top: 16px;
 }
+.hero-buttons {
+  margin-top: 24px;
+  display: flex;
+  gap: 16px;
+}
+
+.btn {
+  background-color: #0077B6;
+  color: white;
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #005f8c;
+}

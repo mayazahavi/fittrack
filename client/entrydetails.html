@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>My History - FitTrack</title>
+  <title>Calories Summary - FitTrack</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/entries.css" />
   <link rel="stylesheet" href="css/navbar-dropdown.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/entrydetails.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet" />
 </head>
 <body>
+
   <!-- Header -->
   <section class="wrapper">
     <header>
@@ -16,16 +18,16 @@
         <img src="images/fittrack_icon.webp" alt="FitTrack logo" class="logo-img" />
         <span class="logo-text">FitTrack</span>
       </a>
-      <nav class="dropdown-nav">
+      <nav class="nav-menu">
         <ul>
           <li><a href="index.html">Home</a></li>
           <li class="dropdown">
-            <a href="#" class="dropbtn dropdown-toggle curr-page">My History</a>
+            <a href="#" class="dropdown-toggle curr-page">Calories</a>
             <ul class="dropdown-menu">
               <li><a href="dashboard.html">Dashboard</a></li>
               <li><a href="addentry.html">Add Entry</a></li>
-              <li><a href="summary.html">Calories Summary</a></li>
-              <li><a href="feedback.html">Coach Feedback</a></li>
+              <li><a href="entries.html">My History</a></li>
+              <li><a href="feedback.html">Feedback</a></li>
             </ul>
           </li>
           <li><a href="#">Logout</a></li>
@@ -34,26 +36,12 @@
     </header>
   </section>
 
-  <!-- Main Table -->
-  <section class="wrapper">
-    <main class="history-section">
-      <h2 class="section-title">My History</h2>
-      <table class="history-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Meals</th>
-            <th>Workout</th>
-            <th>Calories</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="entriesTable">
-          <tr><td colspan="5">Loading...</td></tr>
-        </tbody>
-      </table>
-    </main>
-  </section>
+  <!-- Chart Section -->
+  <main class="summary-section">
+    <h2>Today's Calories Summary</h2>
+    <canvas id="caloriesChart"></canvas>
+    <p id="noDataMessage" style="text-align: center; color: gray;"></p>
+  </main>
 
   <!-- Footer -->
   <footer class="footer">
@@ -86,7 +74,8 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/navbar-dropdown.js"></script>
-  <script src="js/entries.js"></script>
+  <script src="js/entrydetails.js"></script>
 </body>
 </html>

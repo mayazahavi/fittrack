@@ -108,3 +108,33 @@ body {
   width: 100%;
   text-align: left;
 }
+.back-home-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.back-home-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #0077B6;
+  font-weight: bold;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.back-home-link:hover {
+  color: #005f8c;
+}
+
+.back-home-icon {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.3s ease;
+}
+
+.back-home-link:hover .back-home-icon {
+  transform: scale(1.1);
+}
