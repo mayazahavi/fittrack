@@ -1,21 +1,17 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const ctx = document.getElementById("caloriesChart").getContext("2d");
   const noDataMsg = document.getElementById("noDataMessage");
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    noDataMsg.textContent = "Unauthorized. Please log in.";
-    return;
-  }
 
   try {
-    const res = await fetch("http://localhost:3000/api/entries", {
+    const token = localStorage.getItem("token");
+    const res = await fetch("/api/entries", { // ✅ שימוש בנתיב יחסי
       headers: {
         "Authorization": `Bearer ${token}`
       }
     });
 
     const allEntries = await res.json();
+
     const today = new Date().toISOString().split("T")[0];
     const todayEntries = allEntries.filter(e => e.date === today);
 
@@ -28,19 +24,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     const caloriesByMeal = {};
 
     todayEntries.forEach(entry => {
-      if (entry.caloriesPerMeal && Array.isArray(entry.caloriesPerMeal)) {
-        entry.caloriesPerMeal.forEach(meal => {
+      if (entry.meals && Array.isArray(entry.meals)) {
+        entry.meals.forEach(meal => {
           const name = meal.name || "Unknown";
           const cal = Number(meal.calories || 0);
-          if (!caloriesByMeal[name]) {
-            caloriesByMeal[name] = 0;
-          }
-          caloriesByMeal[name] += cal;
+          caloriesByMeal[name] = (caloriesByMeal[name] || 0) + cal;
         });
       }
     });
 
-    // הכנת נתונים לגרף
     const labels = Object.keys(caloriesByMeal);
     const data = Object.values(caloriesByMeal);
 
@@ -49,27 +41,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       data: {
         labels: labels,
         datasets: [{
-          label: "Calories per Meal",
+          label: "Calories",
           data: data,
-          borderWidth: 1
+          backgroundColor: [
+            "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0",
+            "#9966FF", "#FF9F40", "#E7E9ED", "#76B041"
+          ]
         }]
       },
       options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'bottom'
-          },
-          title: {
-            display: true,
-            text: 'Calories Breakdown by Meal (Today)'
-          }
-        }
+        responsive: true
       }
     });
 
   } catch (err) {
-    console.error("Error loading chart:", err);
-    noDataMsg.textContent = "An error occurred while loading data.";
+    console.error("Error fetching or displaying data:", err);
+    noDataMsg.textContent = "Error loading data.";
   }
 });

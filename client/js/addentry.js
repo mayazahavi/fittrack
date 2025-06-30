@@ -1,141 +1,67 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("entryForm");
-  const mealGroup = document.getElementById("meal-group");
-  const addMealBtn = document.getElementById("add-meal-btn");
-  const errorField = document.getElementById("form-error");
-  const caloriesDisplay = document.getElementById("calories-display");
-
-  const API_KEY = "3fe2bc6af3434976b74f5066ec6c337f"; // ← מפתח Spoonacular
-
-  function createMealInput() {
-    const wrapper = document.createElement("div");
-    wrapper.className = "meal-wrapper";
-    wrapper.innerHTML = `
-      <input type="text" class="meal-input" name="meal[]" placeholder="Type a meal..." required />
-      <ul class="suggestions-list"></ul>
-    `;
-    mealGroup.appendChild(wrapper);
-  }
-
-  addMealBtn.addEventListener("click", () => {
-    createMealInput();
-  });
-
-  // השלמה אוטומטית
-  mealGroup.addEventListener("input", async (e) => {
-    if (e.target.classList.contains("meal-input")) {
-      const input = e.target;
-      const list = input.nextElementSibling;
-      const query = input.value.trim();
-
-      if (query.length < 2) {
-        list.innerHTML = "";
-        return;
-      }
-
-      const url = `https://api.spoonacular.com/food/ingredients/search?query=${encodeURIComponent(query)}&apiKey=${API_KEY}`;
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        list.innerHTML = "";
-
-        if (data.results) {
-          data.results.slice(0, 5).forEach(item => {
-            const li = document.createElement("li");
-            li.textContent = item.name;
-            li.addEventListener("click", () => {
-              input.value = item.name;
-              list.innerHTML = "";
-            });
-            list.appendChild(li);
-          });
-        }
-      } catch (err) {
-        console.error("Autocomplete error:", err);
-      }
-    }
-  });
+  const feedback = document.getElementById("feedback");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    errorField.textContent = "";
-    caloriesDisplay.innerHTML = "";
 
-    const inputs = document.querySelectorAll(".meal-input");
-    const mealNames = [...inputs].map(input => input.value.trim()).filter(Boolean);
-    const workout = document.getElementById("workout").value.trim();
     const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
+    const meals = [];
+    const mealNames = document.querySelectorAll(".meal-name");
+    const mealCalories = document.querySelectorAll(".meal-calories");
 
-    if (mealNames.length === 0 || !workout || !date || !time) {
-      errorField.textContent = "Please fill in all fields.";
-      return;
+    for (let i = 0; i < mealNames.length; i++) {
+      const name = mealNames[i].value.trim();
+      const calories = parseInt(mealCalories[i].value.trim());
+      if (name && !isNaN(calories)) {
+        meals.push({ name, calories });
+      }
     }
 
-    let totalCalories = 0;
-    const caloriesPerMeal = [];
+    const workout = document.getElementById("workout").checked;
+
+    const entryData = {
+      date,
+      meals,
+      workout,
+    };
+
+    const token = localStorage.getItem("token");
 
     try {
-      for (const name of mealNames) {
-        const searchUrl = `https://api.spoonacular.com/food/ingredients/search?query=${encodeURIComponent(name)}&apiKey=${API_KEY}`;
-        const searchRes = await fetch(searchUrl);
-        const searchData = await searchRes.json();
-
-        if (searchData.results && searchData.results.length > 0) {
-          const id = searchData.results[0].id;
-          const infoUrl = `https://api.spoonacular.com/food/ingredients/${id}/information?amount=1&apiKey=${API_KEY}`;
-          const infoRes = await fetch(infoUrl);
-          const infoData = await infoRes.json();
-
-          const cal = infoData.nutrition?.nutrients?.find(n => n.name === "Calories");
-          if (cal) {
-            caloriesPerMeal.push({ name, calories: cal.amount });
-            totalCalories += cal.amount;
-          }
-        }
-      }
-
-      const breakdown = caloriesPerMeal
-        .map(item => `${item.name} – ${item.calories.toFixed(0)} kcal`)
-        .join("<br>");
-      caloriesDisplay.innerHTML = breakdown + `<br><strong>Total: ${totalCalories.toFixed(0)} kcal</strong>`;
-
-      // ✅ הכנת הנתונים לשליחה לשרת
-      const entryData = {
-        meals: caloriesPerMeal,
-        calories: totalCalories,
-        caloriesPerMeal,
-        workout,
-        date,
-        time
-      };
-
-      // ✅ שליפת הטוקן מה־localStorage
-      const token = localStorage.getItem("token");
-
-      const response = await fetch("http://localhost:3000/api/entries", {
+      const response = await fetch("/api/entries", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}` // ⬅️ זה החלק הקריטי
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(entryData)
+        body: JSON.stringify(entryData),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        alert("✅ Entry saved successfully!");
+        feedback.textContent = "Entry submitted successfully!";
+        feedback.style.color = "green";
         form.reset();
-        mealGroup.innerHTML = "";
-        createMealInput();
-        caloriesDisplay.textContent = "";
       } else {
-        errorField.textContent = "❌ Failed to save entry to server.";
+        feedback.textContent = data.error || "Submission failed.";
+        feedback.style.color = "red";
       }
-    } catch (err) {
-      console.error(err);
-      errorField.textContent = "❌ Error processing request. Please try again.";
+    } catch (error) {
+      feedback.textContent = "Error submitting entry.";
+      feedback.style.color = "red";
     }
   });
 
-  createMealInput();
+  document.getElementById("addMeal").addEventListener("click", () => {
+    const mealsContainer = document.getElementById("mealsContainer");
+    const mealDiv = document.createElement("div");
+    mealDiv.classList.add("meal-entry");
+    mealDiv.innerHTML = `
+      <input type="text" class="meal-name" placeholder="Meal name" required />
+      <input type="number" class="meal-calories" placeholder="Calories" required />
+    `;
+    mealsContainer.appendChild(mealDiv);
+  });
 });

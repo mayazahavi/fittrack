@@ -15,6 +15,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ✅ שורת הגשה של צד הלקוח
+app.use(express.static("client"));
+
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/entries", entryRoutes);
@@ -23,7 +26,7 @@ app.use("/api/entries", entryRoutes);
 const PORT = process.env.PORT || 3000;
 
 connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running at http://localhost:${PORT}`);
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`🚀 Server running at http://0.0.0.0:${PORT}`);
   });
 });

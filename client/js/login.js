@@ -1,66 +1,33 @@
-document.getElementById("loginForm").addEventListener("submit", async function (e) {
-  e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("loginForm");
 
-  document.querySelectorAll(".error-msg").forEach(msg => {
-    msg.textContent = "";
-    msg.style.display = "none";
-  });
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const role = document.getElementById("role").value;
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value.trim();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-  let hasError = false;
+    try {
+      const res = await fetch("/api/users/login", { // ✅ שימוש בנתיב יחסי
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-  if (!role) {
-    document.getElementById("role-error").textContent = "Please select a role.";
-    document.getElementById("role-error").style.display = "block";
-    hasError = true;
-  }
+      const data = await res.json();
 
-  if (!username) {
-    document.getElementById("username-error").textContent = "Please enter your username.";
-    document.getElementById("username-error").style.display = "block";
-    hasError = true;
-  }
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }
 
-  if (!password) {
-    document.getElementById("password-error").textContent = "Please enter your password.";
-    document.getElementById("password-error").style.display = "block";
-    hasError = true;
-  }
-
-  if (hasError) return;
-
-  try {
-    const res = await fetch("http://localhost:3000/api/users/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, role })
-    });
-
-    if (!res.ok) {
-      const errData = await res.json();
-      alert(errData.error || "Login failed.");
-      return;
-    }
-
-    const data = await res.json();
-
-    // ✅ שמירה של פרטי המשתמש והטוקן
-    localStorage.setItem("username", data.username);
-    localStorage.setItem("role", data.role);
-    localStorage.setItem("token", data.token); // ⬅️ חשוב מאוד
-
-    // ✅ ניווט לדף המתאים
-    if (data.role === "coach") {
-      window.location.href = "coach-dashboard.html";
-    } else {
+      localStorage.setItem("token", data.token);
+      alert("Login successful!");
       window.location.href = "dashboard.html";
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("Login failed: " + err.message);
     }
-
-  } catch (err) {
-    console.error("Login error:", err);
-    alert("Server error. Please try again later.");
-  }
+  });
 });

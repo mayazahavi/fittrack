@@ -1,87 +1,59 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const tableBody = document.querySelector("#entriesTable tbody");
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    alert("Unauthorized. Please log in.");
-    return;
-  }
 
   try {
-    const res = await fetch("http://localhost:3000/api/entries", {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    });
+    const res = await fetch("/api/entries"); // ✅ שימוש בנתיב יחסי
+    const allEntries = await res.json();
 
-    const entries = await res.json();
-
-    entries.forEach(entry => {
+    allEntries.forEach(entry => {
       const row = document.createElement("tr");
 
-      const mealsText = entry.caloriesPerMeal
-        .map(meal => meal.name)
-        .join(", ");
+      const dateCell = document.createElement("td");
+      dateCell.textContent = entry.date;
+      row.appendChild(dateCell);
 
-      row.innerHTML = `
-        <td>${mealsText}</td>
-        <td>${entry.calories}</td>
-        <td>${entry.workout}</td>
-        <td>${entry.date}</td>
-        <td>${entry.time}</td>
-        <td>
-          <button class="edit-btn" data-id="${entry._id}">Edit</button>
-          <button class="delete-btn" data-id="${entry._id}">Delete</button>
-        </td>
-      `;
+      const mealCell = document.createElement("td");
+      mealCell.textContent = entry.meals.map(m => m.name).join(", ");
+      row.appendChild(mealCell);
 
-      tableBody.appendChild(row);
-    });
+      const caloriesCell = document.createElement("td");
+      caloriesCell.textContent = entry.meals.reduce((sum, m) => sum + Number(m.calories), 0);
+      row.appendChild(caloriesCell);
 
-    // מחיקה
-    document.querySelectorAll(".delete-btn").forEach(button => {
-      button.addEventListener("click", async () => {
-        const id = button.dataset.id;
-        if (confirm("Are you sure you want to delete this entry?")) {
-          await fetch(`http://localhost:3000/api/entries/${id}`, {
-            method: "DELETE",
-            headers: {
-              "Authorization": `Bearer ${token}`
-            }
-          });
-          location.reload();
-        }
-      });
-    });
+      const actionsCell = document.createElement("td");
 
-    // עריכה
-    document.querySelectorAll(".edit-btn").forEach(button => {
-      button.addEventListener("click", async () => {
-        const id = button.dataset.id;
-        const newWorkout = prompt("Enter new workout:");
-        const newDate = prompt("Enter new date (YYYY-MM-DD):");
-        const newTime = prompt("Enter new time (HH:MM):");
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Delete";
+      deleteBtn.onclick = async () => {
+        await fetch(`/api/entries/${entry._id}`, {
+          method: "DELETE" // ✅ שימוש בנתיב יחסי
+        });
+        row.remove();
+      };
+      actionsCell.appendChild(deleteBtn);
 
-        if (newWorkout && newDate && newTime) {
-          await fetch(`http://localhost:3000/api/entries/${id}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`
-            },
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "Edit";
+      editBtn.onclick = async () => {
+        const newMeal = prompt("Enter new meal name:");
+        const newCalories = prompt("Enter new calorie amount:");
+        if (newMeal && newCalories) {
+          await fetch(`/api/entries/${entry._id}`, {
+            method: "PUT", // ✅ שימוש בנתיב יחסי
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              workout: newWorkout,
-              date: newDate,
-              time: newTime
-              // את יכולה להוסיף גם meals או calories אם רוצים לעדכן אותם
+              meals: [{ name: newMeal, calories: Number(newCalories) }]
             })
           });
           location.reload();
         }
-      });
-    });
+      };
+      actionsCell.appendChild(editBtn);
 
+      row.appendChild(actionsCell);
+      tableBody.appendChild(row);
+    });
   } catch (err) {
-    console.error("❌ Failed to load entries:", err);
+    console.error("Failed to fetch entries:", err);
   }
 });
