@@ -1,38 +1,34 @@
 const Entry = require("../models/Entry");
 
+// יצירת הזנה חדשה
 exports.createEntry = async (req, res) => {
   try {
-    const newEntry = new Entry(req.body);
+    const { meals, workout, date, time } = req.body;
+
+    // בדיקת תקינות נתוני הארוחות
+    if (!Array.isArray(meals) || meals.some(m => !m.name || typeof m.calories !== "number")) {
+      return res.status(400).json({ error: "Invalid meal data format" });
+    }
+
+    // חישוב סך הקלוריות
+    const totalCalories = meals.reduce((sum, meal) => sum + meal.calories, 0);
+
+    // יצירת אובייקט חדש לשמירה
+    const newEntry = new Entry({
+      meals,                // שומר את מערך הארוחות (עם name ו-calories)
+      calories: totalCalories,
+      workout,
+      date,
+      time,
+      user: req.user.id     // שיוך למשתמש המחובר
+    });
+
+    // שמירה במסד
     await newEntry.save();
+
     res.status(201).json(newEntry);
   } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-};
-
-exports.getEntries = async (req, res) => {
-  try {
-    const entries = await Entry.find();
-    res.json(entries);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-exports.deleteEntry = async (req, res) => {
-  try {
-    await Entry.findByIdAndDelete(req.params.id);
-    res.json({ message: "Entry deleted" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-exports.updateEntry = async (req, res) => {
-  try {
-    const updated = await Entry.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(updated);
-  } catch (err) {
+    console.error("❌ Error saving entry:", err.message);
     res.status(400).json({ error: err.message });
   }
 };

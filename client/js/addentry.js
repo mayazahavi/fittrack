@@ -5,9 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const errorField = document.getElementById("form-error");
   const caloriesDisplay = document.getElementById("calories-display");
 
-  const API_KEY = "3fe2bc6af3434976b74f5066ec6c337f";
+  const API_KEY = "3fe2bc6af3434976b74f5066ec6c337f"; // ← מפתח Spoonacular
 
-  // פונקציה ליצירת שדה חדש עם הצעות חכמות
   function createMealInput() {
     const wrapper = document.createElement("div");
     wrapper.className = "meal-wrapper";
@@ -18,17 +17,17 @@ document.addEventListener("DOMContentLoaded", () => {
     mealGroup.appendChild(wrapper);
   }
 
-  // הוספת אינפוט חדש
   addMealBtn.addEventListener("click", () => {
     createMealInput();
   });
 
-  // טיפול בהשלמה אוטומטית
+  // השלמה אוטומטית
   mealGroup.addEventListener("input", async (e) => {
     if (e.target.classList.contains("meal-input")) {
       const input = e.target;
       const list = input.nextElementSibling;
       const query = input.value.trim();
+
       if (query.length < 2) {
         list.innerHTML = "";
         return;
@@ -39,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const res = await fetch(url);
         const data = await res.json();
         list.innerHTML = "";
+
         if (data.results) {
           data.results.slice(0, 5).forEach(item => {
             const li = document.createElement("li");
@@ -56,47 +56,86 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // שליחת הטופס
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     errorField.textContent = "";
-    caloriesDisplay.textContent = "";
+    caloriesDisplay.innerHTML = "";
 
     const inputs = document.querySelectorAll(".meal-input");
-    const meals = [...inputs].map(input => input.value.trim()).filter(Boolean);
+    const mealNames = [...inputs].map(input => input.value.trim()).filter(Boolean);
+    const workout = document.getElementById("workout").value.trim();
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
 
-    if (meals.length === 0) {
-      errorField.textContent = "Please enter at least one meal.";
+    if (mealNames.length === 0 || !workout || !date || !time) {
+      errorField.textContent = "Please fill in all fields.";
       return;
     }
 
     let totalCalories = 0;
+    const caloriesPerMeal = [];
 
     try {
-      for (const meal of meals) {
-        const searchUrl = `https://api.spoonacular.com/food/ingredients/search?query=${encodeURIComponent(meal)}&apiKey=${API_KEY}`;
+      for (const name of mealNames) {
+        const searchUrl = `https://api.spoonacular.com/food/ingredients/search?query=${encodeURIComponent(name)}&apiKey=${API_KEY}`;
         const searchRes = await fetch(searchUrl);
         const searchData = await searchRes.json();
 
         if (searchData.results && searchData.results.length > 0) {
           const id = searchData.results[0].id;
-
           const infoUrl = `https://api.spoonacular.com/food/ingredients/${id}/information?amount=1&apiKey=${API_KEY}`;
           const infoRes = await fetch(infoUrl);
           const infoData = await infoRes.json();
 
           const cal = infoData.nutrition?.nutrients?.find(n => n.name === "Calories");
-          if (cal) totalCalories += cal.amount;
+          if (cal) {
+            caloriesPerMeal.push({ name, calories: cal.amount });
+            totalCalories += cal.amount;
+          }
         }
       }
 
-      caloriesDisplay.textContent = `Total calories: ${totalCalories.toFixed(0)} kcal`;
+      const breakdown = caloriesPerMeal
+        .map(item => `${item.name} – ${item.calories.toFixed(0)} kcal`)
+        .join("<br>");
+      caloriesDisplay.innerHTML = breakdown + `<br><strong>Total: ${totalCalories.toFixed(0)} kcal</strong>`;
+
+      // ✅ הכנת הנתונים לשליחה לשרת
+      const entryData = {
+        meals: caloriesPerMeal,
+        calories: totalCalories,
+        caloriesPerMeal,
+        workout,
+        date,
+        time
+      };
+
+      // ✅ שליפת הטוקן מה־localStorage
+      const token = localStorage.getItem("token");
+
+      const response = await fetch("http://localhost:3000/api/entries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // ⬅️ זה החלק הקריטי
+        },
+        body: JSON.stringify(entryData)
+      });
+
+      if (response.ok) {
+        alert("✅ Entry saved successfully!");
+        form.reset();
+        mealGroup.innerHTML = "";
+        createMealInput();
+        caloriesDisplay.textContent = "";
+      } else {
+        errorField.textContent = "❌ Failed to save entry to server.";
+      }
     } catch (err) {
       console.error(err);
-      errorField.textContent = "Error fetching calorie data. Please try again.";
+      errorField.textContent = "❌ Error processing request. Please try again.";
     }
   });
 
-  // יצירה התחלתית של שדה אחד
   createMealInput();
 });

@@ -1,14 +1,14 @@
+// server/db.js
 const mongoose = require("mongoose");
-require("dotenv").config(); // חשוב שזה יהיה כאן
 
 async function connectDB() {
   try {
-    await mongoose.connect(process.env.MONGO_URI); // שם משתנה צריך להתאים
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("✅ MongoDB connected successfully");
   } catch (error) {
     console.error("❌ MongoDB connection failed:", error);
-    process.exit(1);
+    process.exit(1); // יציאה במקרה של כשל
   }
 }
-require("dotenv").config({ path: './server/.env' });
+
 module.exports = connectDB;

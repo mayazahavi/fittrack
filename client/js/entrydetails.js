@@ -1,52 +1,75 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const ctx = document.getElementById("caloriesChart").getContext("2d");
   const noDataMsg = document.getElementById("noDataMessage");
+  const token = localStorage.getItem("token");
 
-  // נשלוף את הנתונים מה-localStorage
-  const entries = JSON.parse(localStorage.getItem("caloriesEntries")) || [];
-
-  if (entries.length === 0) {
-    noDataMsg.textContent = "No data available. Please add entries first.";
+  if (!token) {
+    noDataMsg.textContent = "Unauthorized. Please log in.";
     return;
   }
 
-  const caloriesByType = {};
+  try {
+    const res = await fetch("http://localhost:3000/api/entries", {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
 
-  entries.forEach(entry => {
-    const type = entry.mealType || "Other";
-    const calories = Number(entry.calories) || 0;
-    if (!caloriesByType[type]) {
-      caloriesByType[type] = 0;
+    const allEntries = await res.json();
+    const today = new Date().toISOString().split("T")[0];
+    const todayEntries = allEntries.filter(e => e.date === today);
+
+    if (todayEntries.length === 0) {
+      noDataMsg.textContent = "No meal data available for today.";
+      return;
     }
-    caloriesByType[type] += calories;
-  });
 
-  const labels = Object.keys(caloriesByType);
-  const data = Object.values(caloriesByType);
+    // סיכום הקלוריות לפי שם מאכל
+    const caloriesByMeal = {};
 
-  new Chart(ctx, {
-    type: "doughnut",
-    data: {
-      labels: labels,
-      datasets: [{
-        label: "Calories",
-        data: data,
-        backgroundColor: [
-          "#36A2EB", "#FF6384", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"
-        ]
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: "bottom"
-        },
-        title: {
-          display: true,
-          text: "Calories by Meal Type"
+    todayEntries.forEach(entry => {
+      if (entry.caloriesPerMeal && Array.isArray(entry.caloriesPerMeal)) {
+        entry.caloriesPerMeal.forEach(meal => {
+          const name = meal.name || "Unknown";
+          const cal = Number(meal.calories || 0);
+          if (!caloriesByMeal[name]) {
+            caloriesByMeal[name] = 0;
+          }
+          caloriesByMeal[name] += cal;
+        });
+      }
+    });
+
+    // הכנת נתונים לגרף
+    const labels = Object.keys(caloriesByMeal);
+    const data = Object.values(caloriesByMeal);
+
+    new Chart(ctx, {
+      type: "pie",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Calories per Meal",
+          data: data,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          },
+          title: {
+            display: true,
+            text: 'Calories Breakdown by Meal (Today)'
+          }
         }
       }
-    }
-  });
+    });
+
+  } catch (err) {
+    console.error("Error loading chart:", err);
+    noDataMsg.textContent = "An error occurred while loading data.";
+  }
 });
