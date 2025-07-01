@@ -1,0 +1,50 @@
+/* הגדרות בסיסיות לניווט */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  position: relative;
+}
+
+/* עיצוב ל־li עם dropdown */
+.dropdown {
+  position: relative;
+}
+
+/* עיצוב לתפריט הנפתח */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  min-width: 180px;
+  z-index: 999;
+  padding: 10px 0;
+}
+
+.dropdown-menu li {
+  padding: 8px 16px;
+}
+
+.dropdown-menu li a {
+  text-decoration: none;
+  color: #0077B6;
+  font-family: 'Nunito', sans-serif;
+  display: block;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #E0F6FF;
+}
+
+/* הצגת תפריט בלחיצה */
+.dropdown.active .dropdown-menu {
+  display: block;
+}
+.curr-page {
+  font-weight: 700; /* הופך את הטקסט למודגש */
+  color: #0077B6; /* צבע שתואם לעיצוב הכללי */
+}
