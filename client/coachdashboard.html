@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Coach Dashboard - FitTrack</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/navbar-dropdown.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      background-color: #ffffff;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    .dropdown-menu li {
+      padding: 8px 16px;
+    }
+    .dropdown-menu li a {
+      color: #0077B6;
+      text-decoration: none;
+      display: block;
+    }
+    .dropdown-menu li a:hover {
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+  <section class="wrapper">
+    <header>
+      <a href="index.html" class="logo-container">
+        <img src="images/fittrack_icon.webp" alt="FitTrack logo" class="logo-img" />
+        <span class="logo-text">FitTrack</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle curr-page">Dashboard</a>
+            <ul class="dropdown-menu">
+              <li><a href="coachfeedback.html">Send Feedback</a></li>
+              <li><a href="coachhistory.html">Feedback History</a></li>
+            </ul>
+          </li>
+          <li><a href="coach_login.html">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
+  </section>
+
+  <section class="wrapper">
+    <main>
+      <section class="dashboard-cards">
+
+        <article class="dashboard-card">
+          <img src="images/coach_feedback_card_optimized.jpg" alt="Send Feedback" class="card-img" />
+          <section class="card-content">
+            <header>
+              <h3 class="card-title">Send Feedback</h3>
+            </header>
+            <p class="card-desc">Send and manage feedback for your trainees.</p>
+            <footer>
+              <a href="coachfeedback.html" class="card-btn">Go</a>
+            </footer>
+          </section>
+        </article>
+
+        <article class="dashboard-card">
+          <img src="images/edit_feedback_card_optimized.jpg" alt="Feedback History" class="card-img" />
+          <section class="card-content">
+            <header>
+              <h3 class="card-title">Feedback History</h3>
+            </header>
+            <p class="card-desc">View and manage your sent feedback easily.</p>
+            <footer>
+              <a href="coachhistory.html" class="card-btn">Go</a>
+            </footer>
+          </section>
+        </article>
+
+      </section>
+    </main>
+  </section>
+
+  <footer class="footer">
+    <section class="wrapper">
+      <section class="footer-container">
+        <section class="footer-group footer-left">
+          <h3 class="footer-title">ABOUT</h3>
+          <ul class="footer-links">
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Team</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+          <section class="footer-icons">
+            <a href="https://twitter.com" target="_blank"><img src="images/twitter.svg" alt="Twitter" class="social-icon" /></a>
+            <a href="https://facebook.com" target="_blank"><img src="images/facebook.svg" alt="Facebook" class="social-icon" /></a>
+            <a href="https://instagram.com" target="_blank"><img src="images/instagram.svg" alt="Instagram" class="social-icon" /></a>
+          </section>
+          <p class="footer-copy">© 2025 FitTrack</p>
+        </section>
+        <section class="footer-group footer-right">
+          <h3 class="footer-title">FOLLOW US</h3>
+          <ul class="footer-links">
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Instagram</a></li>
+          </ul>
+        </section>
+      </section>
+    </section>
+  </footer>
+
+</body>
+</html>

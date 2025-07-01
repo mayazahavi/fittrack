@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Coach Feedback - FitTrack</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/feedback.css" />
+  <link rel="stylesheet" href="css/coachfeedback.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <section class="wrapper">
+    <header>
+      <a href="index.html" class="logo-container">
+        <img src="images/fittrack_icon.webp" alt="FitTrack logo" class="logo-img" />
+        <span class="logo-text">FitTrack</span>
+      </a>
+      <nav class="nav-menu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="coachdashboard.html" class="curr-page">Dashboard</a></li>
+          <li><a href="coach_login.html">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
+  </section>
+
+  <!-- Main Content -->
+  <section class="wrapper">
+    <main class="feedback-section">
+      <h2 class="feedback-title">Coach Feedback</h2>
+      <div class="feedback-list">
+        <div class="feedback-card">
+          <label for="trainee-select">Select Trainee:</label>
+          <select id="trainee-select" class="feedback-input">
+            <option value="">Loading trainees...</option>
+          </select>
+        </div>
+
+        <div class="feedback-card">
+          <label for="feedback-date">Select Date:</label>
+          <input type="date" id="feedback-date" class="feedback-input">
+
+          <label for="feedback-time" style="margin-top: 10px;">Select Time:</label>
+          <input type="time" id="feedback-time" class="feedback-input">
+
+          <label for="predefined-feedback" style="margin-top: 20px;">Predefined Feedback:</label>
+          <select id="predefined-feedback" class="feedback-input">
+            <option value="">-- Select Feedback --</option>
+            <option value="Great progress, keep it up!">Great progress, keep it up!</option>
+            <option value="Please pay attention to your technique.">Please pay attention to your technique.</option>
+            <option value="Try to stay consistent with your workouts.">Try to stay consistent with your workouts.</option>
+          </select>
+
+          <label for="custom-feedback" style="margin-top: 20px; display: block;">Or write your own feedback:</label>
+          <textarea id="custom-feedback" class="feedback-input" style="height: 150px;" placeholder="Write your feedback here..."></textarea>
+
+          <button id="send-feedback-btn" class="btn" style="margin-top: 10px;">Send Feedback</button>
+        </div>
+
+      </div>
+    </main>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <section class="wrapper">
+      <section class="footer-container">
+        <section class="footer-group footer-left">
+          <h3 class="footer-title">ABOUT</h3>
+          <ul class="footer-links">
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Team</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+          <section class="footer-icons">
+            <a href="https://twitter.com" target="_blank"><img src="images/twitter.svg" alt="Twitter" class="social-icon" /></a>
+            <a href="https://facebook.com" target="_blank"><img src="images/facebook.svg" alt="Facebook" class="social-icon" /></a>
+            <a href="https://instagram.com" target="_blank"><img src="images/instagram.svg" alt="Instagram" class="social-icon" /></a>
+          </section>
+          <p class="footer-copy">© 2025 FitTrack</p>
+        </section>
+        <section class="footer-group footer-right">
+          <h3 class="footer-title">FOLLOW US</h3>
+          <ul class="footer-links">
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Instagram</a></li>
+          </ul>
+        </section>
+      </section>
+    </section>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    fetch('trainees.json')
+      .then(response => response.json())
+      .then(data => {
+        const traineeSelect = document.getElementById('trainee-select');
+        traineeSelect.innerHTML = '<option value="">-- Select Trainee --</option>';
+        data.forEach(trainee => {
+          const option = document.createElement('option');
+          option.value = trainee.name;
+          option.textContent = trainee.name;
+          traineeSelect.appendChild(option);
+        });
+      });
+
+    const traineeSelect = document.getElementById('trainee-select');
+    const sendFeedbackBtn = document.getElementById('send-feedback-btn');
+    const predefinedFeedback = document.getElementById('predefined-feedback');
+    const customFeedback = document.getElementById('custom-feedback');
+    const feedbackDate = document.getElementById('feedback-date');
+    const feedbackTime = document.getElementById('feedback-time');
+
+    sendFeedbackBtn.addEventListener('click', () => {
+      const trainee = traineeSelect.value;
+      const date = feedbackDate.value;
+      const time = feedbackTime.value;
+      const predefined = predefinedFeedback.value;
+      const custom = customFeedback.value.trim();
+
+      if (!trainee) {
+        alert('Please select a trainee.');
+        return;
+      }
+      if (!date) {
+        alert('Please select a date.');
+        return;
+      }
+      if (!time) {
+        alert('Please select a time.');
+        return;
+      }
+
+      let feedbackText = predefined || custom;
+      if (!feedbackText) {
+        alert('Please select or write feedback.');
+        return;
+      }
+
+      alert(`Feedback sent to ${trainee} on ${date} at ${time}:\n${feedbackText}`);
+      predefinedFeedback.value = '';
+      customFeedback.value = '';
+      feedbackDate.value = '';
+      feedbackTime.value = '';
+      traineeSelect.value = '';
+    });
+  </script>
+  <script src="js/navbar-dropdown.js"></script>
+</body>
+</html>
