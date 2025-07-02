@@ -10,7 +10,7 @@ body {
     font-size: 28px;
     color: #0077B6;
     margin-top: 32px;
-    font-family: 'Rubik', sans-serif;
+    font-family: 'Nunito', sans-serif;
   }
   
   .history-table {
@@ -29,7 +29,7 @@ body {
     color: #fff;
     padding: 14px;
     text-align: left;
-    font-family: 'Rubik', sans-serif;
+    font-family:'Nunito', sans-serif;
     font-size: 16px;
   }
   
@@ -47,6 +47,30 @@ body {
   .history-table tr:hover {
     background-color: #f1f1f1;
   }
+  th:nth-child(1),
+td:nth-child(1) {
+    width: 15%;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    width: 15%;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 15%;
+}
+
+th:nth-child(4),
+td:nth-child(4) {
+    width: 15%;
+}
+
+th:nth-child(5),
+td:nth-child(5) {
+    width: 15%;
+}
   
   .btn {
     background-color: #0077B6;
