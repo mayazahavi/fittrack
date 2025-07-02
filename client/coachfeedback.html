@@ -11,8 +11,8 @@
 </head>
 <body>
   <!-- Header -->
-  <section class="wrapper">
-    <header>
+  <header>
+    <section class="wrapper">
       <a href="index.html" class="logo-container">
         <img src="images/fittrack_icon.webp" alt="FitTrack logo" class="logo-img" />
         <span class="logo-text">FitTrack</span>
@@ -20,26 +20,40 @@
       <nav class="nav-menu">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="coachdashboard.html" class="curr-page">Dashboard</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle curr-page">Feedback</a>
+            <ul class="dropdown-menu">
+              <li><a href="coachdashboard.html">Dashboard</a></li>
+              <li><a href="coachhistory.html">Feedback history</a></li>
+            </ul>
+          </li>
           <li><a href="coach_login.html">Logout</a></li>
         </ul>
       </nav>
-    </header>
-  </section>
+    </section>
+  </header>
 
   <!-- Main Content -->
-  <section class="wrapper">
-    <main class="feedback-section">
+  <main class="feedback-section">
+    <section class="wrapper">
       <h2 class="feedback-title">Coach Feedback</h2>
-      <div class="feedback-list">
-        <div class="feedback-card">
+
+      <section class="feedback-list">
+        <section class="feedback-card">
           <label for="trainee-select">Select Trainee:</label>
           <select id="trainee-select" class="feedback-input">
             <option value="">Loading trainees...</option>
           </select>
-        </div>
 
-        <div class="feedback-card">
+          <!-- Last Trainee Entry Static Title -->
+          <section id="trainee-message-box" class="trainee-message-box" aria-label="Last Trainee Entry">
+            <h3 class="trainee-message-title">Last Trainee Entry</h3>
+            <section id="trainee-message-content">
+            </section>
+          </section>
+        </section>
+
+        <section class="feedback-card">
           <label for="feedback-date">Select Date:</label>
           <input type="date" id="feedback-date" class="feedback-input">
 
@@ -58,11 +72,10 @@
           <textarea id="custom-feedback" class="feedback-input" style="height: 150px;" placeholder="Write your feedback here..."></textarea>
 
           <button id="send-feedback-btn" class="btn" style="margin-top: 10px;">Send Feedback</button>
-        </div>
-
-      </div>
-    </main>
-  </section>
+        </section>
+      </section>
+    </section>
+  </main>
 
   <!-- Footer -->
   <footer class="footer">
@@ -93,63 +106,7 @@
       </section>
     </section>
   </footer>
-
-  <!-- Scripts -->
-  <script>
-    fetch('trainees.json')
-      .then(response => response.json())
-      .then(data => {
-        const traineeSelect = document.getElementById('trainee-select');
-        traineeSelect.innerHTML = '<option value="">-- Select Trainee --</option>';
-        data.forEach(trainee => {
-          const option = document.createElement('option');
-          option.value = trainee.name;
-          option.textContent = trainee.name;
-          traineeSelect.appendChild(option);
-        });
-      });
-
-    const traineeSelect = document.getElementById('trainee-select');
-    const sendFeedbackBtn = document.getElementById('send-feedback-btn');
-    const predefinedFeedback = document.getElementById('predefined-feedback');
-    const customFeedback = document.getElementById('custom-feedback');
-    const feedbackDate = document.getElementById('feedback-date');
-    const feedbackTime = document.getElementById('feedback-time');
-
-    sendFeedbackBtn.addEventListener('click', () => {
-      const trainee = traineeSelect.value;
-      const date = feedbackDate.value;
-      const time = feedbackTime.value;
-      const predefined = predefinedFeedback.value;
-      const custom = customFeedback.value.trim();
-
-      if (!trainee) {
-        alert('Please select a trainee.');
-        return;
-      }
-      if (!date) {
-        alert('Please select a date.');
-        return;
-      }
-      if (!time) {
-        alert('Please select a time.');
-        return;
-      }
-
-      let feedbackText = predefined || custom;
-      if (!feedbackText) {
-        alert('Please select or write feedback.');
-        return;
-      }
-
-      alert(`Feedback sent to ${trainee} on ${date} at ${time}:\n${feedbackText}`);
-      predefinedFeedback.value = '';
-      customFeedback.value = '';
-      feedbackDate.value = '';
-      feedbackTime.value = '';
-      traineeSelect.value = '';
-    });
-  </script>
   <script src="js/navbar-dropdown.js"></script>
+  <script src="js/coachfeedback.js"></script>
 </body>
 </html>
