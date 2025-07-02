@@ -1,18 +1,51 @@
 const Entry = require("../models/Entry");
+const axios = require("axios");
 
-// יצירת הזנה חדשה
+// טען את המפתח מה־.env
+const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
+console.log("🔍 API KEY loaded in controller:", SPOONACULAR_API_KEY);
+
+
+// עוזר: מחשב קלוריות לפי שם מאכל
+async function getCaloriesFromAPI(mealName) {
+  const searchUrl = `https://api.spoonacular.com/food/ingredients/search?query=${encodeURIComponent(mealName)}&apiKey=${SPOONACULAR_API_KEY}`;
+  const searchRes = await axios.get(searchUrl);
+  const results = searchRes.data.results;
+
+  if (results.length === 0) return null;
+
+  const id = results[0].id;
+  const infoUrl = `https://api.spoonacular.com/food/ingredients/${id}/information?amount=1&apiKey=${SPOONACULAR_API_KEY}`;
+  const infoRes = await axios.get(infoUrl);
+  const nutrients = infoRes.data.nutrition?.nutrients;
+
+  const calObj = nutrients?.find(n => n.name === "Calories");
+  return calObj ? calObj.amount : null;
+}
+
+// ✅ יצירת הזנה חדשה
 exports.createEntry = async (req, res) => {
   try {
     const { meals, workout, date, time } = req.body;
 
-    if (!Array.isArray(meals) || meals.some(m => !m.name || typeof m.calories !== "number")) {
-      return res.status(400).json({ error: "Invalid meal data format" });
+    if (!Array.isArray(meals) || meals.some(m => !m.name)) {
+      return res.status(400).json({ error: "Invalid meal format" });
     }
 
-    const totalCalories = meals.reduce((sum, meal) => sum + meal.calories, 0);
+    // חשב קלוריות אוטומטית לכל מאכל
+    const mealsWithCalories = [];
+    let totalCalories = 0;
+
+    for (const meal of meals) {
+      const calories = await getCaloriesFromAPI(meal.name);
+      if (calories !== null) {
+        mealsWithCalories.push({ name: meal.name, calories });
+        totalCalories += calories;
+      }
+    }
 
     const newEntry = new Entry({
-      meals,
+      meals: mealsWithCalories,
       calories: totalCalories,
       workout,
       date,
@@ -28,7 +61,7 @@ exports.createEntry = async (req, res) => {
   }
 };
 
-// קבלת כל ההזנות של המשתמש
+// ✅ קבלת כל ההזנות
 exports.getEntries = async (req, res) => {
   try {
     const entries = await Entry.find({ user: req.user.id });
@@ -39,7 +72,7 @@ exports.getEntries = async (req, res) => {
   }
 };
 
-// מחיקת הזנה לפי ID
+// ✅ מחיקה
 exports.deleteEntry = async (req, res) => {
   try {
     const entry = await Entry.findOneAndDelete({ _id: req.params.id, user: req.user.id });
@@ -55,12 +88,34 @@ exports.deleteEntry = async (req, res) => {
   }
 };
 
-// עדכון הזנה קיימת לפי ID
+// ✅ עדכון (כולל חישוב קלוריות מחדש אם שינו מאכלים)
 exports.updateEntry = async (req, res) => {
   try {
+    const { meals, workout, time } = req.body;
+
+    if (!meals || !Array.isArray(meals)) {
+      return res.status(400).json({ error: "Meals must be provided as an array" });
+    }
+
+    let updatedMeals = [];
+    let totalCalories = 0;
+
+    for (const meal of meals) {
+      const calories = await getCaloriesFromAPI(meal.name);
+      if (calories !== null) {
+        updatedMeals.push({ name: meal.name, calories });
+        totalCalories += calories;
+      }
+    }
+
     const updatedEntry = await Entry.findOneAndUpdate(
       { _id: req.params.id, user: req.user.id },
-      req.body,
+      {
+        meals: updatedMeals,
+        calories: totalCalories,
+        workout,
+        time
+      },
       { new: true }
     );
 

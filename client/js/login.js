@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
+    const role = document.getElementById("role").value; // ⬅️ נוסף כאן
 
     try {
       const res = await fetch("/api/users/login", {
@@ -13,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password, role }),
+        body: JSON.stringify({ username, password, role }), // ⬅️ כולל role
       });
 
       const data = await res.json();

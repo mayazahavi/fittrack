@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - FitTrack</title>
+  <title>Register - FitTrack</title>
   <link rel="stylesheet" href="css/login.css" />
 </head>
 <body>
 
-  <!-- כפתור חזרה לדף הבית -->
+  <!-- כפתור חזרה -->
   <section class="back-home-container">
     <a href="index.html" class="back-home-link">
       <img src="images/backtohome.webp" alt="Back to Home" class="back-home-icon">
@@ -17,36 +17,31 @@
   </section>
 
   <section class="login-wrapper">
-    <form class="login-box" id="loginForm" autocomplete="off">
-      <h2 class="login-heading">Welcome to FitTrack</h2>
+    <form class="login-box" id="registerForm" autocomplete="off">
+      <h2 class="login-heading">Create an Account</h2>
 
       <img src="images/fittrack_icon.webp" alt="FitTrack Logo" class="login-logo" />
 
-      <!-- Select role -->
-      <select name="role" id="role" class="login-select">
+      <!-- Select Role -->
+      <select name="role" id="role" class="login-select" required>
         <option value="" disabled selected>Select Role</option>
         <option value="trainee">Trainee</option>
         <option value="coach">Coach</option>
       </select>
-      <p class="error-msg" id="role-error"></p>
 
       <!-- Username -->
-      <input type="text" id="username" placeholder="Username" />
-      <p class="error-msg" id="username-error"></p>
-
+      <input type="text" id="username" placeholder="Username" required />
+      
       <!-- Password -->
-      <input type="password" id="password" placeholder="Password" />
-      <p class="error-msg" id="password-error"></p>
+      <input type="password" id="password" placeholder="Password" required />
 
       <!-- Submit -->
-      <button type="submit">Login</button>
+      <button type="submit">Register</button>
 
-      <!-- Links -->
-      <a href="#" class="forgot-password">Forgot Password?</a><br>
-      <a href="register.html" class="forgot-password">Don't have an account? Register</a>
+      <a href="login.html" class="forgot-password">Already have an account? Login</a>
     </form>
   </section>
 
-  <script src="js/login.js"></script>
+  <script src="js/register.js"></script>
 </body>
 </html>

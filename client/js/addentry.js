@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const errorField = document.getElementById("form-error");
   const caloriesDisplay = document.getElementById("calories-display");
 
-  const API_KEY = "3fe2bc6af3434976b74f5066ec6c337f"; // ← מפתח Spoonacular
-
   function createMealInput() {
     const wrapper = document.createElement("div");
     wrapper.className = "meal-wrapper";
@@ -21,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     createMealInput();
   });
 
-  // השלמה אוטומטית
+  // השלמה אוטומטית – עם Authorization header
   mealGroup.addEventListener("input", async (e) => {
     if (e.target.classList.contains("meal-input")) {
       const input = e.target;
@@ -33,9 +31,18 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const url = `https://api.spoonacular.com/food/ingredients/search?query=${encodeURIComponent(query)}&apiKey=${API_KEY}`;
       try {
-        const res = await fetch(url);
+        const token = localStorage.getItem("token");
+        const res = await fetch(`/api/entries/ingredients/search?query=${encodeURIComponent(query)}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch ingredient suggestions");
+        }
+
         const data = await res.json();
         list.innerHTML = "";
 
@@ -62,56 +69,25 @@ document.addEventListener("DOMContentLoaded", () => {
     caloriesDisplay.innerHTML = "";
 
     const inputs = document.querySelectorAll(".meal-input");
-    const mealNames = [...inputs].map(input => input.value.trim()).filter(Boolean);
+
+    const meals = [...inputs]
+      .map(input => input.value.trim())
+      .filter(Boolean)
+      .map(name => ({ name }));
+
     const workout = document.getElementById("workout").value.trim();
     const date = document.getElementById("date").value;
     const time = document.getElementById("time").value;
 
-    if (mealNames.length === 0 || !workout || !date || !time) {
+    if (meals.length === 0 || !workout || !date || !time) {
       errorField.textContent = "Please fill in all fields.";
       return;
     }
 
-    let totalCalories = 0;
-    const caloriesPerMeal = [];
-
     try {
-      for (const name of mealNames) {
-        const searchUrl = `https://api.spoonacular.com/food/ingredients/search?query=${encodeURIComponent(name)}&apiKey=${API_KEY}`;
-        const searchRes = await fetch(searchUrl);
-        const searchData = await searchRes.json();
-
-        if (searchData.results && searchData.results.length > 0) {
-          const id = searchData.results[0].id;
-          const infoUrl = `https://api.spoonacular.com/food/ingredients/${id}/information?amount=1&apiKey=${API_KEY}`;
-          const infoRes = await fetch(infoUrl);
-          const infoData = await infoRes.json();
-
-          const cal = infoData.nutrition?.nutrients?.find(n => n.name === "Calories");
-          if (cal) {
-            caloriesPerMeal.push({ name, calories: cal.amount });
-            totalCalories += cal.amount;
-          }
-        }
-      }
-
-      const breakdown = caloriesPerMeal
-        .map(item => `${item.name} – ${item.calories.toFixed(0)} kcal`)
-        .join("<br>");
-      caloriesDisplay.innerHTML = breakdown + `<br><strong>Total: ${totalCalories.toFixed(0)} kcal</strong>`;
-
-      const entryData = {
-        meals: caloriesPerMeal,
-        calories: totalCalories,
-        caloriesPerMeal,
-        workout,
-        date,
-        time
-      };
-
+      const entryData = { meals, workout, date, time };
       const token = localStorage.getItem("token");
 
-      // ⬇️ שימוש ב־location.origin במקום localhost
       const response = await fetch(`${location.origin}/api/entries`, {
         method: "POST",
         headers: {
@@ -128,7 +104,8 @@ document.addEventListener("DOMContentLoaded", () => {
         createMealInput();
         caloriesDisplay.textContent = "";
       } else {
-        errorField.textContent = "❌ Failed to save entry to server.";
+        const errData = await response.json();
+        errorField.textContent = `❌ Failed to save entry: ${errData.error || 'Unknown error'}`;
       }
     } catch (err) {
       console.error(err);
@@ -136,5 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // ← היה חסר:
   createMealInput();
 });

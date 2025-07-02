@@ -25,8 +25,8 @@ const registerUser = async (req, res) => {
 
 // התחברות משתמש
 const loginUser = async (req, res) => {
-  console.log("Login attempt:", { username, password, role });
   const { username, password, role } = req.body;
+    console.log("Login attempt:", { username, password, role });
 
   try {
     const user = await User.findOne({ username });
