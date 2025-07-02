@@ -48,3 +48,27 @@ nav ul {
   font-weight: 700; /* הופך את הטקסט למודגש */
   color: #0077B6; /* צבע שתואם לעיצוב הכללי */
 }
+
+/* עיצוב תיבת הודעת מתאמן */
+.trainee-message-box {
+  background-color: #f0f8ff;
+  border: 1px solid #0077b6;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  color: #333;
+}
+
+.trainee-message-box h3 {
+  margin-top: 0;
+  color: #0077b6;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.trainee-message-box ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}
