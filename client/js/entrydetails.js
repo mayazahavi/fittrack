@@ -3,6 +3,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   const noDataMsg = document.getElementById("noDataMessage");
   const totalDisplay = document.getElementById("totalCalories");
 
+  function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join(''));
+    return JSON.parse(jsonPayload);
+  }
+
   try {
     const token = localStorage.getItem("token");
 
@@ -11,7 +20,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const res = await fetch("/api/entries", {
+    const userData = parseJwt(token);
+    const traineeId = userData.id;
+
+    const res = await fetch(`/api/entries?traineeId=${traineeId}`, {
       headers: {
         "Authorization": `Bearer ${token}`
       }
@@ -78,10 +90,8 @@ document.addEventListener("DOMContentLoaded", async () => {
               }
             }
           }
-          // הסרנו את datalabels כדי לא ליצור עומס ובלבול על הגרף
         }
       }
-      // לא נשתמש ב־ChartDataLabels – שורת plugins מוסרת לגמרי
     });
 
   } catch (err) {

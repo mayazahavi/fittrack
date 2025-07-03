@@ -3,79 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <title>Coach Feedback - FitTrack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/feedback.css" />
   <link rel="stylesheet" href="css/coachfeedback.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/navbar-dropdown.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <section class="wrapper">
+
+  <!-- Header + Navigation -->
+  <section class="wrapper">
+    <header>
       <a href="index.html" class="logo-container">
         <img src="images/fittrack_icon.webp" alt="FitTrack logo" class="logo-img" />
         <span class="logo-text">FitTrack</span>
       </a>
-      <nav class="nav-menu">
+      <nav>
         <ul>
           <li><a href="index.html">Home</a></li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle curr-page">Feedback</a>
+            <a href="#" class="curr-page dropdown-toggle">Feedback</a>
             <ul class="dropdown-menu">
               <li><a href="coachdashboard.html">Dashboard</a></li>
-              <li><a href="coachhistory.html">Feedback history</a></li>
+              <li><a href="coachhistory.html">View History</a></li>
             </ul>
           </li>
-          <li><a href="coach_login.html">Logout</a></li>
+          <li><a href="#">Logout</a></li>
         </ul>
       </nav>
-    </section>
-  </header>
+    </header>
+  </section>
 
   <!-- Main Content -->
-  <main class="feedback-section">
-    <section class="wrapper">
-      <h2 class="feedback-title">Coach Feedback</h2>
+  <main class="wrapper py-4">
+    <article class="container bg-info bg-opacity-25 rounded p-4 shadow-sm" style="max-width: 700px;">
+      <h2 class="text-primary fw-bold mb-4 border-start border-5 border-primary ps-3">
+        Coach Feedback Dashboard
+      </h2>
 
-      <section class="feedback-list">
-        <section class="feedback-card">
-          <label for="trainee-select">Select Trainee:</label>
-          <select id="trainee-select" class="feedback-input">
-            <option value="">Loading trainees...</option>
-          </select>
+      <form id="coachForm" autocomplete="off">
+        <label for="date" class="form-label fw-semibold">Date</label>
+        <input type="date" class="form-control rounded-pill" id="date" name="date" required />
 
-          <!-- Last Trainee Entry Static Title -->
-          <section id="trainee-message-box" class="trainee-message-box" aria-label="Last Trainee Entry">
-            <h3 class="trainee-message-title">Last Trainee Entry</h3>
-            <section id="trainee-message-content">
-            </section>
-          </section>
+        <label for="time" class="form-label fw-semibold mt-3">Time</label>
+        <input type="time" class="form-control rounded-pill" id="time" name="time" required />
+
+        <section class="d-flex align-items-center gap-2 mt-3">
+          <div style="flex-grow:1;">
+            <label for="traineeSelect" class="form-label fw-semibold">Select Trainee</label>
+            <select id="traineeSelect" name="traineeSelect" class="form-select rounded-pill" required>
+              <option value="" disabled selected>-- Select Trainee --</option>
+            </select>
+          </div>
+          <button type="button" id="showTraineeDataBtn" class="btn btn-primary rounded-pill mt-4" data-bs-toggle="modal" data-bs-target="#traineeDataModal">
+            Show Trainee Data
+          </button>
         </section>
 
-        <section class="feedback-card">
-          <label for="feedback-date">Select Date:</label>
-          <input type="date" id="feedback-date" class="feedback-input">
+        <label for="tipNutrition" class="form-label fw-semibold mt-4">Nutrition Feedback</label>
+        <textarea id="tipNutrition" name="tipNutrition" class="form-control rounded" placeholder="Feedback about meals and nutrition..." maxlength="300" rows="3"></textarea>
 
-          <label for="feedback-time" style="margin-top: 10px;">Select Time:</label>
-          <input type="time" id="feedback-time" class="feedback-input">
+        <label for="tipExercise" class="form-label fw-semibold mt-3">Exercise Feedback</label>
+        <textarea id="tipExercise" name="tipExercise" class="form-control rounded" placeholder="Feedback about exercise and training..." maxlength="300" rows="3"></textarea>
 
-          <label for="predefined-feedback" style="margin-top: 20px;">Predefined Feedback:</label>
-          <select id="predefined-feedback" class="feedback-input">
-            <option value="">-- Select Feedback --</option>
-            <option value="Great progress, keep it up!">Great progress, keep it up!</option>
-            <option value="Please pay attention to your technique.">Please pay attention to your technique.</option>
-            <option value="Try to stay consistent with your workouts.">Try to stay consistent with your workouts.</option>
-          </select>
+        <label for="tipGeneral" class="form-label fw-semibold mt-3">General Feedback</label>
+        <textarea id="tipGeneral" name="tipGeneral" class="form-control rounded" placeholder="General feedback..." maxlength="300" rows="3"></textarea>
 
-          <label for="custom-feedback" style="margin-top: 20px; display: block;">Or write your own feedback:</label>
-          <textarea id="custom-feedback" class="feedback-input" style="height: 150px;" placeholder="Write your feedback here..."></textarea>
-
-          <button id="send-feedback-btn" class="btn" style="margin-top: 10px;">Send Feedback</button>
-        </section>
-      </section>
-    </section>
+        <button type="submit" class="btn btn-primary w-100 rounded-pill mt-4">Send Feedback</button>
+        <p id="form-error" class="text-danger mt-2"></p>
+      </form>
+    </article>
   </main>
+
+  <!-- Modal להצגת נתוני מתאמן -->
+  <section class="modal fade" id="traineeDataModal" tabindex="-1" aria-labelledby="traineeDataModalLabel" aria-hidden="true">
+    <article class="modal-dialog modal-lg modal-dialog-centered">
+      <section class="modal-content">
+        <header class="modal-header">
+          <h5 class="modal-title" id="traineeDataModalLabel">Trainee Data</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </header>
+        <section class="modal-body" id="traineeDataModalContent">
+          Loading...
+        </section>
+        <footer class="modal-footer">
+          <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
+        </footer>
+      </section>
+    </article>
+  </section>
 
   <!-- Footer -->
   <footer class="footer">
@@ -106,7 +126,11 @@
       </section>
     </section>
   </footer>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/navbar-dropdown.js"></script>
   <script src="js/coachfeedback.js"></script>
+
 </body>
 </html>

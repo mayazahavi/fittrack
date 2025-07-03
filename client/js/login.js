@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-    const role = document.getElementById("role").value; // ⬅️ נוסף כאן
+    const role = document.getElementById("role").value;
 
     try {
       const res = await fetch("/api/users/login", {
@@ -14,18 +14,27 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password, role }), // ⬅️ כולל role
+        body: JSON.stringify({ username, password, role }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Login failed");
+        throw new Error(data.error || data.message || "Login failed");
       }
 
       localStorage.setItem("token", data.token);
+
       alert("Login successful!");
-      window.location.href = "dashboard.html";
+
+      // הפניה לדף לפי תפקיד
+      if (data.role === "coach") {
+        window.location.href = "coachdashboard.html";
+      } else if (data.role === "trainee") {
+        window.location.href = "dashboard.html";
+      } else {
+        window.location.href = "dashboard.html"; // ברירת מחדל
+      }
     } catch (err) {
       console.error("Login error:", err);
       alert("Login failed: " + err.message);

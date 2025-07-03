@@ -29,7 +29,7 @@ router.get("/ingredients/search", verifyToken, async (req, res) => {
   }
 });
 
-// נתיבים נוספים ל-CRUD להזנות
+
 router.post("/", verifyToken, createEntry);
 router.get("/", verifyToken, getEntries);
 router.delete("/:id", verifyToken, deleteEntry);

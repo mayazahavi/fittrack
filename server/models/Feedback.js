@@ -1,0 +1,25 @@
+const mongoose = require("mongoose");
+
+const FeedbackSchema = new mongoose.Schema({
+  trainee: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",       // מתייחס למודל המשתמשים (User)
+    required: true,
+  },
+  coach: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",       // המאמן ששלח את המשוב
+    required: true,
+  },
+  datetime: {
+    type: Date,
+    required: true,
+  },
+  tips: {
+    nutrition: { type: String, default: "" },
+    exercise: { type: String, default: "" },
+    general: { type: String, default: "" }
+  }
+}, { timestamps: true });
+
+module.exports = mongoose.model("Feedback", FeedbackSchema);

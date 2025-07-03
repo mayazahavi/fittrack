@@ -5,7 +5,6 @@ const axios = require("axios");
 const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
 console.log("🔍 API KEY loaded in controller:", SPOONACULAR_API_KEY);
 
-
 // עוזר: מחשב קלוריות לפי שם מאכל
 async function getCaloriesFromAPI(mealName) {
   const searchUrl = `https://api.spoonacular.com/food/ingredients/search?query=${encodeURIComponent(mealName)}&apiKey=${SPOONACULAR_API_KEY}`;
@@ -23,7 +22,7 @@ async function getCaloriesFromAPI(mealName) {
   return calObj ? calObj.amount : null;
 }
 
-// ✅ יצירת הזנה חדשה
+// יצירת הזנה חדשה
 exports.createEntry = async (req, res) => {
   try {
     const { meals, workout, date, time } = req.body;
@@ -61,10 +60,26 @@ exports.createEntry = async (req, res) => {
   }
 };
 
-// ✅ קבלת כל ההזנות
+// קבלת הזנות לפי traineeId ותאריך אופציונלי
 exports.getEntries = async (req, res) => {
   try {
-    const entries = await Entry.find({ user: req.user.id });
+    const { traineeId, date } = req.query;
+
+    if (!traineeId) {
+      return res.status(400).json({ error: "Missing traineeId parameter" });
+    }
+
+    // בניית שאילתה לפי traineeId
+    const query = { user: traineeId };
+
+    // אם קיים תאריך, הוסף סינון לפי תאריך
+    if (date) {
+      query.date = date;
+    }
+
+    // שליפה מהמונגו עם מיון מהחדש לישן לפי תאריך וזמן
+    const entries = await Entry.find(query).sort({ date: -1, time: -1 });
+
     res.status(200).json(entries);
   } catch (err) {
     console.error("❌ Error fetching entries:", err.message);
@@ -72,7 +87,7 @@ exports.getEntries = async (req, res) => {
   }
 };
 
-// ✅ מחיקה
+// מחיקה
 exports.deleteEntry = async (req, res) => {
   try {
     const entry = await Entry.findOneAndDelete({ _id: req.params.id, user: req.user.id });
@@ -88,7 +103,7 @@ exports.deleteEntry = async (req, res) => {
   }
 };
 
-// ✅ עדכון (כולל חישוב קלוריות מחדש אם שינו מאכלים)
+// עדכון (כולל חישוב קלוריות מחדש אם שונו מאכלים)
 exports.updateEntry = async (req, res) => {
   try {
     const { meals, workout, time } = req.body;
