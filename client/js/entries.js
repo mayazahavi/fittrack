@@ -1,3 +1,5 @@
+import { BASE_URL } from "./config.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const tableBody = document.getElementById("entriesTable");
   const editModal = document.getElementById("editModal");
@@ -24,13 +26,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     return JSON.parse(jsonPayload);
   }
 
-  const userData = parseJwt(token);
-  const userId = userData.id;
+  const userId = parseJwt(token).id;
 
   function createMealInput(name = "") {
     const wrapper = document.createElement("div");
     wrapper.className = "meal-wrapper";
-    wrapper.style.position = "relative"; // כדי לוודא שה-ul יישב נכון
+    wrapper.style.position = "relative";
     wrapper.innerHTML = `
       <input type="text" class="meal-input" value="${name}" required />
       <ul class="suggestions-list"></ul>
@@ -44,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (query.length < 2) return;
 
       try {
-        const res = await fetch(`/api/entries/ingredients/search?query=${encodeURIComponent(query)}`, {
+        const res = await fetch(`${BASE_URL}/api/entries/ingredients/search?query=${encodeURIComponent(query)}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (!res.ok) return;
@@ -72,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadEntries() {
     try {
-      const res = await fetch(`/api/entries?traineeId=${userId}`, {
+      const res = await fetch(`${BASE_URL}/api/entries?traineeId=${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const allEntries = await res.json();
@@ -104,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         deleteBtn.textContent = "🗑 Delete";
         deleteBtn.onclick = async () => {
           if (confirm("Are you sure you want to delete this entry?")) {
-            await fetch(`/api/entries/${entry._id}`, {
+            await fetch(`${BASE_URL}/api/entries/${entry._id}`, {
               method: "DELETE",
               headers: { Authorization: `Bearer ${token}` }
             });
@@ -154,7 +155,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     try {
-      const response = await fetch(`/api/entries/${currentEditId}`, {
+      const response = await fetch(`${BASE_URL}/api/entries/${currentEditId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

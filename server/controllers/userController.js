@@ -2,11 +2,19 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+// הרשאות חוקיות במערכת
+const validRoles = ["trainee", "coach"];
+
 // רישום משתמש חדש
 const registerUser = async (req, res) => {
   const { username, password, role } = req.body;
 
   try {
+    // בדיקה אם התפקיד תקין
+    if (!validRoles.includes(role)) {
+      return res.status(400).json({ error: "Invalid role specified" });
+    }
+
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ error: "Username already exists" });
@@ -26,7 +34,7 @@ const registerUser = async (req, res) => {
 // התחברות משתמש
 const loginUser = async (req, res) => {
   const { username, password, role } = req.body;
-    console.log("Login attempt:", { username, password, role });
+  console.log("Login attempt:", { username, password, role });
 
   try {
     const user = await User.findOne({ username });

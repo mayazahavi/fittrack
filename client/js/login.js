@@ -1,15 +1,17 @@
+import { BASE_URL } from "./config.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("loginForm");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
     const role = document.getElementById("role").value;
 
     try {
-      const res = await fetch("/api/users/login", {
+      const res = await fetch(`${BASE_URL}/api/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,13 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       alert("Login successful!");
 
-      // הפניה לדף לפי תפקיד
       if (data.role === "coach") {
         window.location.href = "coachdashboard.html";
-      } else if (data.role === "trainee") {
-        window.location.href = "dashboard.html";
       } else {
-        window.location.href = "dashboard.html"; // ברירת מחדל
+        window.location.href = "dashboard.html";
       }
     } catch (err) {
       console.error("Login error:", err);

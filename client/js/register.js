@@ -1,3 +1,5 @@
+import { BASE_URL } from "./config.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("registerForm");
 
@@ -9,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const role = document.getElementById("role").value;
 
     try {
-      const res = await fetch("/api/users/register", {
+      const res = await fetch(`${BASE_URL}/api/users/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password, role }),

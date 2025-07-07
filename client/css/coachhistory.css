@@ -10,7 +10,7 @@ body {
   font-size: 28px;
   color: #0077B6;
   margin-top: 32px;
-  font-family: 'Nunito', sans-serif; /* תוקן ל-Nunito */
+  font-family: 'Nunito', sans-serif;
 }
 
 .history-table {
@@ -29,7 +29,7 @@ body {
   color: #fff;
   padding: 14px;
   text-align: left;
-  font-family: 'Nunito', sans-serif; /* תוקן ל-Nunito */
+  font-family: 'Nunito', sans-serif;
   font-size: 16px;
 }
 
@@ -61,4 +61,92 @@ body {
 
 .btn:hover {
   background-color: #005f8d;
+}
+
+.actions button {
+  margin: 0 5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.edit-btn {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #d9534f;
+  color: white;
+}
+
+/* ===== Modal Styles ===== */
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 999;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-box {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  max-width: 420px;
+  width: 90%;
+  font-family: 'Nunito', sans-serif;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.modal-box h2 {
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 12px;
+  word-break: break-word;
+  text-align: center;
+}
+
+#closeEditModal {
+  background: none;
+  border: none;
+  font-size: 22px;
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  cursor: pointer;
+  color: #333;
+}
+
+#editFeedbackForm label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+#editFeedbackForm input,
+#editFeedbackForm textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-family: 'Nunito', sans-serif;
+  box-sizing: border-box;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 1rem;
 }

@@ -11,7 +11,9 @@ async function getCaloriesFromAPI(mealName) {
   const searchRes = await axios.get(searchUrl);
   const results = searchRes.data.results;
 
-  if (results.length === 0) return null;
+  if (!results || results.length === 0) {
+    throw new Error(`❌ Ingredient "${mealName}" not found`);
+  }
 
   const id = results[0].id;
   const infoUrl = `https://api.spoonacular.com/food/ingredients/${id}/information?amount=1&apiKey=${SPOONACULAR_API_KEY}`;
@@ -19,7 +21,12 @@ async function getCaloriesFromAPI(mealName) {
   const nutrients = infoRes.data.nutrition?.nutrients;
 
   const calObj = nutrients?.find(n => n.name === "Calories");
-  return calObj ? calObj.amount : null;
+
+  if (!calObj) {
+    throw new Error(`❌ No calorie data available for "${mealName}"`);
+  }
+
+  return calObj.amount;
 }
 
 // יצירת הזנה חדשה
@@ -31,15 +38,17 @@ exports.createEntry = async (req, res) => {
       return res.status(400).json({ error: "Invalid meal format" });
     }
 
-    // חשב קלוריות אוטומטית לכל מאכל
     const mealsWithCalories = [];
     let totalCalories = 0;
 
     for (const meal of meals) {
-      const calories = await getCaloriesFromAPI(meal.name);
-      if (calories !== null) {
+      try {
+        const calories = await getCaloriesFromAPI(meal.name);
         mealsWithCalories.push({ name: meal.name, calories });
         totalCalories += calories;
+      } catch (err) {
+        console.error(`🔴 Failed to get calories for ${meal.name}:`, err.message);
+        return res.status(400).json({ error: `Meal "${meal.name}" has no calorie data. Please choose another.` });
       }
     }
 
@@ -69,17 +78,12 @@ exports.getEntries = async (req, res) => {
       return res.status(400).json({ error: "Missing traineeId parameter" });
     }
 
-    // בניית שאילתה לפי traineeId
     const query = { user: traineeId };
-
-    // אם קיים תאריך, הוסף סינון לפי תאריך
     if (date) {
       query.date = date;
     }
 
-    // שליפה מהמונגו עם מיון מהחדש לישן לפי תאריך וזמן
     const entries = await Entry.find(query).sort({ date: -1, time: -1 });
-
     res.status(200).json(entries);
   } catch (err) {
     console.error("❌ Error fetching entries:", err.message);
@@ -116,10 +120,13 @@ exports.updateEntry = async (req, res) => {
     let totalCalories = 0;
 
     for (const meal of meals) {
-      const calories = await getCaloriesFromAPI(meal.name);
-      if (calories !== null) {
+      try {
+        const calories = await getCaloriesFromAPI(meal.name);
         updatedMeals.push({ name: meal.name, calories });
         totalCalories += calories;
+      } catch (err) {
+        console.error(`🔴 Failed to get calories for ${meal.name}:`, err.message);
+        return res.status(400).json({ error: `Meal "${meal.name}" has no calorie data. Please choose another.` });
       }
     }
 

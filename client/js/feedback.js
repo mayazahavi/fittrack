@@ -1,8 +1,9 @@
+import { BASE_URL } from "./config.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const feedbackList = document.getElementById("feedbackList");
   feedbackList.innerHTML = "Loading feedback...";
 
-  // פונקציה לפענוח טוקן JWT
   function parseJwt(token) {
     try {
       return JSON.parse(atob(token.split('.')[1]));
@@ -26,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    const res = await fetch(`/api/coach/feedback?traineeId=${traineeId}`, {
+    const res = await fetch(`${BASE_URL}/api/coach/feedback/by-trainee?traineeId=${traineeId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -41,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    feedbackList.innerHTML = ""; // נקה את ההודעה "Loading"
+    feedbackList.innerHTML = "";
 
     feedbacks.forEach(fb => {
       const card = document.createElement("article");

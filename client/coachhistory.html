@@ -10,8 +10,8 @@
 </head>
 <body>
   <!-- Header -->
-  <section class="wrapper">
-    <header>
+  <header>
+    <section class="wrapper">
       <a href="index.html" class="logo-container">
         <img src="images/fittrack_icon.webp" alt="FitTrack logo" class="logo-img" />
         <span class="logo-text">FitTrack</span>
@@ -29,12 +29,12 @@
           <li><a href="coach_login.html">Logout</a></li>
         </ul>
       </nav>
-    </header>
-  </section>
+    </section>
+  </header>
 
   <!-- Main Content -->
-  <section class="wrapper">
-    <main>
+  <main>
+    <section class="wrapper">
       <h2 class="section-title">Feedback History</h2>
       <table class="history-table">
         <thead>
@@ -52,10 +52,42 @@
           </tr>
         </tbody>
       </table>
-    </main>
+    </section>
+  </main>
+
+  <!-- ✅ Edit Modal with semantic HTML5 tags -->
+  <section id="editModal" class="modal hidden">
+    <section class="modal-box">
+      <button id="closeEditModal" class="close-btn" aria-label="Close Edit Modal">&times;</button>
+      <h2>Edit Feedback</h2>
+      <form id="editFeedbackForm">
+        <fieldset>
+          <legend>Date and Time</legend>
+          <label for="editDate">Date:</label>
+          <input type="date" id="editDate" required />
+
+          <label for="editTime">Time:</label>
+          <input type="time" id="editTime" required />
+        </fieldset>
+
+        <fieldset>
+          <legend>Tips</legend>
+          <label for="editNutrition">Nutrition Feedback:</label>
+          <textarea id="editNutrition" rows="2"></textarea>
+
+          <label for="editExercise">Exercise Feedback:</label>
+          <textarea id="editExercise" rows="2"></textarea>
+
+          <label for="editGeneral">General Feedback:</label>
+          <textarea id="editGeneral" rows="2"></textarea>
+        </fieldset>
+
+        <button type="submit" class="btn">Update</button>
+      </form>
+    </section>
   </section>
 
-  <!-- Footer (copied from coachfeedback for consistency) -->
+  <!-- Footer -->
   <footer class="footer">
     <section class="wrapper">
       <section class="footer-container">
@@ -85,8 +117,9 @@
     </section>
   </footer>
 
-  <script src="js/navbar-dropdown.js"></script>
-  <script src="js/coachhistory.js"></script>
+  <!-- Scripts -->
+ <script src="js/navbar-dropdown.js"></script>
+<script type="module" src="js/coachhistory.js"></script>
 
 </body>
 </html>

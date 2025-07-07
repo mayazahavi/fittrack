@@ -1,3 +1,5 @@
+import { BASE_URL } from "./config.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const ctx = document.getElementById("caloriesChart").getContext("2d");
   const noDataMsg = document.getElementById("noDataMessage");
@@ -23,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const userData = parseJwt(token);
     const traineeId = userData.id;
 
-    const res = await fetch(`/api/entries?traineeId=${traineeId}`, {
+    const res = await fetch(`${BASE_URL}/api/entries?traineeId=${traineeId}`, {
       headers: {
         "Authorization": `Bearer ${token}`
       }

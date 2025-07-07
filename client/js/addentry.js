@@ -1,3 +1,5 @@
+import { BASE_URL } from "./config.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("entryForm");
   const mealGroup = document.getElementById("meal-group");
@@ -33,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`/api/entries/ingredients/search?query=${encodeURIComponent(query)}`, {
+        const res = await fetch(`${BASE_URL}/api/entries/ingredients/search?query=${encodeURIComponent(query)}`, {
           headers: {
             "Authorization": `Bearer ${token}`
           }
@@ -88,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const entryData = { meals, workout, date, time };
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`${location.origin}/api/entries`, {
+      const response = await fetch(`${BASE_URL}/api/entries`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,15 +99,21 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify(entryData)
       });
 
+      const result = await response.json();
+
       if (response.ok) {
+        if (result.meals.length === 0) {
+          errorField.textContent = "❌ No calorie data available for the selected meals. Try different foods.";
+          return;
+        }
+
         alert("✅ Entry saved successfully!");
         form.reset();
         mealGroup.innerHTML = "";
         createMealInput();
         caloriesDisplay.textContent = "";
       } else {
-        const errData = await response.json();
-        errorField.textContent = `❌ Failed to save entry: ${errData.error || 'Unknown error'}`;
+        errorField.textContent = `❌ Failed to save entry: ${result.error || 'Unknown error'}`;
       }
     } catch (err) {
       console.error(err);
@@ -113,6 +121,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ← היה חסר:
   createMealInput();
 });
