@@ -7,8 +7,8 @@
 }
 
 .dashboard-card {
-  width: 288px;
-  background-color: #E0F6FF; 
+  width: 266px;
+    background-color: #D6F0E9;/* ✅ ירוק פסטל רך */
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -34,7 +34,7 @@
 .card-title {
   font-size: 20px;
   font-weight: 700;
-  color: #0077B6;
+  color: #14532D; /* ✅ ירוק כהה */
   margin-bottom: 8px;
   font-family: 'Rubik', sans-serif;
 }
@@ -49,14 +49,33 @@
 .card-btn {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #0077B6;
+  background-color: #14532D; /* ✅ ירוק כהה */
   color: white;
   text-decoration: none;
   border-radius: 8px;
   font-weight: 600;
   transition: background-color 0.3s ease;
+  font-family: 'Rubik', sans-serif;
 }
 
 .card-btn:hover {
-  background-color: #4BB4E6;
+  background-color: #1E5E3C; /* ✅ ירוק כהה יותר בהובר */
+}
+.welcome-section {
+  padding-top: 40px;
+  padding-bottom: 20px;
+}
+
+.welcome-title {
+  font-size: 32px;
+  font-weight: 800;
+    color: #14532D/* ירוק כהה */
+  font-family: 'Rubik', sans-serif;
+  margin-bottom: 12px;
+}
+
+.welcome-text {
+  font-size: 18px;
+  color: #333;
+  font-family: 'Nunito', sans-serif;
 }

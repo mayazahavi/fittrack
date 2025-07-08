@@ -157,3 +157,19 @@ body {
 .footer-section .social-icon:hover {
   transform: scale(1.2);
 }
+/* התפריט הנפתח */
+.dropdown-menu {
+  background-color: #f8f3ff;
+  border: 1px solid #cce5e1;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.dropdown-item {
+  color: #333;
+  padding: 10px 16px;
+}
+
+.dropdown-item:hover {
+  background-color: #cce5e1;
+  color: #000;
+}

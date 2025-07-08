@@ -3,137 +3,143 @@
 <head>
   <meta charset="UTF-8">
   <title>FitTrack - Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/dashboard.css">
-  <link rel="stylesheet" href="css/navbar-dropdown.css">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
-<body>
+<body style="font-family: 'Rubik', sans-serif; background-color: #f8f3ff;">
 
-  <!-- Header + Navigation -->
-  <section class="wrapper">
-    <header>
-      <a href="index.html" class="logo-container">
-        <img src="images/fittrack_icon.webp" alt="FitTrack logo" class="logo-img">
-        <span class="logo-text">FitTrack</span>
-      </a>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li class="dropdown">
-            <a href="#" class="curr-page dropdown-toggle">Dashboard</a>
-            <ul class="dropdown-menu">
-              <li><a href="addentry.html">Add Entry</a></li>
-              <li><a href="entries.html">View History</a></li>
-              <li><a href="entrydetails.html">Calories Summary</a></li>
-              <li><a href="feedback.html">Coach Feedback</a></li>
-            </ul>
-          </li>
-          <li><a href="logout.html">Logout</a></li>
-        </ul>
-      </nav>
-    </header>
-  </section>
+  <!-- ✅ HEADER -->
+  <header>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+      <section class="container d-flex justify-content-between align-items-center">
+        <a href="index.html" class="navbar-brand d-flex align-items-center">
+          <img src="images/fittrack_logo_darkgreen.png" alt="FitTrack Logo" width="64" height="64" class="me-2">
+          <strong class="fs-4 text-dark">FitTrack</strong>
+        </a>
 
-  <!-- Main Dashboard Content -->
-  <section class="wrapper">
-    <main>
-      <section class="dashboard-cards">
-
-        <article class="dashboard-card">
-          <img src="images/card_fitness_image_optimized.jpg" alt="Add Entry" class="card-img" />
-          <section class="card-content">
-            <header>
-              <h3 class="card-title">Add Daily Entry</h3>
-            </header>
-            <p class="card-desc">Log today’s meals and workout.</p>
-            <footer>
-              <a href="addentry.html" class="card-btn">Go</a>
-            </footer>
-          </section>
-        </article>
-
-        <article class="dashboard-card">
-          <img src="images/history_card_image_optimized.jpg" alt="View History" class="card-img" />
-          <section class="card-content">
-            <header>
-              <h3 class="card-title">View My History</h3>
-            </header>
-            <p class="card-desc">See past entries and track progress.</p>
-            <footer>
-              <a href="entries.html" class="card-btn">Go</a>
-            </footer>
-          </section>
-        </article>
-
-        <article class="dashboard-card">
-          <img src="images/calorie_card_image_optimized.jpg" alt="Calories Summary" class="card-img" />
-          <section class="card-content">
-            <header>
-              <h3 class="card-title">Calories Summary</h3>
-            </header>
-            <p class="card-desc">Track calories consumed and burned.</p>
-            <footer>
-              <a href="entrydetails.html" class="card-btn">Go</a>
-            </footer>
-          </section>
-        </article>
-
-        <article class="dashboard-card">
-          <img src="images/coach_feedback_card_optimized.jpg" alt="Coach Feedback" class="card-img" />
-          <section class="card-content">
-            <header>
-              <h3 class="card-title">Coach Feedback</h3>
-            </header>
-            <p class="card-desc">Read your coach's recommendations.</p>
-            <footer>
-              <a href="feedback.html" class="card-btn">Go</a>
-            </footer>
-          </section>
-        </article>
-
+        <nav class="d-flex align-items-center gap-3">
+          <ul class="nav mb-0">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle active-link" href="#" id="dashboardDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Dashboard
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
+                <li><a class="dropdown-item" href="dashboard.html">Main Dashboard</a></li>
+                <li><a class="dropdown-item" href="addentry.html">Add Entry</a></li>
+                <li><a class="dropdown-item" href="entries.html">History</a></li>
+                <li><a class="dropdown-item" href="entrydetails.html">Calories</a></li>
+                <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="logout.html" class="btn btn-success px-4 ms-2">Logout</a>
+            </li>
+          </ul>
+        </nav>
       </section>
-    </main>
-  </section>
+    </nav>
+  </header>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <section class="wrapper">
-      <section class="footer-container">
-        <section class="footer-group footer-left">
-          <h3 class="footer-title">ABOUT</h3>
-          <ul class="footer-links">
-            <li><a href="#">Our Story</a></li>
-            <li><a href="#">Team</a></li>
-            <li><a href="#">Contact</a></li>
-          </ul>
-          <section class="footer-icons">
-            <a href="https://twitter.com" target="_blank">
-              <img src="images/twitter.svg" alt="Twitter" class="social-icon">
-            </a>
-            <a href="https://facebook.com" target="_blank">
-              <img src="images/facebook.svg" alt="Facebook" class="social-icon">
-            </a>
-            <a href="https://instagram.com" target="_blank">
-              <img src="images/instagram.svg" alt="Instagram" class="social-icon">
-            </a>
+  <!-- ✅ MAIN -->
+  <main class="container my-5">
+
+    <!-- 👋 Welcome Message -->
+    <section class="text-center mb-5">
+      <h2 class="fw-bold text-success">Welcome, Trainee!</h2>
+      <p class="lead text-dark">Is it your first time today? Let's begin by logging your day.</p>
+    </section>
+
+    <section class="row text-center gy-4">
+      <section class="col-md-6 col-lg-3">
+        <article class="dashboard-card">
+          <img src="images/card1_nutrition_tracking_v2.jpg" alt="Add Entry" class="card-img" />
+          <section class="card-content">
+            <h3 class="card-title">Add Daily Entry</h3>
+            <p class="card-desc">Log today’s meals and workout please.</p>
+            <a href="addentry.html" class="card-btn btn btn-outline-success">Go</a>
           </section>
-          <p class="footer-copy">© 2025 FitTrack</p>
-        </section>
-        <section class="footer-group footer-right">
-          <h3 class="footer-title">FOLLOW US</h3>
-          <ul class="footer-links">
-            <li><a href="#">Twitter</a></li>
-            <li><a href="#">Facebook</a></li>
-            <li><a href="#">Instagram</a></li>
-          </ul>
-        </section>
+        </article>
+      </section>
+
+      <section class="col-md-6 col-lg-3">
+        <article class="dashboard-card">
+          <img src="images/card4_entry_history_300x300.jpg" alt="View History" class="card-img" />
+          <section class="card-content">
+            <h3 class="card-title">View My History</h3>
+            <p class="card-desc">See past entries and track progress.</p>
+            <a href="entries.html" class="card-btn btn btn-outline-success">Go</a>
+          </section>
+        </article>
+      </section>
+
+      <section class="col-md-6 col-lg-3">
+        <article class="dashboard-card">
+          <img src="images/card2_calories_piechart.jpg" alt="Calories Summary" class="card-img" />
+          <section class="card-content">
+            <h3 class="card-title">Calories Summary</h3>
+            <p class="card-desc">Track calories consumed and burned.</p>
+            <a href="entrydetails.html" class="card-btn btn btn-outline-success">Go</a>
+          </section>
+        </article>
+      </section>
+
+      <section class="col-md-6 col-lg-3">
+        <article class="dashboard-card">
+          <img src="images/card3_trainer_feedback.jpg" alt="Coach Feedback" class="card-img" />
+          <section class="card-content">
+            <h3 class="card-title">Coach Feedback</h3>
+            <p class="card-desc">Read your coach's recommendations.</p>
+            <a href="feedback.html" class="card-btn btn btn-outline-success">Go</a>
+          </section>
+        </article>
       </section>
     </section>
+    <!-- Testimonials Section -->
+<section class="container text-center my-5">
+  <section id="testimonials" class="carousel slide" data-bs-ride="carousel">
+    <section class="carousel-inner">
+      <article class="carousel-item active">
+        <img src="images/avatar_woman_smile_circle_transparent.png" class="rounded-circle mb-3" alt="Sarah" width="80" />
+        <blockquote>
+          <p>"FitTrack helped me lose 10 kg in 3 months!"</p>
+          <footer class="blockquote-footer">Sarah W.</footer>
+        </blockquote>
+      </article>
+      <article class="carousel-item">
+        <img src="images/avatar_man_smile_circle_transparent.png" class="rounded-circle mb-3" alt="Tom" width="80" />
+        <blockquote>
+          <p>"Thanks to FitTrack I feel stronger and more focused!"</p>
+          <footer class="blockquote-footer">Tom D.</footer>
+        </blockquote>
+      </article>
+    </section>
+    <button class="carousel-control-prev" type="button" data-bs-target="#testimonials" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#testimonials" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </section>
+</section>
+
+  </main>
+
+  <!-- ✅ FOOTER -->
+  <footer id="contact" class="footer-section text-center text-white">
+    <section class="mb-3">
+      <a href="https://facebook.com" target="_blank"><img src="images/facebook.svg" alt="Facebook" width="24" class="mx-2 social-icon" /></a>
+      <a href="https://instagram.com" target="_blank"><img src="images/instagram.svg" alt="Instagram" width="24" class="mx-2 social-icon" /></a>
+      <a href="https://twitter.com" target="_blank"><img src="images/twitter.svg" alt="Twitter" width="24" class="mx-2 social-icon" /></a>
+    </section>
+    <small>© 2025 FitTrack, All rights reserved.</small>
   </footer>
 
-  <script src="js/navbar-dropdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
