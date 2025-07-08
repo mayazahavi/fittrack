@@ -7,11 +7,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const errorField = document.getElementById("form-error");
   const caloriesDisplay = document.getElementById("calories-display");
 
+  // אלמנטים לשגיאות לפי שדה
+  const mealError = document.getElementById("meal-error");
+  const workoutError = document.getElementById("workout-error");
+  const dateError = document.getElementById("date-error");
+  const timeError = document.getElementById("time-error");
+
+  function clearFieldErrors() {
+    mealError.textContent = "";
+    workoutError.textContent = "";
+    dateError.textContent = "";
+    timeError.textContent = "";
+    errorField.textContent = "";
+  }
+
   function createMealInput() {
     const wrapper = document.createElement("div");
     wrapper.className = "meal-wrapper";
     wrapper.innerHTML = `
-      <input type="text" class="meal-input" name="meal[]" placeholder="Type a meal..." required />
+      <input type="text" class="meal-input form-control mb-2" name="meal[]" placeholder="Type a meal..." required />
       <ul class="suggestions-list"></ul>
     `;
     mealGroup.appendChild(wrapper);
@@ -21,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     createMealInput();
   });
 
-  // השלמה אוטומטית – עם Authorization header
+  // השלמה אוטומטית עם Authorization header
   mealGroup.addEventListener("input", async (e) => {
     if (e.target.classList.contains("meal-input")) {
       const input = e.target;
@@ -41,9 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
 
-        if (!res.ok) {
-          throw new Error("Failed to fetch ingredient suggestions");
-        }
+        if (!res.ok) throw new Error("Failed to fetch ingredient suggestions");
 
         const data = await res.json();
         list.innerHTML = "";
@@ -67,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    errorField.textContent = "";
+    clearFieldErrors();
     caloriesDisplay.innerHTML = "";
 
     const inputs = document.querySelectorAll(".meal-input");
@@ -81,10 +93,36 @@ document.addEventListener("DOMContentLoaded", () => {
     const date = document.getElementById("date").value;
     const time = document.getElementById("time").value;
 
-    if (meals.length === 0 || !workout || !date || !time) {
-      errorField.textContent = "Please fill in all fields.";
-      return;
+    let hasError = false;
+
+    // ✳️ בדיקות שגיאה ספציפיות לכל שדה
+    if (meals.length === 0) {
+      mealError.textContent = "Please enter at least one meal.";
+      hasError = true;
     }
+
+    if (!workout) {
+      workoutError.textContent = "Please select a workout.";
+      hasError = true;
+    }
+
+    if (!date) {
+      dateError.textContent = "Please choose a date.";
+      hasError = true;
+    } else {
+      const today = new Date().toISOString().split("T")[0];
+      if (date !== today) {
+        dateError.textContent = "Date must be today's date.";
+        hasError = true;
+      }
+    }
+
+    if (!time) {
+      timeError.textContent = "Please enter a time.";
+      hasError = true;
+    }
+
+    if (hasError) return;
 
     try {
       const entryData = { meals, workout, date, time };

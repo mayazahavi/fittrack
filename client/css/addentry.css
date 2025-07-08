@@ -7,14 +7,14 @@
 
 .form-title {
   font-size: 32px;
-  color: #0077B6;
-  font-weight: 700;
+  color: #14532D; /* ירוק כהה */
+  font-weight: 800;
   margin-bottom: 32px;
   font-family: 'Rubik', sans-serif;
 }
 
 .entry-form {
-  background-color: #E0F6FF;
+    background-color: #D6F0E9 !important; /* ירוק פסטלי */
   padding: 32px;
   border-radius: 16px;
   width: 100%;
@@ -27,7 +27,7 @@
 
 .entry-form label {
   font-weight: 600;
-  color: #333;
+  color: #14532D;
   font-family: 'Nunito', sans-serif;
 }
 
@@ -42,7 +42,7 @@
   box-sizing: border-box;
 }
 
-/* עיצוב לשדה חיפוש ארוחות */
+/* שדה חיפוש לארוחות */
 .meal-wrapper {
   position: relative;
 }
@@ -85,8 +85,9 @@
   background-color: #f0f0f0;
 }
 
+/* כפתור הוספת ארוחה */
 #add-meal-btn {
-  background-color: #0077B6;
+  background-color: #14532D;
   color: white;
   font-weight: 600;
   border: none;
@@ -97,12 +98,13 @@
 }
 
 #add-meal-btn:hover {
-  background-color: #4BB4E6;
+  background-color: #1E5E3C;
 }
 
+/* כפתור שליחה */
 .entry-form button[type="submit"] {
   padding: 12px;
-  background-color: #0077B6;
+  background-color: #14532D;
   color: white;
   font-size: 16px;
   font-weight: 600;
@@ -113,9 +115,10 @@
 }
 
 .entry-form button[type="submit"]:hover {
-  background-color: #4BB4E6;
+  background-color: #1E5E3C;
 }
 
+/* שגיאה */
 .form-error {
   color: red;
   font-size: 14px;
@@ -123,9 +126,10 @@
   margin-top: -8px;
 }
 
+/* קלוריות */
 .calorie-output {
   font-weight: bold;
   font-size: 18px;
-  color: #0077B6;
+  color: #14532D;
   margin-top: 12px;
 }
