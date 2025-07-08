@@ -11,7 +11,7 @@
   <!-- כפתור חזרה לדף הבית -->
   <section class="back-home-container">
     <a href="index.html" class="back-home-link">
-      <img src="images/backtohome.webp" alt="Back to Home" class="back-home-icon">
+      <img src="images/home_icon.png" alt="Back to Home" class="back-home-icon">
       <span class="back-home-text">Back to Home</span>
     </a>
   </section>
@@ -20,7 +20,7 @@
     <form class="login-box" id="loginForm" autocomplete="off">
       <h2 class="login-heading">Welcome to FitTrack</h2>
 
-      <img src="images/fittrack_icon.webp" alt="FitTrack Logo" class="login-logo" />
+      <img src="images/fittrack_logo_darkgreen.png" alt="FitTrack Logo" class="login-logo" />
 
       <!-- Select role -->
       <select name="role" id="role" class="login-select">
@@ -38,6 +38,9 @@
       <input type="password" id="password" placeholder="Password" />
       <p class="error-msg" id="password-error"></p>
 
+      <!-- ✅ הודעת הצלחה/שגיאה כללית -->
+      <p class="feedback-msg" id="form-feedback"></p>
+
       <!-- Submit -->
       <button type="submit">Login</button>
 
@@ -47,9 +50,7 @@
     </form>
   </section>
 
-
-<script type="module" src="js/login.js"></script>
-
+  <script type="module" src="js/login.js"></script>
 
 </body>
 </html>

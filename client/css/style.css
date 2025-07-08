@@ -1,225 +1,159 @@
-/* כללי */
-* {
-  box-sizing: border-box;
+/* ========== GENERAL ========== */
+body {
+  font-family: 'Rubik', sans-serif;
+  background-color: #f8f3ff;
   margin: 0;
   padding: 0;
 }
 
-body {
-  font-family: 'Nunito', sans-serif;
-  background-color: #ffffff;
-  color: #333;
-  overflow-x: hidden;
+/* ========== HEADER NAVBAR ========== */
+.custom-navbar {
+  background-color: rgba(200, 233, 224, 0.4);
+  padding: 12px 0;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-ul {
-  list-style: none;
-}
-
-/* עיטוף כללי */
-.wrapper {
-  width: 1200px;
-  margin: 0 auto;
-}
-
-/* הדר */
-header {
-  width: 1046px;
-  height: 64px;
-  margin: 32px 122px 0 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.logo-img {
-  width: 64px;
-  height: 64px;
-}
-
-.logo-text {
-  font-size: 24px;
-  font-weight: 700;
-  color: #0077B6;
-  margin-left: 8px;
-  letter-spacing: 6px;
-}
-
-nav ul {
-  display: flex;
-  gap: 62px;
-  font-size: 20px;
-}
-
-nav a {
-  color: #0077B6;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-nav a:hover {
-  color: #4BB4E6;
-}
-
-/* הדגשה לקישור הפעיל */
-.curr-page a {
-  font-weight: 900;
-}
-
-/* Hero section */
-.hero-section {
-  margin-top: 32px;
-  width: 100%;
-  height: 797px;
-  background-image: url("../images/fittrack_hero.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: relative;
-}
-
-.hero-text-container {
-  position: absolute;
-  top: 32px;
-  left: 32px;
-  max-width: 448px;
-}
-
-.hero-title {
-  font-size: 96px;
-  font-weight: 800;
-  color: #0077B6;
-}
-
-.hero-subtext {
-  font-size: 24px;
-  font-weight: 600;
-  color: #000000;
-  margin-top: 8px;
-}
-
-/* About section */
-.about-section {
-  width: 1136px;
-  margin: 32px auto 0 auto;
-}
-
-.about-section h2,
-.products-title {
-  font-size: 40px;
+.nav-link {
+  color: #000;
+  transition: color 0.3s ease;
   font-weight: 500;
-  color: #0077B6;
-  font-family: 'Rubik', sans-serif;
-  margin-bottom: 32px;
+  font-size: 16px;
 }
 
-.about-text {
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 1.6;
-  color: #000000;
-  font-family: 'Rubik', sans-serif;
-  text-align: justify;
+.nav-link:hover {
+  color: #28a745;
 }
 
-/* Featured Tools title */
-.products-area {
-  width: 784px;
-  margin-left: 32px;
-  margin-top: 32px;
-}
-
-/* Footer */
-.footer {
-  width: 100%;
-  height: 287px;
-  margin-top: 198px;
-  background-color: #A6E3F2;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.footer-container {
-  display: flex;
-  margin-left: 32px;
-  margin-top: 32px;
-  align-items: flex-start;
-}
-
-.footer-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.footer-left {
-  width: 126px;
-  margin-right: 150px;
-}
-
-.footer-right {
-  width: 107px;
-}
-
-.footer-title {
-  font-size: 18px;
+.active-link {
   font-weight: 700;
-  color: #000000;
-  text-transform: uppercase;
+  color: #14532d !important;
 }
 
-.footer-links {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.footer-links a {
-  font-size: 16px;
-  color: #000000;
-  text-decoration: none;
-}
-
-.footer-icons {
-  display: flex;
-  gap: 24px;
-  margin-top: 24px;
-}
-
-.social-icon {
-  width: 20px;
-  height: 20px;
-}
-
-.footer-copy {
-  font-size: 16px;
-  font-weight: 600;
-  color: #000000;
-  margin-top: 16px;
-}
-.hero-buttons {
-  margin-top: 24px;
-  display: flex;
+.nav {
+  margin-right: 8px;
   gap: 16px;
 }
 
-.btn {
-  background-color: #0077B6;
-  color: white;
-  padding: 12px 24px;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+/* ========== BANNER SECTION ========== */
+.banner-section {
+  margin-top: 40px;
+  position: relative;
 }
 
-.btn:hover {
-  background-color: #005f8c;
+.banner-text-box {
+  position: absolute;
+  top: 30px;
+  left: 60px;
+  max-width: 520px;
+  color: #000;
+  background: none;
+  padding: 0;
+}
+
+.banner-text-box h1 {
+  font-size: 60px;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 800;
+  color: #000;
+  text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.9);
+  margin-bottom: 30px;
+}
+
+.banner-text-box p {
+  font-size: 22px;
+  font-weight: 500;
+  color: #222;
+  text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.7);
+  margin-bottom: 40px;
+}
+
+.banner-text-box .btn {
+  font-size: 18px;
+  padding: 12px 32px;
+  border-radius: 8px;
+  min-width: 200px;
+  font-weight: 600;
+}
+
+.banner-text-box .btn-light {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #ccc;
+}
+
+.banner-text-box .btn-light:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+/* ========== FEATURES – SIMPLE ========== */
+#features {
+  margin-top: 80px;
+  text-align: center;
+}
+
+#features img {
+  width: 100px;
+  height: auto; /* גובה יחסי כדי לא לעוות */
+  margin-bottom: 12px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  filter: brightness(0) saturate(100%) invert(36%) sepia(76%) saturate(469%) hue-rotate(92deg) brightness(96%) contrast(86%);
+}
+
+#features h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  margin-top: 0;
+}
+
+#features p {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ========== TESTIMONIALS ========== */
+#testimonials {
+  margin-top: 100px;
+}
+
+.carousel-item blockquote {
+  font-size: 20px;
+  font-weight: 500;
+  color: #333;
+  margin: 20px auto;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.blockquote-footer {
+  font-size: 16px;
+  color: #888;
+}
+
+#testimonials img {
+  width: 100px;
+  height: auto;
+  margin-bottom: 16px;
+}
+
+/* ========== FOOTER ========== */
+.footer-section {
+  background-color: #0a2540;
+  padding: 32px 0;
+}
+
+.footer-section .social-icon {
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s;
+}
+
+.footer-section .social-icon:hover {
+  transform: scale(1.2);
 }

@@ -12,7 +12,7 @@ body, html {
 
 /* רקע על כל המסך */
 body {
-  background: url("../images/login_background.jpg") no-repeat center center fixed;
+  background: url("../images/login_background_fitness_desktop_optimized.png") no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -30,14 +30,14 @@ body {
   padding: 32px;
   border-radius: 12px;
   width: 320px;
-  box-shadow: 0 8px 20px rgba(102, 204, 255, 0.4);
+  box-shadow: 0 8px 20px rgba(47, 104, 70, 0.4); /* ירוק כהה שקפקף */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .login-logo {
-  width: 60px;
+  width: 70px;
   margin-bottom: 24px;
 }
 
@@ -45,20 +45,20 @@ body {
   width: 100%;
   padding: 12px;
   margin-bottom: 16px;
-  border: 1px solid #a6dfff;  /* קו תכלת */
+  border: 1px solid #538d6b;  /* קו ירוק כהה */
   border-radius: 6px;
-  background-color: #f0faff;
+  background-color: #edf6f0;
   color: #333;
 }
 
 .login-box input::placeholder {
-  color: #7fbfd6;
+  color: #6b9c80;
 }
 
 .login-box button {
   width: 100%;
   padding: 12px;
-  background-color: #66ccff; /* תכלת */
+  background-color: #2f6846; /* ירוק כהה */
   color: white;
   border: none;
   border-radius: 6px;
@@ -68,13 +68,13 @@ body {
 }
 
 .login-box button:hover {
-  background-color: #4bb8e6; /* תכלת כהה */
+  background-color: #245a3b; /* ירוק כהה יותר */
 }
 
 .forgot-password {
   margin-top: 12px;
   font-size: 14px;
-  color: #3399cc;
+  color: #3b7c58;
   text-decoration: none;
 }
 
@@ -87,19 +87,21 @@ body {
   width: 100%;
   padding: 12px;
   margin-bottom: 16px;
-  border: 1px solid #a6dfff;
+  border: 1px solid #538d6b;
   border-radius: 6px;
-  background-color: #f0faff;
+  background-color: #edf6f0;
   color: #333;
   font-size: 16px;
 }
+
 .login-heading {
   font-size: 28px;
   font-weight: 700;
-  color: #66ccff; /* תכלת */
+  color: #2f6846; /* כותרת בירוק כהה */
   margin-bottom: 12px;
   text-align: center;
 }
+
 .error-msg {
   color: #cc0000;
   font-size: 14px;
@@ -108,6 +110,7 @@ body {
   width: 100%;
   text-align: left;
 }
+
 .back-home-container {
   display: flex;
   justify-content: center;
@@ -119,14 +122,14 @@ body {
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  color: #0077B6;
+  color: #2f6846;
   font-weight: bold;
   font-size: 18px;
   transition: color 0.3s ease;
 }
 
 .back-home-link:hover {
-  color: #005f8c;
+  color: #245a3b;
 }
 
 .back-home-icon {
@@ -137,4 +140,28 @@ body {
 
 .back-home-link:hover .back-home-icon {
   transform: scale(1.1);
+}
+
+/* ✅ הודעת שגיאה או הצלחה כללית */
+.feedback-msg {
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  margin: 8px 0 16px;
+  padding: 10px;
+  border-radius: 6px;
+  display: none;
+}
+
+.feedback-error {
+  background-color: #ffe5e5;
+  color: #cc0000;
+  border: 1px solid #cc0000;
+}
+
+.feedback-success {
+  background-color: #e1f5e9;
+  color: #2f6846;
+  border: 1px solid #2f6846;
 }
