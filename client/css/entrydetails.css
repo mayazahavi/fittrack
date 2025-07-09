@@ -73,3 +73,6 @@ h2.summary-title {
 .footer-section .social-icon:hover {
   transform: scale(1.2);
 }
+#caloriesChart {
+  cursor: pointer;
+}
