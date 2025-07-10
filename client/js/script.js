@@ -5,7 +5,7 @@ if (testimonialCarousel) {
   const carousel = new bootstrap.Carousel(testimonialCarousel, {
     interval: 2000,
     ride: 'carousel',
-    pause: 'hover',
+    pause: false,
     wrap: true
   });
 } 
