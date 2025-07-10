@@ -1,55 +1,120 @@
-/* צבע רקע ושדות מעוגלים עם Bootstrap, כאן מותאמים לגווני ירוק */
-.container {
+/* ✅ פונט וצבע טקסט כללי רק בתוך main */
+main.container,
+main .container {
   font-family: 'Nunito', sans-serif;
-  color: #14532D; /* ירוק כהה */
+  color: #14532D;
 }
 
-h2 {
-  color: #14532D  !important; /* ירוק כהה */
-  font-weight: 700;
-  border-left: 5px solid #14532D;
-  padding-left: 15px;
+/* ✅ כותרת הטופס */
+main h2 {
+  color: #14532D !important;
+  font-weight: 800;
+  font-size: 28px;
+  border-left: 6px solid #14532D;
+  padding-left: 16px;
   margin-bottom: 1.5rem;
 }
 
-/* שדות קלט, כפתורים ובחירה עם פינות מעוגלות */
-.form-control,
-.form-select,
-.btn {
-  border-radius: 25px !important;
+/* ✅ קופסת הטופס עם רקע מנטה מעודן וצל רך */
+main .card-form {
+  background-color: #D6F0E9 !important; /* ירוק מנטה רך */
+  border: 1px solid #c2e3d3;
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
-/* כפתור ראשי (כחול לשעבר) הופך לירוק */
-.btn-primary {
+/* ✅ שדות קלט ו־select עם מסגרת מודגשת וצל עדין */
+main .form-control,
+main .form-select {
+  border-radius: 12px;
+  border: 2px solid #14532D;
+  background-color: #fff;
+  color: #14532D;
+  padding: 10px 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+main .form-control:focus,
+main .form-select:focus {
+  border-color: #1c6b3a;
+  box-shadow: 0 0 0 0.2rem rgba(20, 83, 45, 0.25);
+}
+
+/* ✅ תוויות */
+main .form-label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #0d3a1f;
+}
+
+/* ✅ כפתור שליחה */
+main .btn-primary {
   background-color: #14532D !important;
   border-color: #14532D !important;
   color: white !important;
+  border-radius: 30px;
+  font-weight: 600;
+  padding: 12px;
+  font-size: 16px;
 }
 
-.btn-primary:hover {
-  background-color: #1c6b3a !important; /* ירוק כהה יותר */
+main .btn-primary:hover {
+  background-color: #1c6b3a !important;
   border-color: #1c6b3a !important;
 }
 
-/* כפתור משני (כמו close במודאל) */
-.btn-secondary {
+/* ✅ כפתור משני (במודאל לדוג') */
+main .btn-secondary,
+#traineeDataModal .btn-secondary {
   background-color: #A7D7A7 !important;
   border-color: #A7D7A7 !important;
   color: #14532D !important;
+  border-radius: 25px;
+  font-weight: 600;
 }
 
-.btn-secondary:hover {
+main .btn-secondary:hover,
+#traineeDataModal .btn-secondary:hover {
   background-color: #8AC78A !important;
   border-color: #8AC78A !important;
   color: #0d3a1f !important;
 }
 
-/* מרווח בין השדות בטופס */
-.mb-3 {
-  margin-bottom: 1rem !important;
+/* ✅ מרווחים בין שדות */
+main .mb-3 {
+  margin-bottom: 1.25rem !important;
 }
 
-/* תיבת הטופס כולה (ב־main) – רקע ירוק שקפקף */
-.container.bg-info.bg-opacity-25 {
-  background-color: #d4f4dd !important; /* ירקרק בהיר במקום תכלת */
+/* ✅ כפתור עזר – צפייה במתאמן */
+main #showTraineeDataBtn {
+  padding: 8px 18px;
+  font-weight: 500;
+  border-radius: 25px;
+  font-size: 15px;
+}
+.form-title {
+  font-size: 32px;
+  color: #14532D;
+  font-weight: 800;
+  margin-bottom: 32px;
+  font-family: 'Rubik', sans-serif;
+}
+/* ✅ כפתור עזר – צפייה במתאמן */
+main #showTraineeDataBtn {
+  padding: 8px 18px;
+  font-weight: 500;
+  border-radius: 25px;
+  font-size: 15px;
+  background-color: #14532D !important;
+  color: white !important;
+  border: 2px solid #14532D !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+main #showTraineeDataBtn:hover {
+  background-color: #1c6b3a !important;
+  border-color: #1c6b3a !important;
 }

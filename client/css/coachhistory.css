@@ -1,152 +1,157 @@
-body {
-  font-family: 'Nunito', sans-serif;
-  background-color: #f5f5f5;
-  margin: 0;
-  padding: 0;
+/* ========== כותרת כמו ב־entries ========== */
+.form-title {
+  font-size: 32px;
+  color: #14532D; /* ירוק כהה */
+  font-weight: 800;
+  margin-bottom: 32px;
+  font-family: 'Rubik', sans-serif;
 }
 
-.section-title {
-  text-align: center;
-  font-size: 28px;
-  color: #0077B6;
-  margin-top: 32px;
-  font-family: 'Nunito', sans-serif;
+/* ========== טבלת פידבקים ========== */
+.history-section {
+  padding: 64px 0;
 }
 
 .history-table {
-  width: 90%;
-  max-width: 900px;
-  margin: 40px auto;
+  width: 100%;
   border-collapse: collapse;
-  background: #fff;
-  border-radius: 12px;
+  background-color: #F0FFF4; /* ירוק בהיר מאוד */
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: 'Rubik', sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.history-table th,
+.history-table td {
+  text-align: left;
+  padding: 16px;
+  border-bottom: 1px solid #cde7d4;
 }
 
 .history-table th {
-  background-color: #0077B6;
-  color: #fff;
-  padding: 14px;
-  text-align: left;
-  font-family: 'Nunito', sans-serif;
-  font-size: 16px;
+  background-color: #14532D;
+  color: white;
+  font-weight: 700;
 }
 
 .history-table td {
-  padding: 14px;
-  border-top: 1px solid #ddd;
-  font-family: 'Nunito', sans-serif;
-  font-size: 15px;
+  background-color: #F0FFF4;
+  color: #333;
 }
 
-.history-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+.history-table tr:hover td {
+  background-color: #e9fdf2;
 }
 
-.history-table tr:hover {
-  background-color: #f1f1f1;
-}
-
-.btn {
-  background-color: #0077B6;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-  background-color: #005f8d;
-}
-
+/* ========== כפתורים לעריכה ומחיקה ========== */
 .actions button {
-  margin: 0 5px;
-  padding: 4px 10px;
+  padding: 6px 12px;
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background-color 0.3s ease;
+  font-family: 'Rubik', sans-serif;
+  margin-right: 6px;
 }
 
 .edit-btn {
-  background-color: #f0ad4e;
+  background-color: #4CAF50;
   color: white;
+}
+
+.edit-btn:hover {
+  background-color: #3e8e41;
 }
 
 .delete-btn {
-  background-color: #d9534f;
+  background-color: #FF6B6B;
   color: white;
 }
 
-/* ===== Modal Styles ===== */
-.modal {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0,0,0,0.6);
-  z-index: 999;
+.delete-btn:hover {
+  background-color: #e05353;
 }
 
-.modal.hidden {
-  display: none;
-}
-
-.modal-box {
-  background-color: #fff;
-  padding: 1.5rem;
-  border-radius: 10px;
-  max-width: 420px;
-  width: 90%;
-  font-family: 'Nunito', sans-serif;
-  position: relative;
-  box-sizing: border-box;
-}
-
-.modal-box h2 {
-  font-size: 20px;
-  margin-top: 0;
-  margin-bottom: 12px;
-  word-break: break-word;
-  text-align: center;
-}
-
-#closeEditModal {
-  background: none;
+/* ========== מודאל עריכה ========== */
+#editModal {
   border: none;
-  font-size: 22px;
-  position: absolute;
-  top: 10px;
-  right: 14px;
-  cursor: pointer;
-  color: #333;
+  border-radius: 10px;
+  padding: 24px 32px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  font-family: 'Rubik', sans-serif;
+  width: 400px;
+}
+
+#editModal::backdrop {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+#editModal[open] {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#editFeedbackForm h3 {
+  margin-bottom: 20px;
+  color: #14532D;
 }
 
 #editFeedbackForm label {
   display: block;
-  margin-top: 12px;
-  font-weight: bold;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #333;
 }
 
 #editFeedbackForm input,
 #editFeedbackForm textarea {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   margin-top: 4px;
+  margin-bottom: 8px;
   border-radius: 6px;
   border: 1px solid #ccc;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Rubik', sans-serif;
+  font-size: 15px;
   box-sizing: border-box;
 }
 
-.modal-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 1rem;
+#editFeedbackForm button[type="submit"] {
+  background-color: #14532D;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  margin-top: 16px;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+#editFeedbackForm button[type="submit"]:hover {
+  background-color: #0e3e22;
+}
+
+#editFeedbackForm button[type="button"] {
+  background-color: #ccc;
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  margin-top: 12px;
+  cursor: pointer;
+  width: 100%;
 }

@@ -173,3 +173,21 @@ body {
   background-color: #cce5e1;
   color: #000;
 }
+/* מדגיש את הקטגוריה הראשית (Feedback History) כשהיא העמוד הפעיל */
+.nav-link.dropdown-toggle.active-link {
+  color: #14532d !important;
+  font-weight: 700;
+}
+
+/* הדגשה קבועה בפריט הנפתח כשהוא העמוד הפעיל */
+.dropdown-item.active {
+  background-color: #cce5e1 !important;
+  color: #14532d !important;
+  font-weight: bold;
+}
+
+/* הדגשה על ריחוף */
+.dropdown-item:hover {
+  background-color: #cce5e1;
+  color: #14532d;
+}
