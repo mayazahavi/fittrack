@@ -1,4 +1,4 @@
-const TraineeProfile = require("../models/TraineeProfile");
+const TraineeProfile = require("../models/Profile");
 
 // 🔵 שליפת פרופיל לפי המשתמש המחובר (מהטוקן)
 exports.getProfile = async (req, res) => {
