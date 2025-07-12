@@ -19,12 +19,9 @@
           <img src="images/fittrack_logo_darkgreen.png" alt="FitTrack Logo" width="64" height="64" class="me-2">
           <strong class="fs-4 text-dark">FitTrack</strong>
         </a>
-
         <nav class="d-flex align-items-center gap-3">
           <ul class="nav mb-0">
-            <li class="nav-item">
-              <a href="index.html" class="nav-link">Home</a>
-            </li>
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle active-link" href="#" id="entryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 View History
@@ -36,9 +33,7 @@
                 <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
               </ul>
             </li>
-            <li class="nav-item">
-              <a href="logout.html" class="btn btn-success px-4 ms-2">Logout</a>
-            </li>
+            <li class="nav-item"><a href="logout.html" class="btn btn-success px-4 ms-2">Logout</a></li>
           </ul>
         </nav>
       </section>
@@ -46,7 +41,7 @@
   </header>
 
   <!-- ✅ MAIN -->
- <main class="container my-5">
+  <main class="container my-5">
     <h2 class="form-title text-center fw-bold mb-4 d-flex justify-content-center align-items-center gap-3">
       <img src="images/healthy_nutrition_icon.png" alt="History Icon" style="height: 2.2em;">
       My History
@@ -76,24 +71,34 @@
     <form method="dialog" id="editForm">
       <h3>Edit Entry</h3>
 
-      <label for="editTime">
-        Time:
-        <input type="time" id="editTime" required />
+      <label for="editTime" class="form-label">Time:
+        <input type="time" id="editTime" class="form-control" />
       </label>
 
-      <label for="editWorkout">
-        Workout:
-        <input type="text" id="editWorkout" required />
+      <label for="editWorkout" class="form-label mt-3">Workout:
+        <input type="text" id="editWorkout" class="form-control" />
       </label>
 
-      <label for="editMealGroup">Meals:</label>
-      <section id="editMealGroup"></section>
+      <label for="editMealGroup" class="form-label mt-3">Meals:</label>
+      <section id="editMealGroup" class="mb-3"></section>
 
-      <button type="button" id="addEditMealBtn">+ Add Meal</button>
+      <button type="button" id="addEditMealBtn" class="btn btn-outline-secondary mb-3">+ Add Meal</button>
 
-      <section style="margin-top: 16px;">
-        <button type="submit">Save</button>
-        <button type="button" onclick="document.getElementById('editModal').close()">Cancel</button>
+      <!-- ✅ כאן הוספנו את המחלקה button-row -->
+      <section style="margin-top: 16px;" class="d-flex justify-content-end gap-2 button-row">
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('editModal').close()">Cancel</button>
+      </section>
+    </form>
+  </dialog>
+
+  <!-- ✅ DELETE CONFIRM MODAL -->
+  <dialog id="deleteConfirmModal">
+    <form method="dialog" id="deleteConfirmForm">
+      <h4 style="color: #14532D;">Are you sure you want to delete this entry?</h4>
+      <section style="margin-top: 16px; display: flex; justify-content: flex-end; gap: 12px;">
+        <button type="submit" id="confirmDeleteBtn" class="btn btn-danger">Yes, Delete</button>
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('deleteConfirmModal').close()">Cancel</button>
       </section>
     </form>
   </dialog>

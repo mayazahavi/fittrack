@@ -1,5 +1,10 @@
 import { BASE_URL } from "./config.js";
 
+const sportsOptions = [
+  "Running", "Cycling", "Yoga", "Swimming", "Weightlifting",
+  "Walking", "Pilates", "Dancing", "HIIT", "Crossfit"
+];
+
 document.addEventListener("DOMContentLoaded", async () => {
   const tableBody = document.getElementById("entriesTable");
   const editModal = document.getElementById("editModal");
@@ -9,9 +14,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const editMealGroup = document.getElementById("editMealGroup");
   const addEditMealBtn = document.getElementById("addEditMealBtn");
 
+  const deleteConfirmModal = document.getElementById("deleteConfirmModal");
+  const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+  let currentDeleteId = null;
   let currentEditId = null;
-  const token = localStorage.getItem("token");
 
+  const token = localStorage.getItem("token");
   if (!token) {
     tableBody.innerHTML = "<tr><td colspan='6'>You must be logged in.</td></tr>";
     return;
@@ -28,20 +36,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const userId = parseJwt(token).id;
 
+  function formatDateDMY(dateStr) {
+    const [year, month, day] = dateStr.split("-");
+    return `${day}/${month}/${year}`;
+  }
+
   function createMealInput(name = "") {
     const wrapper = document.createElement("div");
     wrapper.className = "meal-wrapper";
-    wrapper.style.position = "relative";
     wrapper.innerHTML = `
-      <input type="text" class="meal-input" value="${name}" required />
-      <ul class="suggestions-list"></ul>
+      <div class="meal-input-group">
+        <input type="text" class="meal-input form-control" value="${name}" />
+        <button type="button" class="remove-meal-btn" title="Remove">×</button>
+        <ul class="suggestions-list"></ul>
+        <div class="meal-error text-danger small mt-1" style="display: none;">Please enter a meal name</div>
+      </div>
     `;
+
     const input = wrapper.querySelector(".meal-input");
+    const removeBtn = wrapper.querySelector(".remove-meal-btn");
     const suggestions = wrapper.querySelector(".suggestions-list");
 
+    removeBtn.addEventListener("click", () => wrapper.remove());
+
     input.addEventListener("input", async () => {
-      const query = input.value.trim();
       suggestions.innerHTML = "";
+      const query = input.value.trim();
       if (query.length < 2) return;
 
       try {
@@ -71,6 +91,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     createMealInput();
   });
 
+  // Auto-complete for workout field
+  editWorkout.addEventListener("input", () => {
+    const datalist = document.getElementById("workoutOptions") || document.createElement("datalist");
+    datalist.id = "workoutOptions";
+    if (!editWorkout.getAttribute("list")) {
+      editWorkout.setAttribute("list", "workoutOptions");
+      document.body.appendChild(datalist);
+    }
+    datalist.innerHTML = "";
+    sportsOptions.forEach(option => {
+      if (option.toLowerCase().includes(editWorkout.value.toLowerCase())) {
+        const opt = document.createElement("option");
+        opt.value = option;
+        datalist.appendChild(opt);
+      }
+    });
+  });
+
   async function loadEntries() {
     try {
       const res = await fetch(`${BASE_URL}/api/entries?traineeId=${userId}`, {
@@ -90,7 +128,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const row = document.createElement("tr");
 
         row.innerHTML = `
-          <td>${entry.date}</td>
+          <td>${formatDateDMY(entry.date)}</td>
           <td>${entry.time || "—"}</td>
           <td>${entry.meals?.map(m => `${m.name} (${m.calories?.toFixed(0) || "0"} kcal)`).join("<br>") || "—"}</td>
           <td>${entry.workout || "—"}</td>
@@ -103,14 +141,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         const deleteBtn = document.createElement("button");
         deleteBtn.className = "delete-btn";
         deleteBtn.textContent = "🗑 Delete";
-        deleteBtn.onclick = async () => {
-          if (confirm("Are you sure you want to delete this entry?")) {
-            await fetch(`${BASE_URL}/api/entries/${entry._id}`, {
-              method: "DELETE",
-              headers: { Authorization: `Bearer ${token}` }
-            });
-            await loadEntries();
-          }
+        deleteBtn.onclick = () => {
+          currentDeleteId = entry._id;
+          deleteConfirmModal.showModal();
         };
 
         const editBtn = document.createElement("button");
@@ -138,21 +171,101 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  confirmDeleteBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (!currentDeleteId) return;
+
+    const form = document.getElementById("deleteConfirmForm");
+    const message = document.createElement("div");
+    message.className = "mt-3 fw-bold text-center";
+
+    try {
+      const res = await fetch(`${BASE_URL}/api/entries/${currentDeleteId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (!res.ok) throw new Error();
+
+      message.textContent = "Entry deleted successfully.";
+      message.style.color = "green";
+      await loadEntries();
+    } catch {
+      message.textContent = "Failed to delete entry.";
+      message.style.color = "red";
+    }
+
+    form.appendChild(message);
+
+    setTimeout(() => {
+      deleteConfirmModal.close();
+      message.remove();
+    }, 2000);
+  });
+
   await loadEntries();
 
   editForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!currentEditId) return;
 
-    const meals = Array.from(editMealGroup.querySelectorAll(".meal-input"))
-      .map(input => ({ name: input.value.trim() }))
-      .filter(m => m.name);
+    editForm.querySelectorAll(".meal-error").forEach(e => e.style.display = "none");
+    editForm.querySelectorAll(".meal-list-error").forEach(e => e.remove());
+    editForm.querySelectorAll(".form-feedback").forEach(e => e.remove());
+    editTime.classList.remove("is-invalid");
+    editWorkout.classList.remove("is-invalid");
+    document.querySelectorAll(".time-error, .workout-error").forEach(e => e.remove());
+
+    let isValid = true;
+
+    if (!editTime.value) {
+      editTime.classList.add("is-invalid");
+      const msg = document.createElement("div");
+      msg.className = "invalid-feedback time-error";
+      msg.textContent = "Please enter a valid time.";
+      editTime.after(msg);
+      isValid = false;
+    }
+
+    if (!editWorkout.value.trim()) {
+      editWorkout.classList.add("is-invalid");
+      const msg = document.createElement("div");
+      msg.className = "invalid-feedback workout-error";
+      msg.textContent = "Please enter a workout.";
+      editWorkout.after(msg);
+      isValid = false;
+    }
+
+    const mealGroups = editMealGroup.querySelectorAll(".meal-input-group");
+    if (mealGroups.length === 0) {
+      const msg = document.createElement("div");
+      msg.className = "meal-list-error text-danger fw-bold mt-2";
+      msg.textContent = "Please add at least one meal.";
+      editMealGroup.appendChild(msg);
+      isValid = false;
+    }
+
+    const meals = Array.from(mealGroups).map(group => {
+      const input = group.querySelector(".meal-input");
+      const error = group.querySelector(".meal-error");
+      const value = input.value.trim();
+      if (!value) {
+        error.style.display = "block";
+        isValid = false;
+      }
+      return { name: value };
+    }).filter(m => m.name);
+
+    if (!isValid) return;
 
     const updatedData = {
       meals,
       time: editTime.value,
       workout: editWorkout.value.trim()
     };
+
+    const feedback = document.createElement("div");
+    feedback.className = "form-feedback mt-3 text-center fw-bold";
 
     try {
       const response = await fetch(`${BASE_URL}/api/entries/${currentEditId}`, {
@@ -164,12 +277,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         body: JSON.stringify(updatedData)
       });
 
-      if (!response.ok) throw new Error("Failed to update entry");
+      if (!response.ok) throw new Error();
 
-      editModal.close();
+      feedback.textContent = "Changes saved successfully.";
+      feedback.classList.add("success");
       await loadEntries();
-    } catch (err) {
-      alert("Error updating entry: " + err.message);
+    } catch {
+      feedback.textContent = "Failed to save changes.";
+      feedback.classList.add("error");
     }
+
+   const btnSection = editForm.querySelector(".button-row");
+
+    btnSection.insertAdjacentElement("beforebegin", feedback);
+
+    setTimeout(() => {
+      feedback.remove();
+      editModal.close();
+    }, 2000);
   });
 });

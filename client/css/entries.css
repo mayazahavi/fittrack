@@ -1,7 +1,7 @@
 /* ========== כותרת בעיצוב זהה ל־addentry.html ========== */
 .form-title {
   font-size: 32px;
-  color: #14532D; /* ירוק כהה */
+  color: #14532D;
   font-weight: 800;
   margin-bottom: 32px;
   font-family: 'Rubik', sans-serif;
@@ -16,7 +16,7 @@
 .history-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #F0FFF4; /* ירוק בהיר מאוד */
+  background-color: #F0FFF4;
   border-radius: 8px;
   overflow: hidden;
   font-family: 'Nunito', sans-serif;
@@ -27,16 +27,16 @@
 .history-table td {
   text-align: left;
   padding: 16px;
-  border-bottom: 1px solid #cde7d4; /* קו תחתי ירקרק */
+  border-bottom: 1px solid #cde7d4;
 }
 
 .history-table th {
-  background-color: #14532D; /* ירוק כהה */
+  background-color: #14532D;
   color: white;
 }
 
 .history-table td {
-  background-color: #F0FFF4; /* ירוק בהיר */
+  background-color: #F0FFF4;
 }
 
 /* ========== כפתורים ========== */
@@ -51,7 +51,7 @@
 }
 
 .edit-btn {
-  background-color: #4CAF50; /* ירוק חי */
+  background-color: #4CAF50;
   color: white;
 }
 
@@ -60,21 +60,35 @@
   color: white;
 }
 
-/* ========== מודאל עריכה ========== */
-#editModal {
+/* ========== מודאלים ========== */
+#editModal,
+#deleteConfirmModal {
   border: none;
   border-radius: 10px;
   padding: 24px 32px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
   font-family: 'Nunito', sans-serif;
   width: 350px;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
-#editModal::backdrop {
+#editModal {
+  background-color: white;
+}
+
+#deleteConfirmModal {
+  background-color: #E6F4EA;
+  color: #14532D;
+}
+
+#editModal::backdrop,
+#deleteConfirmModal::backdrop {
   background: rgba(0, 0, 0, 0.3);
 }
 
-#editModal[open] {
+#editModal[open],
+#deleteConfirmModal[open] {
   animation: fadeIn 0.2s ease-out;
 }
 
@@ -89,7 +103,9 @@
   }
 }
 
-#editForm h3 {
+/* ========== טפסים במודאל ========== */
+#editForm h3,
+#deleteConfirmForm h4 {
   margin-bottom: 20px;
   color: #14532D;
 }
@@ -110,7 +126,8 @@
   font-size: 15px;
 }
 
-#editForm button[type="submit"] {
+#editForm button[type="submit"],
+#deleteConfirmForm button.btn-danger {
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -120,9 +137,14 @@
   cursor: pointer;
 }
 
-#editForm button[type="button"] {
-  background-color: #ccc;
-  color: #333;
+#deleteConfirmForm button.btn-danger {
+  background-color: #FF6B6B;
+}
+
+#editForm button[type="button"],
+#deleteConfirmForm button.btn-secondary {
+  background-color: #D1E7DD;
+  color: #14532D;
   border: none;
   padding: 8px 14px;
   border-radius: 6px;
@@ -143,7 +165,41 @@
   padding-bottom: 40px;
 }
 
-/* ========== רשימת הצעות חכמות ========== */
+.meal-input-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.meal-input {
+  padding-right: 30px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  padding: 8px 12px;
+  width: 100%;
+}
+
+.remove-meal-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: none;
+  border: none;
+  color: #FF6B6B;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.meal-error {
+  color: #dc3545;
+  font-size: 13px;
+  margin-top: 4px;
+  display: none;
+}
+
 .suggestions-list {
   list-style: none;
   margin: 0;
@@ -154,8 +210,10 @@
   overflow-y: auto;
   background-color: white;
   position: absolute;
-  z-index: 100;
+  z-index: 9999;
   width: 100%;
+  top: 100%;
+  left: 0;
   box-sizing: border-box;
 }
 
@@ -178,4 +236,31 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+}
+
+.invalid-feedback {
+  font-size: 0.875rem;
+  color: #dc3545;
+  margin-top: 0.25rem;
+}
+
+/* ========== הודעות הצלחה/שגיאה בטופס ========== */
+#editForm .form-feedback {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+#editForm .form-feedback.success {
+  background-color: #d1e7dd;
+  color: #14532D;
+}
+
+#editForm .form-feedback.error {
+  background-color: #f8d7da;
+  color: #842029;
 }

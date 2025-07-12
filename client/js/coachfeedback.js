@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const timeInput = document.getElementById("time");
   const traineeDataContent = document.getElementById("traineeDataModalContent");
   const coachForm = document.getElementById("coachForm");
-  const formError = document.getElementById("form-error");
   const showDataBtn = document.getElementById("showTraineeDataBtn");
+  const formStatus = document.getElementById("form-status-message");
 
   function getTodayDateISO() {
     const today = new Date();
@@ -89,7 +89,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   coachForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    formError.textContent = "";
+    formStatus.innerHTML = "";
+    formStatus.className = "text-center fw-bold mt-3 form-status-box";
+
+    coachForm.classList.add("was-validated");
+
+    if (!coachForm.checkValidity()) {
+      formStatus.innerHTML = `<i class="bi bi-x-circle-fill"></i> Please complete all required fields.`;
+      formStatus.classList.add("text-danger");
+      return;
+    }
 
     const payload = {
       traineeId: traineeSelect.value,
@@ -101,11 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
 
-    if (!payload.traineeId || !payload.datetime) {
-      formError.textContent = "Please select trainee and date/time.";
-      return;
-    }
-
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(`${BASE_URL}/api/coach/feedback`, {
@@ -116,12 +120,29 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         body: JSON.stringify(payload)
       });
+
       if (!res.ok) throw new Error("Failed to send feedback");
-      alert("Feedback sent successfully!");
+
+      formStatus.innerHTML = `<i class="bi bi-check-circle-fill"></i> Feedback sent successfully!`;
+      formStatus.className = "text-center fw-bold mt-3 form-status-box text-success";
+
       coachForm.reset();
+      coachForm.classList.remove("was-validated");
       traineeDataContent.innerHTML = "Please select a trainee.";
+
+      setTimeout(() => {
+        formStatus.innerHTML = "";
+        formStatus.className = "text-center fw-bold mt-3 form-status-box";
+      }, 5000);
     } catch (err) {
-      formError.textContent = "Error sending feedback: " + err.message;
+      formStatus.innerHTML = `<i class="bi bi-x-circle-fill"></i> Error sending feedback: ${err.message}`;
+      formStatus.className = "text-center fw-bold mt-3 form-status-box text-danger";
+
+      setTimeout(() => {
+        formStatus.innerHTML = "";
+        formStatus.className = "text-center fw-bold mt-3 form-status-box";
+      }, 5000);
+
       console.error("Feedback submission error:", err);
     }
   });

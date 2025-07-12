@@ -1,7 +1,7 @@
 /* ========== כותרת כמו ב־entries ========== */
 .form-title {
   font-size: 32px;
-  color: #14532D; /* ירוק כהה */
+  color: #14532D;
   font-weight: 800;
   margin-bottom: 32px;
   font-family: 'Rubik', sans-serif;
@@ -15,7 +15,7 @@
 .history-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #F0FFF4; /* ירוק בהיר מאוד */
+  background-color: #F0FFF4;
   border-radius: 8px;
   overflow: hidden;
   font-family: 'Rubik', sans-serif;
@@ -67,13 +67,10 @@
 }
 
 .delete-btn {
-  background-color: #FF6B6B;
+  background-color: #FF6B6B !important;
   color: white;
 }
 
-.delete-btn:hover {
-  background-color: #e05353;
-}
 
 /* ========== מודאל עריכה ========== */
 #editModal {
@@ -129,6 +126,7 @@
   box-sizing: border-box;
 }
 
+/* ✅ כפתור שמירה */
 #editFeedbackForm button[type="submit"] {
   background-color: #14532D;
   color: white;
@@ -145,6 +143,7 @@
   background-color: #0e3e22;
 }
 
+/* ❌ כפתור ביטול */
 #editFeedbackForm button[type="button"] {
   background-color: #ccc;
   color: #333;
@@ -154,4 +153,98 @@
   margin-top: 12px;
   cursor: pointer;
   width: 100%;
+}
+
+#closeEditModal {
+  display: none;
+}
+
+/* ✅ הודעת הצלחה או שגיאה במודל */
+.form-feedback {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: 'Rubik', sans-serif;
+}
+
+.form-feedback.success {
+  background-color: #d1e7dd;
+  color: #14532D;
+}
+
+.form-feedback.error {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+/* ❗ הודעות שגיאה מתחת לשדה */
+.invalid-feedback {
+  font-size: 13px;
+  color: #dc3545;
+  margin-top: 4px;
+  font-weight: 700; /* 🔥 מודגש יותר */
+  font-family: 'Rubik', sans-serif;
+  display: none;
+}
+
+
+/* ❗ תיבה אדומה עם אייקון */
+input.is-invalid,
+textarea.is-invalid {
+  border-color: #dc3545 !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc3545' viewBox='0 0 16 16'%3e%3cpath d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM7.002 4a.905.905 0 0 1 1.996 0l-.35 4.15a.552.552 0 0 1-1.096 0L7.002 4zm.998 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.375rem) center;
+  background-size: calc(0.75em + 0.75rem) calc(0.75em + 0.75rem);
+  padding-right: 2.25rem;
+}
+
+/* ✅ טוסט להודעות מחיקה */
+#toast {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #14532D;
+  color: white;
+  text-align: center;
+  border-radius: 8px;
+  padding: 12px;
+  position: fixed;
+  z-index: 1000;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 600;
+  font-family: 'Rubik', sans-serif;
+  transition: visibility 0s, opacity 0.5s ease;
+  opacity: 0;
+}
+
+#toast.show {
+  visibility: visible;
+  opacity: 1;
+}
+/* ✅ הודעת הצלחה או שגיאה בתוך מודאל המחיקה */
+#deleteMessageBox {
+  display: none;
+  margin-top: 16px;
+  text-align: center;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: 'Rubik', sans-serif;
+}
+
+#deleteMessageBox.success {
+  background-color: #d1e7dd;
+  color: #14532D;
+}
+
+#deleteMessageBox.error {
+  background-color: #f8d7da;
+  color: #842029;
 }

@@ -1,3 +1,12 @@
+/* ========= SECTION: כללי ========= */
+body {
+  background-color: #f8f3ff;
+  font-family: 'Rubik', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* ========= SECTION: טופס ========= */
 .entry-form-section {
   padding: 64px 0;
   display: flex;
@@ -14,7 +23,7 @@
 }
 
 .entry-form {
-    background-color: #D6F0E9 !important; /* ירוק פסטלי */
+  background-color: #D6F0E9 !important; /* ירוק פסטלי */
   padding: 32px;
   border-radius: 16px;
   width: 100%;
@@ -42,7 +51,7 @@
   box-sizing: border-box;
 }
 
-/* שדה חיפוש לארוחות */
+/* ========= SECTION: ארוחות ========= */
 .meal-wrapper {
   position: relative;
 }
@@ -57,7 +66,6 @@
   box-sizing: border-box;
 }
 
-/* הצעות חכמות */
 .suggestions-list {
   position: absolute;
   top: 100%;
@@ -85,7 +93,7 @@
   background-color: #f0f0f0;
 }
 
-/* כפתור הוספת ארוחה */
+/* ========= SECTION: כפתורים ========= */
 #add-meal-btn {
   background-color: #14532D;
   color: white;
@@ -101,7 +109,6 @@
   background-color: #1E5E3C;
 }
 
-/* כפתור שליחה */
 .entry-form button[type="submit"] {
   padding: 12px;
   background-color: #14532D;
@@ -118,18 +125,62 @@
   background-color: #1E5E3C;
 }
 
-/* שגיאה */
-.form-error {
-  color: red;
+/* ========= SECTION: שגיאות ========= */
+.invalid-feedback {
+  display: none;
+  color: #cc0000;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.invalid-feedback.d-block {
+  display: block;
+}
+
+.form-error,
+.text-danger {
+  color: #cc0000 !important;
   font-size: 14px;
   font-weight: 600;
   margin-top: -8px;
 }
 
-/* קלוריות */
+/* ========= SECTION: תצוגת קלוריות ========= */
 .calorie-output {
   font-weight: bold;
   font-size: 18px;
   color: #14532D;
   margin-top: 12px;
+}
+
+/* ========= SECTION: הודעת פידבק כללית (שגיאה/הצלחה) ========= */
+#form-feedback {
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 12px;
+  text-align: center;
+  display: none; /* תופעל רק כשיש הודעה */
+  border-radius: 6px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* הצלחה */
+.feedback-success {
+  background-color: #e1f5e9;
+  color: #2f6846;
+  border: 1px solid #2f6846;
+}
+
+/* שגיאה */
+.feedback-error {
+  background-color: #ffe5e5;
+  color: #cc0000;
+  border: 1px solid #cc0000;
+}
+.remove-meal-btn {
+  margin-left: 8px;
+  margin-top: -2px;
 }

@@ -86,6 +86,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       localStorage.setItem("token", data.token);
+      localStorage.setItem("username", data.username); // ✅ שומר את שם המשתמש
+
 
       showFeedback("Login successful!", "success");
 
@@ -93,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.role === "coach") {
           window.location.href = "coachdashboard.html";
         } else {
-          window.location.href = "dashboard.html";
+          window.location.href = "traineeprofile.html";
         }
       }, 1000);
     } catch (err) {

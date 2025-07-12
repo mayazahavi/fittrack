@@ -20,19 +20,16 @@
           <img src="images/fittrack_logo_darkgreen.png" alt="FitTrack Logo" width="64" height="64" class="me-2">
           <strong class="fs-4 text-dark">FitTrack</strong>
         </a>
-
         <nav class="d-flex align-items-center gap-3">
           <ul class="nav mb-0">
-            <li class="nav-item">
-              <a href="index.html" class="nav-link">Home</a>
-            </li>
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle active-link" href="#" id="dashboardDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Send Feedback
               </a>
               <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
                 <li><a class="dropdown-item" href="coachdashboard.html">Dashboard</a></li>
-                <li><a class="dropdown-item" href="coachhistory.html"> Feedback History</a></li>
+                <li><a class="dropdown-item" href="coachhistory.html">Feedback History</a></li>
               </ul>
             </li>
             <li class="nav-item">
@@ -48,64 +45,72 @@
   <main class="container my-5">
     <div class="card-form shadow rounded-4" style="max-width: 700px; margin: auto;">
       <div class="card-body p-5">
-  <h2 class="form-title text-center text-success fw-bold mb-4 d-flex justify-content-center align-items-center">
-  Coach Feedback
-  <img src="images/notepad_icon_optimized.png" alt="Feedback Icon" style="height: 1.6em; margin-left: 8px;" />
-</h2>
-
+        <h2 class="form-title text-center text-success fw-bold mb-4 d-flex justify-content-center align-items-center">
+          Coach Feedback
+          <img src="images/notepad_icon_optimized.png" alt="Feedback Icon" style="height: 1.6em; margin-left: 8px;" />
+        </h2>
 
         <form id="coachForm" autocomplete="off" class="needs-validation" novalidate>
           <div class="row g-3">
 
             <!-- תאריך -->
-            <div class="col-md-6">
+            <div class="col-md-6 position-relative">
               <label for="date" class="form-label">Date</label>
-              <input type="date" id="date" name="date" class="form-control" required>
+              <input type="date" id="date" name="date" class="form-control" required />
+              <div class="invalid-feedback">Please select a date.</div>
             </div>
 
             <!-- שעה -->
-            <div class="col-md-6">
+            <div class="col-md-6 position-relative">
               <label for="time" class="form-label">Time</label>
-              <input type="time" id="time" name="time" class="form-control" required>
+              <input type="time" id="time" name="time" class="form-control" required />
+              <div class="invalid-feedback">Please select a time.</div>
             </div>
 
             <!-- מתאמן -->
-            <div class="col-12">
+            <div class="col-12 position-relative">
               <label for="traineeSelect" class="form-label">Select Trainee</label>
               <select id="traineeSelect" name="traineeSelect" class="form-select" required>
                 <option value="" disabled selected>-- Select Trainee --</option>
               </select>
+              <div class="invalid-feedback">Please select a trainee.</div>
             </div>
 
             <!-- כפתור הצגת נתונים -->
             <div class="col-12 text-end">
-              <button type="button" id="showTraineeDataBtn" class="btn rounded-pill mt-2" data-bs-toggle="modal" data-bs-target="#traineeDataModal" style="background-color: #14532D; color: white; border: 2px solid #14532D; display: inline-flex; align-items: center; gap: 8px;">
+              <button type="button" id="showTraineeDataBtn" class="btn rounded-pill mt-2" data-bs-toggle="modal" data-bs-target="#traineeDataModal">
                 Show Trainee Data <i class="bi bi-eye-fill"></i>
               </button>
             </div>
 
             <!-- תזונה -->
-            <div class="col-12">
+            <div class="col-12 position-relative">
               <label for="tipNutrition" class="form-label">Nutrition Feedback</label>
-              <textarea id="tipNutrition" name="tipNutrition" class="form-control" rows="3" maxlength="300" placeholder="Feedback about meals..."></textarea>
+              <textarea id="tipNutrition" name="tipNutrition" class="form-control" rows="3" required placeholder="Feedback about meals..."></textarea>
+              <div class="invalid-feedback">Please enter nutrition feedback.</div>
             </div>
 
             <!-- אימון -->
-            <div class="col-12">
+            <div class="col-12 position-relative">
               <label for="tipExercise" class="form-label">Exercise Feedback</label>
-              <textarea id="tipExercise" name="tipExercise" class="form-control" rows="3" maxlength="300" placeholder="Feedback about training..."></textarea>
+              <textarea id="tipExercise" name="tipExercise" class="form-control" rows="3" required placeholder="Feedback about training..."></textarea>
+              <div class="invalid-feedback">Please enter exercise feedback.</div>
             </div>
 
             <!-- כללי -->
-            <div class="col-12">
+            <div class="col-12 position-relative">
               <label for="tipGeneral" class="form-label">General Feedback</label>
-              <textarea id="tipGeneral" name="tipGeneral" class="form-control" rows="3" maxlength="300" placeholder="General feedback..."></textarea>
+              <textarea id="tipGeneral" name="tipGeneral" class="form-control" rows="3" required placeholder="General feedback..."></textarea>
+              <div class="invalid-feedback">Please enter general feedback.</div>
             </div>
 
           </div>
 
+          <!-- הודעה כללית -->
+          <div id="form-status-message" class="text-center fw-bold mt-3"></div>
+
+          <!-- כפתור שליחה -->
           <button type="submit" class="btn btn-success w-100 mt-4 rounded-pill">Send Feedback</button>
-          <p id="form-error" class="text-danger mt-2"></p>
         </form>
       </div>
     </div>
@@ -119,9 +124,7 @@
           <h5 class="modal-title" id="traineeDataModalLabel">Trainee Data</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </header>
-        <section class="modal-body" id="traineeDataModalContent">
-          Loading...
-        </section>
+        <section class="modal-body" id="traineeDataModalContent">Loading...</section>
         <footer class="modal-footer">
           <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
         </footer>

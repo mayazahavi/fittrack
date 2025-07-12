@@ -4,10 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("entryForm");
   const mealGroup = document.getElementById("meal-group");
   const addMealBtn = document.getElementById("add-meal-btn");
-  const errorField = document.getElementById("form-error");
   const caloriesDisplay = document.getElementById("calories-display");
+  const feedbackMsg = document.getElementById("form-feedback");
 
-  // אלמנטים לשגיאות לפי שדה
   const mealError = document.getElementById("meal-error");
   const workoutError = document.getElementById("workout-error");
   const dateError = document.getElementById("date-error");
@@ -18,24 +17,46 @@ document.addEventListener("DOMContentLoaded", () => {
     workoutError.textContent = "";
     dateError.textContent = "";
     timeError.textContent = "";
-    errorField.textContent = "";
+
+    document.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+
+    feedbackMsg.textContent = "";
+    feedbackMsg.className = "feedback-msg";
+  }
+
+  function showFeedback(message, type) {
+    feedbackMsg.textContent = message;
+    feedbackMsg.className = `feedback-msg ${type === "error" ? "feedback-error" : "feedback-success"}`;
+    feedbackMsg.style.display = "block";
+
+    setTimeout(() => {
+      feedbackMsg.textContent = "";
+      feedbackMsg.style.display = "none";
+    }, 5000);
   }
 
   function createMealInput() {
     const wrapper = document.createElement("div");
-    wrapper.className = "meal-wrapper";
+    wrapper.className = "meal-wrapper position-relative mb-2 d-flex align-items-center gap-2";
+
     wrapper.innerHTML = `
-      <input type="text" class="meal-input form-control mb-2" name="meal[]" placeholder="Type a meal..." required />
+      <input type="text" class="meal-input form-control" name="meal[]" placeholder="Type a meal..." required />
       <ul class="suggestions-list"></ul>
+      <button type="button" class="btn-close remove-meal-btn" aria-label="Remove"></button>
     `;
+
     mealGroup.appendChild(wrapper);
+
+    const removeBtn = wrapper.querySelector(".remove-meal-btn");
+    removeBtn.addEventListener("click", () => {
+      wrapper.remove();
+    });
   }
 
   addMealBtn.addEventListener("click", () => {
     createMealInput();
   });
 
-  // השלמה אוטומטית עם Authorization header
   mealGroup.addEventListener("input", async (e) => {
     if (e.target.classList.contains("meal-input")) {
       const input = e.target;
@@ -55,8 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
 
-        if (!res.ok) throw new Error("Failed to fetch ingredient suggestions");
-
+        if (!res.ok) throw new Error("Failed to fetch suggestions");
         const data = await res.json();
         list.innerHTML = "";
 
@@ -80,51 +100,71 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     clearFieldErrors();
-    caloriesDisplay.innerHTML = "";
+    caloriesDisplay.textContent = "";
 
     const inputs = document.querySelectorAll(".meal-input");
+    const workoutSelect = document.getElementById("workout");
+    const dateInput = document.getElementById("date");
+    const timeInput = document.getElementById("time");
 
-    const meals = [...inputs]
-      .map(input => input.value.trim())
-      .filter(Boolean)
-      .map(name => ({ name }));
-
-    const workout = document.getElementById("workout").value.trim();
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
+    const date = dateInput.value;
+    const time = timeInput.value;
+    const workout = workoutSelect.value.trim();
 
     let hasError = false;
 
-    // ✳️ בדיקות שגיאה ספציפיות לכל שדה
-    if (meals.length === 0) {
-      mealError.textContent = "Please enter at least one meal.";
+    const mealValues = [...inputs].map(input => input.value.trim());
+    const filledMeals = mealValues.filter(Boolean);
+
+    if (filledMeals.length === 0) {
+      mealError.textContent = "❌ At least one meal is required.";
+      inputs.forEach(input => input.classList.add("is-invalid"));
       hasError = true;
+    } else {
+      inputs.forEach((input, index) => {
+        if (!mealValues[index]) {
+          input.classList.add("is-invalid");
+        } else {
+          input.classList.remove("is-invalid");
+        }
+      });
     }
 
     if (!workout) {
-      workoutError.textContent = "Please select a workout.";
+      workoutError.textContent = "❌ Please select a workout.";
+      workoutSelect.classList.add("is-invalid");
       hasError = true;
+    } else {
+      workoutSelect.classList.remove("is-invalid");
     }
 
     if (!date) {
-      dateError.textContent = "Please choose a date.";
+      dateError.textContent = "❌ Date is required.";
+      dateInput.classList.add("is-invalid");
       hasError = true;
     } else {
       const today = new Date().toISOString().split("T")[0];
       if (date !== today) {
-        dateError.textContent = "Date must be today's date.";
+        dateError.textContent = "❌ Date must be today.";
+        dateInput.classList.add("is-invalid");
         hasError = true;
+      } else {
+        dateInput.classList.remove("is-invalid");
       }
     }
 
     if (!time) {
-      timeError.textContent = "Please enter a time.";
+      timeError.textContent = "❌ Time is required.";
+      timeInput.classList.add("is-invalid");
       hasError = true;
+    } else {
+      timeInput.classList.remove("is-invalid");
     }
 
     if (hasError) return;
 
     try {
+      const meals = filledMeals.map(name => ({ name }));
       const entryData = { meals, workout, date, time };
       const token = localStorage.getItem("token");
 
@@ -140,22 +180,24 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
 
       if (response.ok) {
-        if (result.meals.length === 0) {
-          errorField.textContent = "❌ No calorie data available for the selected meals. Try different foods.";
+        if (!result.meals || result.meals.length === 0) {
+          showFeedback("❌ No nutritional data found. Try different meals.", "error");
           return;
         }
 
-        alert("✅ Entry saved successfully!");
+        showFeedback("✅ Entry saved successfully!", "success");
+
         form.reset();
         mealGroup.innerHTML = "";
         createMealInput();
         caloriesDisplay.textContent = "";
+
       } else {
-        errorField.textContent = `❌ Failed to save entry: ${result.error || 'Unknown error'}`;
+        showFeedback(`❌ Failed to save entry: ${result.error || 'Unknown error'}`, "error");
       }
     } catch (err) {
       console.error(err);
-      errorField.textContent = "❌ Error processing request. Please try again.";
+      showFeedback("❌ Error submitting the form. Please try again.", "error");
     }
   });
 

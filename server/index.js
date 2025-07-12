@@ -13,6 +13,8 @@ const connectDB = require("./db");
 const userRoutes = require("./routes/userRoutes");
 const entryRoutes = require("./routes/entryRoutes");
 const feedbackRoutes = require("./routes/feedbackRoutes");
+const traineeProfileRoutes = require("./routes/profileRoutes");
+ // ✅ ייבוא ראוטר פרופיל מתאמן
 
 const app = express();
 
@@ -51,8 +53,9 @@ app.use(express.static("client"));
 
 // 6. ראוטים
 app.use("/api/users", userRoutes);
-app.use("/api/entries", verifyToken, entryRoutes); // ראוטים להזנות – מוגנים בטוקן
-app.use("/api/coach/feedback", feedbackRoutes);    // ✅ הורדנו את verifyToken כאן כי הוא כבר בתוך הקובץ
+app.use("/api/entries", verifyToken, entryRoutes);        // 🔐 מוגן בטוקן
+app.use("/api/coach/feedback", feedbackRoutes);           // ✅ בלי טוקן כי בפנים יש אימות
+app.use("/api/trainee/profile", verifyToken, traineeProfileRoutes); // ✅ נתיב חדש לפרופיל מתאמן
 
 // 7. הפעלת שרת אחרי חיבור למסד
 const PORT = process.env.PORT || 3000;

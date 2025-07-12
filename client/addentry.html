@@ -19,7 +19,6 @@
           <img src="images/fittrack_logo_darkgreen.png" alt="FitTrack Logo" width="64" height="64" class="me-2">
           <strong class="fs-4 text-dark">FitTrack</strong>
         </a>
-
         <nav class="d-flex align-items-center gap-3">
           <ul class="nav mb-0">
             <li class="nav-item">
@@ -52,14 +51,14 @@
       Add Daily Entry
     </h2>
 
-    <form id="entryForm" class="entry-form mx-auto p-4 bg-white rounded shadow-sm" style="max-width: 600px;" autocomplete="off">
-      
+    <form id="entryForm" class="entry-form mx-auto p-4 bg-white rounded shadow-sm" style="max-width: 600px;" autocomplete="off" novalidate>
+
       <!-- Meals -->
       <div id="meal-group" class="mb-1">
         <label for="meal-0" class="form-label fw-bold">What did you eat?</label>
         <!-- JS will insert input fields here -->
       </div>
-      <small id="meal-error" class="text-danger ms-1 d-block mt-1"></small>
+      <div id="meal-error" class="invalid-feedback d-block"></div>
 
       <div class="mb-4">
         <button type="button" id="add-meal-btn" class="btn btn-outline-success w-100">+ Add another meal</button>
@@ -75,20 +74,20 @@
           <option value="strength">Strength Training</option>
           <option value="none">No workout today</option>
         </select>
+        <div id="workout-error" class="invalid-feedback d-block"></div>
       </div>
-      <small id="workout-error" class="text-danger ms-1 d-block mt-1"></small>
 
       <!-- Date & Time -->
       <div class="row g-3 mb-3">
         <div class="col-md-6">
           <label for="date" class="form-label fw-bold">Date:</label>
           <input type="date" id="date" name="date" class="form-control" required />
-          <small id="date-error" class="text-danger ms-1 d-block mt-1"></small>
+          <div id="date-error" class="invalid-feedback d-block"></div>
         </div>
         <div class="col-md-6">
           <label for="time" class="form-label fw-bold">Time:</label>
           <input type="time" id="time" name="time" class="form-control" required />
-          <small id="time-error" class="text-danger ms-1 d-block mt-1"></small>
+          <div id="time-error" class="invalid-feedback d-block"></div>
         </div>
       </div>
 
@@ -96,10 +95,14 @@
       <p id="calories-display" class="text-center text-success fw-semibold mb-3"></p>
 
       <!-- Submit -->
-      <div class="text-center">
-        <button type="submit" class="btn btn-success px-5">Submit Entry</button>
-      </div>
-      <p id="form-error" class="text-danger text-center mt-3"></p>
+     <!-- ✅ Success/Error message -->
+<p id="form-feedback" class="feedback-msg mt-3"></p>
+
+<div class="text-center">
+  <button type="submit" class="btn btn-success px-5">Submit Entry</button>
+</div>
+
+
     </form>
   </main>
 
@@ -115,7 +118,6 @@
 
   <!-- ✅ SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/navbar-dropdown.js"></script>
   <script type="module" src="js/addentry.js"></script>
 </body>
 </html>
