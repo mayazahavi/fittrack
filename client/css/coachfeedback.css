@@ -1,0 +1,188 @@
+
+/* ✅ פונט וצבע טקסט כללי */
+main.container,
+main .container {
+  font-family: 'Nunito', sans-serif;
+  color: #14532D;
+}
+
+/* ✅ כותרת הטופס */
+main h2 {
+  color: #14532D !important;
+  font-weight: 800;
+  font-size: 28px;
+  border-left: 6px solid #14532D;
+  padding-left: 16px;
+  margin-bottom: 1.5rem;
+}
+
+/* ✅ קופסת הטופס */
+main .card-form {
+  background-color: #D6F0E9 !important;
+  border: 1px solid #c2e3d3;
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+/* ✅ שדות קלט ו־select */
+main .form-control,
+main .form-select {
+  border-radius: 12px;
+  border: 2px solid #14532D;
+  background-color: #fff;
+  color: #14532D;
+  padding: 10px 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+main .form-control:focus,
+main .form-select:focus {
+  border-color: #1c6b3a;
+  box-shadow: 0 0 0 0.2rem rgba(20, 83, 45, 0.25);
+}
+
+/* ✅ תוויות */
+main .form-label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #0d3a1f;
+}
+
+/* ✅ כפתור שליחה */
+main .btn-primary {
+  background-color: #14532D !important;
+  border-color: #14532D !important;
+  color: white !important;
+  border-radius: 30px;
+  font-weight: 600;
+  padding: 12px;
+  font-size: 16px;
+}
+
+main .btn-primary:hover {
+  background-color: #1c6b3a !important;
+  border-color: #1c6b3a !important;
+}
+
+/* ✅ כפתור משני */
+main .btn-secondary,
+#traineeDataModal .btn-secondary {
+  background-color: #A7D7A7 !important;
+  border-color: #A7D7A7 !important;
+  color: #14532D !important;
+  border-radius: 25px;
+  font-weight: 600;
+}
+
+main .btn-secondary:hover,
+#traineeDataModal .btn-secondary:hover {
+  background-color: #8AC78A !important;
+  border-color: #8AC78A !important;
+  color: #0d3a1f !important;
+}
+
+/* ✅ כפתור צפייה במתאמן */
+main #showTraineeDataBtn {
+  padding: 8px 18px;
+  font-weight: 500;
+  border-radius: 25px;
+  font-size: 15px;
+  background-color: #14532D !important;
+  color: white !important;
+  border: 2px solid #14532D !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+main #showTraineeDataBtn:hover {
+  background-color: #1c6b3a !important;
+  border-color: #1c6b3a !important;
+}
+
+/* ✅ כותרת פנימית */
+.form-title {
+  font-size: 32px;
+  color: #14532D;
+  font-weight: 800;
+  margin-bottom: 32px;
+  font-family: 'Rubik', sans-serif;
+}
+
+/* ✅ עיצוב שגיאה אחיד לשדות שלא מולאו */
+.was-validated .form-control:invalid,
+.was-validated .form-select:invalid,
+.was-validated textarea:invalid {
+  border-color: #dc3545 !important;
+  background-color: #fff5f5;
+  background-image: url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/exclamation-circle-fill.svg");
+  background-repeat: no-repeat;
+  background-position: top 12px right 12px;
+  background-size: 18px 18px;
+  padding-right: 38px;
+}
+
+/* ✅ הודעות שגיאה מודגשות מתחת לשדות */
+.invalid-feedback {
+  display: none;
+  color: #dc3545;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* ✅ הצגת שגיאה בפעולה */
+.was-validated .form-control:invalid ~ .invalid-feedback,
+.was-validated .form-select:invalid ~ .invalid-feedback,
+.was-validated textarea:invalid ~ .invalid-feedback {
+  display: block;
+}
+
+/* ✅ הודעות כלליות */
+#form-status-message.text-success {
+  color: #198754 !important;
+}
+
+#form-status-message.text-danger {
+  color: #dc3545 !important;
+}
+/* ✅ סגנון בסיסי של הודעת סטטוס */
+#form-status-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 18px;
+  margin-top: 20px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+/* ✅ הצלחה */
+#form-status-message.text-success {
+  background-color: #d1f4e0;
+  color: #14532D;
+  border: 2px solid #a5e4c0;
+}
+
+/* ✅ שגיאה */
+#form-status-message.text-danger {
+  background-color: #fde2e2;
+  color: #8b1c1c;
+  border: 2px solid #f5b5b5;
+}
+
+/* ✅ אייקון בהודעה */
+#form-status-message i {
+  font-size: 1.4rem;
+}
+#traineeProfileCard {
+  border: 1.5px solid #14532D; /* ירוק כהה */
+  border-radius: 12px;
+  background-color: #e8f5e9;
+  transition: all 0.3s ease;
+}
