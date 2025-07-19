@@ -1,14 +1,13 @@
 const mongoose = require("mongoose");
-
 const FeedbackSchema = new mongoose.Schema({
   trainee: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",       // מתייחס למודל המשתמשים (User)
+    ref: "User",      
     required: true,
   },
   coach: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",       // המאמן ששלח את המשוב
+    ref: "User",
     required: true,
   },
   datetime: {

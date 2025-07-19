@@ -9,9 +9,7 @@
   <link rel="stylesheet" href="css/entries.css" />
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet" />
 </head>
-<body style="font-family: 'Rubik', sans-serif; background-color: #f8f3ff;">
-
-  <!-- ✅ HEADER -->
+<body>
   <header>
     <nav class="navbar navbar-expand-lg custom-navbar">
       <section class="container d-flex justify-content-between align-items-center">
@@ -40,14 +38,11 @@
       </section>
     </nav>
   </header>
-
-  <!-- ✅ MAIN -->
   <main class="container my-5">
     <h2 class="form-title text-center fw-bold mb-4 d-flex justify-content-center align-items-center gap-3">
       <img src="images/healthy_nutrition_icon.png" alt="History Icon" style="height: 2.2em;">
       My History
     </h2>
-
     <section class="history-section">
       <table class="history-table table table-bordered table-hover">
         <thead class="table-light">
@@ -66,34 +61,24 @@
       </table>
     </section>
   </main>
-
-  <!-- ✅ EDIT MODAL -->
   <dialog id="editModal">
     <form method="dialog" id="editForm">
       <h3>Edit Entry</h3>
-
       <label for="editTime" class="form-label">Time:
         <input type="time" id="editTime" class="form-control" />
       </label>
-
       <label for="editWorkout" class="form-label mt-3">Workout:
         <input type="text" id="editWorkout" class="form-control" />
       </label>
-
       <label for="editMealGroup" class="form-label mt-3">Meals:</label>
       <section id="editMealGroup" class="mb-3"></section>
-
       <button type="button" id="addEditMealBtn" class="btn btn-outline-secondary mb-3">+ Add Meal</button>
-
-      <!-- ✅ כאן הוספנו את המחלקה button-row -->
       <section style="margin-top: 16px;" class="d-flex justify-content-end gap-2 button-row">
         <button type="submit" class="btn btn-success">Save</button>
         <button type="button" class="btn btn-secondary" onclick="document.getElementById('editModal').close()">Cancel</button>
       </section>
     </form>
   </dialog>
-
-  <!-- ✅ DELETE CONFIRM MODAL -->
   <dialog id="deleteConfirmModal">
     <form method="dialog" id="deleteConfirmForm">
       <h4 style="color: #14532D;">Are you sure you want to delete this entry?</h4>
@@ -103,8 +88,6 @@
       </section>
     </form>
   </dialog>
-
-  <!-- ✅ FOOTER -->
   <footer id="contact" class="footer-section text-center text-white mt-5 py-4">
     <section class="mb-3">
       <a href="https://facebook.com" target="_blank"><img src="images/facebook.svg" alt="Facebook" width="24" class="mx-2 social-icon" /></a>
@@ -113,8 +96,6 @@
     </section>
     <small>© 2025 FitTrack, All rights reserved.</small>
   </footer>
-
-  <!-- ✅ SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/config.js" type="module"></script>
   <script src="js/entries.js" type="module"></script>

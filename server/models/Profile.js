@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const weightEntrySchema = new mongoose.Schema({
   weight: {
     type: Number,
@@ -10,11 +9,10 @@ const weightEntrySchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-
 const profileSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // הפנייה למודל User
+    ref: "User", 
     required: true,
     unique: true,
   },
@@ -28,10 +26,10 @@ const profileSchema = new mongoose.Schema({
     required: true,
   },
   height: {
-    type: Number, // ס"מ
+    type: Number, 
     required: true,
   },
-  weightHistory: [weightEntrySchema], // היסטוריית משקלים
+  weightHistory: [weightEntrySchema], 
 });
 
 module.exports = mongoose.model("Profile", profileSchema);

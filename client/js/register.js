@@ -6,11 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    // ננקה הודעות שגיאה קודמות
     usernameError.textContent = "";
-    usernameError.style.display = "none"; // נסתיר כל הודעה ישנה
-
+    usernameError.style.display = "none"; 
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
     const role = document.getElementById("role").value;
@@ -25,19 +22,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (!res.ok) {
-        // אם זו שגיאה על שם משתמש תפוס – נציג מתחת לשדה
         if (data.error && data.error.toLowerCase().includes("username")) {
           usernameError.textContent = "Username already exists.";
-          usernameError.style.display = "block"; // ✅ נחשוף את הודעת השגיאה
+          usernameError.style.display = "block"; 
         } else {
           alert("Registration failed: " + (data.error || "Unknown error"));
         }
         return;
       }
-
       alert("Registration successful!");
       window.location.href = "login.html";
-
     } catch (err) {
       console.error("Register error:", err);
       alert("Registration failed: " + err.message);

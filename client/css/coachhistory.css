@@ -5,12 +5,9 @@
   margin-bottom: 32px;
   font-family: 'Rubik', sans-serif;
 }
-
-/* ========== טבלת פידבקים ========== */
 .history-section {
   padding: 64px 0;
 }
-
 .history-table {
   width: 100%;
   border-collapse: collapse;
@@ -20,30 +17,24 @@
   font-family: 'Rubik', sans-serif;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
 .history-table th,
 .history-table td {
   text-align: left;
   padding: 16px;
   border-bottom: 1px solid #cde7d4;
 }
-
 .history-table th {
   background-color: #14532D;
   color: white;
   font-weight: 700;
 }
-
 .history-table td {
   background-color: #F0FFF4;
   color: #333;
 }
-
 .history-table tr:hover td {
   background-color: #e9fdf2;
 }
-
-/* ========== כפתורים לעריכה ומחיקה ========== */
 .actions button {
   padding: 6px 12px;
   border-radius: 6px;
@@ -55,23 +46,17 @@
   font-family: 'Rubik', sans-serif;
   margin-right: 6px;
 }
-
 .edit-btn {
   background-color: #4CAF50;
   color: white;
 }
-
 .edit-btn:hover {
   background-color: #3e8e41;
 }
-
 .delete-btn {
   background-color: #FF6B6B !important;
   color: white;
 }
-
-
-/* ========== מודאל עריכה ========== */
 #editModal {
   border: none;
   border-radius: 10px;
@@ -80,15 +65,12 @@
   font-family: 'Rubik', sans-serif;
   width: 400px;
 }
-
 #editModal::backdrop {
   background: rgba(0, 0, 0, 0.3);
 }
-
 #editModal[open] {
   animation: fadeIn 0.2s ease-out;
 }
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -99,19 +81,16 @@
     transform: translateY(0);
   }
 }
-
 #editFeedbackForm h3 {
   margin-bottom: 20px;
   color: #14532D;
 }
-
 #editFeedbackForm label {
   display: block;
   margin-bottom: 12px;
   font-weight: 600;
   color: #333;
 }
-
 #editFeedbackForm input,
 #editFeedbackForm textarea {
   width: 100%;
@@ -124,8 +103,6 @@
   font-size: 15px;
   box-sizing: border-box;
 }
-
-/* ✅ כפתור שמירה */
 #editFeedbackForm button[type="submit"] {
   background-color: #14532D;
   color: white;
@@ -137,12 +114,9 @@
   width: 100%;
   transition: background-color 0.3s ease;
 }
-
 #editFeedbackForm button[type="submit"]:hover {
   background-color: #0e3e22;
 }
-
-/* ❌ כפתור ביטול */
 #editFeedbackForm button[type="button"] {
   background-color: #ccc;
   color: #333;
@@ -153,12 +127,9 @@
   cursor: pointer;
   width: 100%;
 }
-
 #closeEditModal {
   display: none;
 }
-
-/* ✅ הודעת הצלחה או שגיאה במודל */
 .form-feedback {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -169,29 +140,22 @@
   font-size: 0.95rem;
   font-family: 'Rubik', sans-serif;
 }
-
 .form-feedback.success {
   background-color: #d1e7dd;
   color: #14532D;
 }
-
 .form-feedback.error {
   background-color: #f8d7da;
   color: #842029;
 }
-
-/* ❗ הודעות שגיאה מתחת לשדה */
 .invalid-feedback {
   font-size: 13px;
   color: #dc3545;
   margin-top: 4px;
-  font-weight: 700; /* 🔥 מודגש יותר */
+  font-weight: 700; 
   font-family: 'Rubik', sans-serif;
   display: none;
 }
-
-
-/* ❗ תיבה אדומה עם אייקון */
 input.is-invalid,
 textarea.is-invalid {
   border-color: #dc3545 !important;
@@ -201,8 +165,6 @@ textarea.is-invalid {
   background-size: calc(0.75em + 0.75rem) calc(0.75em + 0.75rem);
   padding-right: 2.25rem;
 }
-
-/* ✅ טוסט להודעות מחיקה */
 #toast {
   visibility: hidden;
   min-width: 250px;
@@ -221,12 +183,10 @@ textarea.is-invalid {
   transition: visibility 0s, opacity 0.5s ease;
   opacity: 0;
 }
-
 #toast.show {
   visibility: visible;
   opacity: 1;
 }
-/* ✅ הודעת הצלחה או שגיאה בתוך מודאל המחיקה */
 #deleteMessageBox {
   display: none;
   margin-top: 16px;
@@ -237,12 +197,10 @@ textarea.is-invalid {
   font-size: 0.95rem;
   font-family: 'Rubik', sans-serif;
 }
-
 #deleteMessageBox.success {
   background-color: #d1e7dd;
   color: #14532D;
 }
-
 #deleteMessageBox.error {
   background-color: #f8d7da;
   color: #842029;

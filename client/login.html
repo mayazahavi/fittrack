@@ -7,50 +7,32 @@
   <link rel="stylesheet" href="css/login.css" />
 </head>
 <body>
-
-  <!-- כפתור חזרה לדף הבית -->
   <section class="back-home-container">
     <a href="index.html" class="back-home-link">
       <img src="images/home_icon.png" alt="Back to Home" class="back-home-icon">
       <span class="back-home-text">Back to Home</span>
     </a>
   </section>
-
   <section class="login-wrapper">
     <form class="login-box" id="loginForm" autocomplete="off">
       <h2 class="login-heading">Welcome to FitTrack</h2>
-
       <img src="images/fittrack_logo_darkgreen.png" alt="FitTrack Logo" class="login-logo" />
-
-      <!-- Select role -->
       <select name="role" id="role" class="login-select">
         <option value="" disabled selected>Select Role</option>
         <option value="trainee">Trainee</option>
         <option value="coach">Coach</option>
       </select>
       <p class="error-msg" id="role-error"></p>
-
-      <!-- Username -->
       <input type="text" id="username" placeholder="Username" />
       <p class="error-msg" id="username-error"></p>
-
-      <!-- Password -->
       <input type="password" id="password" placeholder="Password" />
       <p class="error-msg" id="password-error"></p>
-
-      <!-- ✅ הודעת הצלחה/שגיאה כללית -->
       <p class="feedback-msg" id="form-feedback"></p>
-
-      <!-- Submit -->
       <button type="submit">Login</button>
-
-      <!-- Links -->
       <a href="#" class="forgot-password">Forgot Password?</a><br>
       <a href="register.html" class="forgot-password">Don't have an account? Register</a>
     </form>
   </section>
-
   <script type="module" src="js/login.js"></script>
-
 </body>
 </html>

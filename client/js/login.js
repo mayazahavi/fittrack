@@ -11,18 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const usernameError = document.getElementById("username-error");
   const passwordError = document.getElementById("password-error");
   const formFeedback = document.getElementById("form-feedback");
-
-  // 🟢 חילוץ פרמטר role מה-URL
   const params = new URLSearchParams(window.location.search);
   const roleFromURL = params.get("role");
-
-  // 🟢 אם יש role תקין ב-URL, נגדיר אותו וננעל את הבחירה
   if (roleFromURL === "trainee" || roleFromURL === "coach") {
     roleSelect.value = roleFromURL;
     roleSelect.disabled = true;
   }
-
-  // 🟢 איפוס הודעות שגיאה
   const clearErrors = () => {
     roleError.textContent = "";
     usernameError.textContent = "";
@@ -34,14 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
     formFeedback.style.display = "none";
     formFeedback.className = "feedback-msg";
   };
-
-  // 🟢 הצגת הודעה כללית
   const showFeedback = (msg, type = "error") => {
     formFeedback.textContent = msg;
     formFeedback.classList.add(type === "success" ? "feedback-success" : "feedback-error");
     formFeedback.style.display = "block";
   };
-
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     clearErrors();
@@ -49,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
     const role = roleSelect.value;
-
     let hasError = false;
 
     if (!role) {
@@ -67,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
       passwordError.style.display = "block";
       hasError = true;
     }
-
     if (hasError) return;
 
     try {
@@ -86,9 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem("username", data.username); // ✅ שומר את שם המשתמש
-
-
+      localStorage.setItem("username", data.username); 
       showFeedback("Login successful!", "success");
 
       setTimeout(() => {

@@ -90,8 +90,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   addEditMealBtn.addEventListener("click", () => {
     createMealInput();
   });
-
-  // Auto-complete for workout field
+  
   editWorkout.addEventListener("input", () => {
     const datalist = document.getElementById("workoutOptions") || document.createElement("datalist");
     datalist.id = "workoutOptions";

@@ -1,5 +1,4 @@
 import { BASE_URL } from "./config.js";
-
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("entryForm");
   const mealGroup = document.getElementById("meal-group");

@@ -1,7 +1,4 @@
-
-
 import { BASE_URL } from "./config.js";
-
 document.addEventListener("DOMContentLoaded", () => {
   const traineeSelect = document.getElementById("traineeSelect");
   const dateInput = document.getElementById("date");
@@ -24,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return today.toISOString().split("T")[0];
   }
 
-  const traineeMap = new Map(); // ⬅️ מיפוי בין ID ל־username
+  const traineeMap = new Map(); 
 
   async function loadTrainees() {
     try {
@@ -37,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const trainees = await res.json();
       trainees.forEach(t => {
         const option = document.createElement("option");
-        option.value = t._id; // נשתמש ב־_id לטופס, נשמור username במפה
+        option.value = t._id; 
         option.textContent = t.username;
         traineeMap.set(t._id, t.username);
         traineeSelect.appendChild(option);
@@ -87,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function loadTraineeProfile(traineeId) {
     const token = localStorage.getItem("token");
-    const username = traineeMap.get(traineeId); // ⬅️ קבלת שם המשתמש לפי ה־ID
+    const username = traineeMap.get(traineeId); 
 
     if (!username) {
       console.error("Username not found for traineeId", traineeId);

@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     ).join(''));
     return JSON.parse(jsonPayload);
   }
-
   try {
     const token = localStorage.getItem("token");
 

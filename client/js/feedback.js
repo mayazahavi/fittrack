@@ -11,39 +11,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       return null;
     }
   }
-
   const token = localStorage.getItem("token");
   if (!token) {
     feedbackList.innerHTML = "<p>No token found, please login first.</p>";
     return;
   }
-
   const decoded = parseJwt(token);
   const traineeId = decoded?.id;
-
   if (!traineeId) {
     feedbackList.innerHTML = "<p>Invalid token: trainee ID missing.</p>";
     return;
   }
-
   try {
     const res = await fetch(`${BASE_URL}/api/coach/feedback/by-trainee?traineeId=${traineeId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
-
     if (!res.ok) throw new Error("Failed to load feedback");
-
     const feedbacks = await res.json();
-
     if (feedbacks.length === 0) {
       feedbackList.innerHTML = "<p>No feedback found for this trainee.</p>";
       return;
     }
-
     feedbackList.innerHTML = "";
-
     feedbacks.forEach(fb => {
       const card = document.createElement("article");
       card.className = "feedback-card";

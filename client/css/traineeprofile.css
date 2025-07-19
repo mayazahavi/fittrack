@@ -1,12 +1,9 @@
-/* ✅ רקע כללי */
 body {
   background-color: #f8f3ff;
   font-family: 'Nunito', sans-serif;
   margin: 0;
   padding: 0;
 }
-
-/* ✅ כותרת */
 .profile-title {
   font-size: 28px;
   font-weight: 800;
@@ -17,13 +14,11 @@ body {
   border-left: 6px solid #14532D;
   padding-left: 16px;
 }
-
-/* ✅ תזכורת לעדכון משקל */
 #weight-reminder {
   max-width: 600px;
   margin: 0 auto 32px auto;
-  background-color: #d1f4e0; /* ירוק פסטלי */
-  border: 2px solid #14532D; /* ירוק כהה */
+  background-color: #d1f4e0; 
+  border: 2px solid #14532D; 
   color: #14532D;
   padding: 16px 20px;
   border-radius: 12px;
@@ -32,8 +27,6 @@ body {
   font-weight: 600;
   text-align: center;
 }
-
-/* ✅ קופסת הטופס */
 .profile-form-card {
   background-color: #D6F0E9;
   padding: 40px 30px;
@@ -43,8 +36,6 @@ body {
   margin: 0 auto 40px auto;
   border: 1px solid #c2e3d3;
 }
-
-/* ✅ שדות טופס */
 .profile-form-card .form-control,
 .profile-form-card .form-select {
   border-radius: 12px;
@@ -56,21 +47,16 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
   margin-bottom: 4px;
 }
-
 .profile-form-card .form-control:focus,
 .profile-form-card .form-select:focus {
   border-color: #1c6b3a;
   box-shadow: 0 0 0 0.2rem rgba(20, 83, 45, 0.25);
 }
-
-/* ✅ תוויות */
 .profile-form-card .form-label {
   font-weight: 600;
   margin-bottom: 6px;
   color: #0d3a1f;
 }
-
-/* ✅ הודעות שגיאה לשדות חובה */
 .profile-form-card .invalid-feedback {
   display: none;
   color: #8b1c1c;
@@ -78,13 +64,10 @@ body {
   font-weight: 800;
   margin-bottom: 12px;
 }
-
 .profile-form-card .form-control.is-invalid ~ .invalid-feedback,
 .profile-form-card .form-select.is-invalid ~ .invalid-feedback {
   display: block;
 }
-
-/* ✅ כפתור שמירה */
 .profile-form-card .btn-primary {
   background-color: #14532D !important;
   border-color: #14532D !important;
@@ -94,13 +77,10 @@ body {
   font-weight: 600;
   font-size: 16px;
 }
-
 .profile-form-card .btn-primary:hover {
   background-color: #1c6b3a !important;
   border-color: #1c6b3a !important;
 }
-
-/* ✅ הודעת סטטוס */
 #profile-status-message {
   margin-top: 20px;
   padding: 12px;
@@ -109,13 +89,11 @@ body {
   text-align: center;
   display: none;
 }
-
 #profile-status-message.success {
   background-color: #d1f4e0;
   color: #14532D;
   border: 2px solid #a5e4c0;
 }
-
 #profile-status-message.error {
   background-color: #fde2e2;
   color: #8b1c1c;

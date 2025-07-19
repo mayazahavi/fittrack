@@ -7,43 +7,29 @@
   <link rel="stylesheet" href="css/login.css" />
 </head>
 <body>
-
-  <!-- כפתור חזרה -->
   <section class="back-home-container">
     <a href="index.html" class="back-home-link">
       <img src="images/home_icon.png" alt="Back to Home" class="back-home-icon">
       <span class="back-home-text">Back to Home</span>
     </a>
   </section>
-
   <section class="login-wrapper">
     <form class="login-box" id="registerForm" autocomplete="off">
       <h2 class="login-heading">Create an Account</h2>
 
       <img src="images/fittrack_logo_darkgreen.png" alt="FitTrack Logo" class="login-logo" />
-
-      <!-- Select Role -->
       <select name="role" id="role" class="login-select" required>
         <option value="" disabled selected>Select Role</option>
         <option value="trainee">Trainee</option>
         <option value="coach">Coach</option>
       </select>
-
-      <!-- Username -->
       <input type="text" id="username" placeholder="Username" required />
-      <div id="username-error" class="error-msg"></div> <!-- ✅ תוקן כאן -->
-
-      <!-- Password -->
+      <div id="username-error" class="error-msg"></div> 
       <input type="password" id="password" placeholder="Password" required />
-
-      <!-- Submit -->
       <button type="submit">Register</button>
-
       <a href="login.html" class="forgot-password">Already have an account? Login</a>
     </form>
   </section>
-
   <script src="js/register.js" type="module"></script>
-
 </body>
 </html>

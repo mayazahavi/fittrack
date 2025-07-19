@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,12 +9,9 @@
   <link rel="stylesheet" href="css/coachfeedback.css" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet" />
-  <!-- ✅ Chart.js לטעינת גרף המשקל -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body style="font-family: 'Rubik', sans-serif; background-color: #f8f3ff;">
-
-  <!-- ✅ HEADER -->
+<body>
   <header>
     <nav class="navbar navbar-expand-lg custom-navbar">
       <section class="container d-flex justify-content-between align-items-center">
@@ -43,8 +39,6 @@
       </section>
     </nav>
   </header>
-
-  <!-- ✅ MAIN CONTENT -->
   <main class="container my-5">
     <div class="card-form shadow rounded-4" style="max-width: 700px; margin: auto;">
       <div class="card-body p-5">
@@ -52,25 +46,18 @@
           Coach Feedback
           <img src="images/notepad_icon_optimized.png" alt="Feedback Icon" style="height: 1.6em; margin-left: 8px;" />
         </h2>
-
         <form id="coachForm" autocomplete="off" class="needs-validation" novalidate>
           <div class="row g-3">
-
-            <!-- תאריך -->
             <div class="col-md-6 position-relative">
               <label for="date" class="form-label">Date</label>
               <input type="date" id="date" name="date" class="form-control" required />
               <div class="invalid-feedback">Please select a date.</div>
             </div>
-
-            <!-- שעה -->
             <div class="col-md-6 position-relative">
               <label for="time" class="form-label">Time</label>
               <input type="time" id="time" name="time" class="form-control" required />
               <div class="invalid-feedback">Please select a time.</div>
             </div>
-
-            <!-- מתאמן -->
             <div class="col-12 position-relative">
               <label for="traineeSelect" class="form-label">Select Trainee</label>
               <select id="traineeSelect" name="traineeSelect" class="form-select" required>
@@ -78,15 +65,11 @@
               </select>
               <div class="invalid-feedback">Please select a trainee.</div>
             </div>
-
-            <!-- כפתור הצגת נתונים -->
             <div class="col-12 text-end">
               <button type="button" id="showTraineeDataBtn" class="btn rounded-pill mt-2" data-bs-toggle="modal" data-bs-target="#traineeDataModal">
                 Show Trainee Data <i class="bi bi-eye-fill"></i>
               </button>
             </div>
-
-            <!-- ✅ כרטיס פרופיל מתאמן עם גרף משקל -->
             <section id="traineeProfileCard" class="card mt-4 p-4 shadow-sm" style="display: none; background-color: #e8f5e9;">
               <h5 class="mb-3 fw-bold text-success">Trainee Profile</h5>
               <div class="row">
@@ -99,46 +82,32 @@
                 <div class="col-md-6">
                   <canvas id="weightChart" width="300" height="200"></canvas>
                   <p class="text-success mt-2" style="font-size: 0.9rem; text-align: center;">
-  Weight progression over time
-</p>
-
+                  Weight progression over time</p>
                 </div>
               </div>
             </section>
-
-            <!-- תזונה -->
             <div class="col-12 position-relative">
               <label for="tipNutrition" class="form-label">Nutrition Feedback</label>
               <textarea id="tipNutrition" name="tipNutrition" class="form-control" rows="3" required placeholder="Feedback about meals..."></textarea>
               <div class="invalid-feedback">Please enter nutrition feedback.</div>
             </div>
-
-            <!-- אימון -->
             <div class="col-12 position-relative">
               <label for="tipExercise" class="form-label">Exercise Feedback</label>
               <textarea id="tipExercise" name="tipExercise" class="form-control" rows="3" required placeholder="Feedback about training..."></textarea>
               <div class="invalid-feedback">Please enter exercise feedback.</div>
             </div>
-
-            <!-- כללי -->
             <div class="col-12 position-relative">
               <label for="tipGeneral" class="form-label">General Feedback</label>
               <textarea id="tipGeneral" name="tipGeneral" class="form-control" rows="3" required placeholder="General feedback..."></textarea>
               <div class="invalid-feedback">Please enter general feedback.</div>
             </div>
           </div>
-
-          <!-- הודעה כללית -->
           <div id="form-status-message" class="text-center fw-bold mt-3"></div>
-
-          <!-- כפתור שליחה -->
           <button type="submit" class="btn btn-success w-100 mt-4 rounded-pill">Send Feedback</button>
         </form>
       </div>
     </div>
   </main>
-
-  <!-- ✅ MODAL -->
   <section class="modal fade" id="traineeDataModal" tabindex="-1" aria-labelledby="traineeDataModalLabel" aria-hidden="true">
     <article class="modal-dialog modal-lg modal-dialog-centered">
       <section class="modal-content">
@@ -153,8 +122,6 @@
       </section>
     </article>
   </section>
-
-  <!-- ✅ FOOTER -->
   <footer id="contact" class="footer-section text-center text-white mt-5 py-4">
     <section class="mb-3">
       <a href="https://facebook.com" target="_blank"><img src="images/facebook.svg" alt="Facebook" width="24" class="mx-2 social-icon" /></a>
@@ -163,10 +130,7 @@
     </section>
     <small>© 2025 FitTrack, All rights reserved.</small>
   </footer>
-
-  <!-- ✅ SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/navbar-dropdown.js"></script>
   <script type="module" src="js/coachfeedback.js"></script>
 </body>
 </html>

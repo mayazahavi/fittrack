@@ -1,8 +1,4 @@
-
 import { BASE_URL } from './config.js';
-
-console.log("🧠 coachhistory.js loaded!");
-
 document.addEventListener('DOMContentLoaded', () => {
   const tableBody = document.getElementById('feedbackTableBody');
   const modal = document.getElementById("editModal");
@@ -113,7 +109,6 @@ confirmDeleteBtn.addEventListener("click", async () => {
     feedbackRowToDelete.remove();
     showDeleteMessage("✅ Feedback deleted successfully", true);
 
-    // תשאירי את המודאל פתוח 2 שניות כדי לאפשר לראות את ההודעה
     setTimeout(() => {
       deleteModal.close();
       clearDeleteMessage();
@@ -127,7 +122,6 @@ confirmDeleteBtn.addEventListener("click", async () => {
     }, 2500);
   }
 });
-
 
   function showDeleteMessage(msg, success = true) {
   deleteMessageBox.innerText = msg;
