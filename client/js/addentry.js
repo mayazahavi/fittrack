@@ -1,4 +1,5 @@
 import { BASE_URL } from "./config.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("entryForm");
   const mealGroup = document.getElementById("meal-group");
@@ -50,6 +51,33 @@ document.addEventListener("DOMContentLoaded", () => {
     removeBtn.addEventListener("click", () => {
       wrapper.remove();
     });
+  }
+
+  async function populateWorkoutOptions() {
+    const select = document.getElementById("workout");
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${BASE_URL}/api/entries/workouts`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch workout options");
+
+      const workouts = await response.json();
+      workouts.forEach(w => {
+        const option = document.createElement("option");
+        option.value = w.value;
+        option.textContent = w.label;
+        select.appendChild(option);
+      });
+    } catch (err) {
+      console.error("❌ Failed to load workout options:", err);
+      const errorOption = document.createElement("option");
+      errorOption.value = "";
+      errorOption.textContent = "Error loading workouts";
+      errorOption.disabled = true;
+      select.appendChild(errorOption);
+    }
   }
 
   addMealBtn.addEventListener("click", () => {
@@ -201,4 +229,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   createMealInput();
+  populateWorkoutOptions(); // <-- טעינה דינמית של סוגי האימון
 });

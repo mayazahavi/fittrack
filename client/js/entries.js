@@ -1,9 +1,5 @@
+// entries.js – גרסה מעודכנת שמתאימה ל־select דינמי של אימונים
 import { BASE_URL } from "./config.js";
-
-const sportsOptions = [
-  "Running", "Cycling", "Yoga", "Swimming", "Weightlifting",
-  "Walking", "Pilates", "Dancing", "HIIT", "Crossfit"
-];
 
 document.addEventListener("DOMContentLoaded", async () => {
   const tableBody = document.getElementById("entriesTable");
@@ -90,23 +86,32 @@ document.addEventListener("DOMContentLoaded", async () => {
   addEditMealBtn.addEventListener("click", () => {
     createMealInput();
   });
-  
-  editWorkout.addEventListener("input", () => {
-    const datalist = document.getElementById("workoutOptions") || document.createElement("datalist");
-    datalist.id = "workoutOptions";
-    if (!editWorkout.getAttribute("list")) {
-      editWorkout.setAttribute("list", "workoutOptions");
-      document.body.appendChild(datalist);
+
+  async function fetchWorkoutOptions() {
+    try {
+      const res = await fetch(`${BASE_URL}/api/entries/workouts`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error("Failed to fetch workouts");
+      return await res.json();
+    } catch (err) {
+      console.error("Workout fetch error:", err);
+      return [];
     }
-    datalist.innerHTML = "";
-    sportsOptions.forEach(option => {
-      if (option.toLowerCase().includes(editWorkout.value.toLowerCase())) {
-        const opt = document.createElement("option");
-        opt.value = option;
-        datalist.appendChild(opt);
-      }
+  }
+
+  async function populateWorkoutSelect() {
+    const workouts = await fetchWorkoutOptions();
+    editWorkout.innerHTML = '<option value="" disabled selected>Select a workout</option>';
+    workouts.forEach(w => {
+      const opt = document.createElement("option");
+      opt.value = w.label;
+      opt.textContent = w.label;
+      editWorkout.appendChild(opt);
     });
-  });
+  }
+
+  await populateWorkoutSelect();
 
   async function loadEntries() {
     try {
@@ -286,8 +291,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       feedback.classList.add("error");
     }
 
-   const btnSection = editForm.querySelector(".button-row");
-
+    const btnSection = editForm.querySelector(".button-row");
     btnSection.insertAdjacentElement("beforebegin", feedback);
 
     setTimeout(() => {
