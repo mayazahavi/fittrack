@@ -12,10 +12,34 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedUsername = localStorage.getItem("username");
   const token = localStorage.getItem("token");
 
+  // ✅ שליפת המגדרים מהשרת עם Authorization header
+  fetch(`${BASE_URL}/api/trainee/profile/genders`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch genders");
+      return res.json();
+    })
+    .then((genders) => {
+      genderSelect.innerHTML = `<option value="">Select</option>`;
+      genders.forEach((g) => {
+        const option = document.createElement("option");
+        option.value = g;
+        option.textContent = g.charAt(0).toUpperCase() + g.slice(1);
+        genderSelect.appendChild(option);
+      });
+    })
+    .catch((err) => {
+      console.error("Error loading gender list:", err);
+    });
+
   if (savedUsername && usernameInput) {
     usernameInput.value = savedUsername;
     usernameInput.readOnly = true;
   }
+
   if (token && savedUsername) {
     fetch(`${BASE_URL}/api/trainee/profile/${savedUsername}`, {
       method: "GET",
@@ -40,16 +64,19 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Error loading profile:", err);
       });
   }
+
   profileForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     clearValidation();
+
     const data = {
-      username: savedUsername, 
+      username: savedUsername,
       age: ageInput.value.trim(),
       gender: genderSelect.value,
       height: heightInput.value.trim(),
       weight: weightInput.value.trim(),
     };
+
     let valid = true;
     if (!data.age) {
       markInvalid(ageInput);
@@ -67,10 +94,12 @@ document.addEventListener("DOMContentLoaded", () => {
       markInvalid(weightInput);
       valid = false;
     }
+
     if (!valid) {
       showMessage("Please fill out all required fields.", "error");
       return;
     }
+
     try {
       const res = await fetch(`${BASE_URL}/api/trainee/profile`, {
         method: "POST",
@@ -86,6 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showMessage("Error saving profile: " + err.message, "error");
     }
   });
+
   function showMessage(message, type) {
     statusMessage.textContent = message;
     statusMessage.className = "";
@@ -97,15 +127,17 @@ document.addEventListener("DOMContentLoaded", () => {
       statusMessage.style.display = "none";
     }, 5000);
   }
+
   function markInvalid(input) {
     input.classList.add("is-invalid");
-    let error = document.createElement("div");
+    const error = document.createElement("div");
     error.className = "invalid-feedback";
     error.textContent = "This field is required";
     if (!input.parentElement.querySelector(".invalid-feedback")) {
       input.parentElement.appendChild(error);
     }
   }
+
   function clearValidation() {
     const invalids = profileForm.querySelectorAll(".is-invalid");
     invalids.forEach((el) => el.classList.remove("is-invalid"));

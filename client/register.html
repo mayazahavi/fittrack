@@ -13,23 +13,45 @@
       <span class="back-home-text">Back to Home</span>
     </a>
   </section>
+
   <section class="login-wrapper">
     <form class="login-box" id="registerForm" autocomplete="off">
       <h2 class="login-heading">Create an Account</h2>
-
       <img src="images/fittrack_logo_darkgreen.png" alt="FitTrack Logo" class="login-logo" />
-      <select name="role" id="role" class="login-select" required>
+
+      <!-- תפקיד -->
+      <select name="role" id="role" class="login-select">
         <option value="" disabled selected>Select Role</option>
-        <option value="trainee">Trainee</option>
-        <option value="coach">Coach</option>
+        <!-- 🟢 options loaded dynamically from server via register.js -->
       </select>
-      <input type="text" id="username" placeholder="Username" required />
+      <div id="role-error" class="error-msg"></div>
+
+      <!-- שם משתמש -->
+      <input type="text" id="username" placeholder="Username" />
       <div id="username-error" class="error-msg"></div> 
-      <input type="password" id="password" placeholder="Password" required />
+
+      <!-- סיסמה -->
+      <input type="password" id="password" placeholder="Password" />
+      <div id="password-error" class="error-msg"></div>
+
+      <!-- אימות סיסמה -->
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" />
+      <div id="confirm-password-error" class="error-msg"></div>
+
+      <!-- קוד למאמן -->
+      <div id="coach-code-container" style="display: none; width: 100%;">
+        <input type="text" id="coachCode" placeholder="Enter Coach Code" />
+        <div id="coachcode-error" class="error-msg"></div>
+      </div>
+
+      <!-- כפתור הרשמה -->
       <button type="submit">Register</button>
+
+      <!-- קישור להתחברות -->
       <a href="login.html" class="forgot-password">Already have an account? Login</a>
     </form>
   </section>
+
   <script src="js/register.js" type="module"></script>
 </body>
 </html>

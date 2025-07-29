@@ -1,4 +1,5 @@
 import { BASE_URL } from "./config.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const traineeSelect = document.getElementById("traineeSelect");
   const dateInput = document.getElementById("date");
@@ -21,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return today.toISOString().split("T")[0];
   }
 
-  const traineeMap = new Map(); 
+  const traineeMap = new Map();
 
   async function loadTrainees() {
     try {
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const trainees = await res.json();
       trainees.forEach(t => {
         const option = document.createElement("option");
-        option.value = t._id; 
+        option.value = t._id;
         option.textContent = t.username;
         traineeMap.set(t._id, t.username);
         traineeSelect.appendChild(option);
@@ -68,8 +69,8 @@ document.addEventListener("DOMContentLoaded", () => {
       data.sort((a, b) => new Date(b.date + "T" + (b.time || "00:00")) - new Date(a.date + "T" + (a.time || "00:00")));
 
       traineeDataContent.innerHTML = data.map(entry => `
-        <div style="border-bottom: 1px solid #ccc; padding: 5px 0; margin-bottom: 5px;">
-          <strong>Date:</strong> ${entry.date}<br/>
+        <div class="trainee-entry-box">
+          <strong>Date:</strong> ${new Date(entry.date).toLocaleDateString('he-IL')}<br/>
           <strong>Time:</strong> ${entry.time || "Unknown"}<br/>
           <strong>Meals:</strong> ${entry.meals.map(m => m.name).join(", ")}<br/>
           <strong>Calories:</strong> ${entry.calories || 0} kcal<br/>
@@ -84,8 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function loadTraineeProfile(traineeId) {
     const token = localStorage.getItem("token");
-    const username = traineeMap.get(traineeId); 
-
+    const username = traineeMap.get(traineeId);
     if (!username) {
       console.error("Username not found for traineeId", traineeId);
       return;
@@ -97,7 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
           Authorization: `Bearer ${token}`
         }
       });
-
       if (!res.ok) throw new Error("Failed to load trainee profile");
 
       const data = await res.json();
@@ -120,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const ctx = document.getElementById("weightChart").getContext("2d");
 
     const sorted = [...weightHistory].sort((a, b) => new Date(a.date) - new Date(b.date));
-    const labels = sorted.map(entry => new Date(entry.date).toLocaleDateString());
+    const labels = sorted.map(entry => new Date(entry.date).toLocaleDateString('he-IL'));
     const data = sorted.map(entry => entry.weight);
 
     if (weightChartInstance) {

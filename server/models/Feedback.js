@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const FeedbackSchema = new mongoose.Schema({
   trainee: {
     type: mongoose.Schema.Types.ObjectId,
@@ -18,6 +19,10 @@ const FeedbackSchema = new mongoose.Schema({
     nutrition: { type: String, default: "" },
     exercise: { type: String, default: "" },
     general: { type: String, default: "" }
+  },
+  readByTrainee: {
+    type: Boolean,
+    default: false
   }
 }, { timestamps: true });
 

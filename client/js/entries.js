@@ -1,4 +1,3 @@
-// entries.js – גרסה מעודכנת שמתאימה ל־select דינמי של אימונים
 import { BASE_URL } from "./config.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -9,9 +8,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const editWorkout = document.getElementById("editWorkout");
   const editMealGroup = document.getElementById("editMealGroup");
   const addEditMealBtn = document.getElementById("addEditMealBtn");
-
   const deleteConfirmModal = document.getElementById("deleteConfirmModal");
   const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+  const deleteFeedbackArea = document.getElementById("deleteFeedbackArea");
+
   let currentDeleteId = null;
   let currentEditId = null;
 
@@ -21,57 +21,73 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  function parseJwt(token) {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
-      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-    ).join(''));
-    return JSON.parse(jsonPayload);
-  }
-
-  const userId = parseJwt(token).id;
+  const userId = JSON.parse(atob(token.split(".")[1])).id;
 
   function formatDateDMY(dateStr) {
     const [year, month, day] = dateStr.split("-");
     return `${day}/${month}/${year}`;
   }
 
-  function createMealInput(name = "") {
+  function clearFeedback() {
+    const msg = document.querySelector(".form-feedback");
+    if (msg) msg.remove();
+  }
+
+  function showFeedback(message, isSuccess, parent = editForm) {
+    clearFeedback();
+    const div = document.createElement("div");
+    div.className = `form-feedback ${isSuccess ? "success" : "error"}`;
+    div.textContent = message;
+
+    const buttonRow = parent.querySelector(".button-row");
+    if (buttonRow) {
+      parent.insertBefore(div, buttonRow);
+    } else {
+      parent.appendChild(div);
+    }
+    return div;
+  }
+
+  function createMealInput(name = "", amount = "", unit = "") {
     const wrapper = document.createElement("div");
     wrapper.className = "meal-wrapper";
     wrapper.innerHTML = `
       <div class="meal-input-group">
-        <input type="text" class="meal-input form-control" value="${name}" />
+        <input type="text" class="meal-input form-control mb-1" placeholder="Meal name" value="${name}" />
+        <input type="number" class="amount-input form-control mb-1" placeholder="Amount" value="${amount}" />
+        <select class="unit-input form-select mb-1">
+          <option value="">Select unit</option>
+        </select>
         <button type="button" class="remove-meal-btn" title="Remove">×</button>
         <ul class="suggestions-list"></ul>
-        <div class="meal-error text-danger small mt-1" style="display: none;">Please enter a meal name</div>
+        <div class="meal-error text-danger small mt-1" style="display: none;">Please enter all meal details</div>
       </div>
     `;
 
     const input = wrapper.querySelector(".meal-input");
+    const unitSelect = wrapper.querySelector(".unit-input");
     const removeBtn = wrapper.querySelector(".remove-meal-btn");
     const suggestions = wrapper.querySelector(".suggestions-list");
 
     removeBtn.addEventListener("click", () => wrapper.remove());
 
     input.addEventListener("input", async () => {
-      suggestions.innerHTML = "";
       const query = input.value.trim();
+      suggestions.innerHTML = "";
       if (query.length < 2) return;
 
       try {
         const res = await fetch(`${BASE_URL}/api/entries/ingredients/search?query=${encodeURIComponent(query)}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        if (!res.ok) return;
         const data = await res.json();
         data.results.slice(0, 5).forEach(item => {
           const li = document.createElement("li");
           li.textContent = item.name;
-          li.onclick = () => {
+          li.onclick = async () => {
             input.value = item.name;
             suggestions.innerHTML = "";
+            await loadUnits(item.id, unitSelect, unit);
           };
           suggestions.appendChild(li);
         });
@@ -80,7 +96,49 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
+    input.addEventListener("blur", () => {
+      setTimeout(() => suggestions.innerHTML = "", 200);
+    });
+
     editMealGroup.appendChild(wrapper);
+
+    if (name) {
+      fetch(`${BASE_URL}/api/entries/ingredients/search?query=${encodeURIComponent(name)}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(res => res.json())
+        .then(data => {
+          const match = data.results.find(m => m.name.toLowerCase() === name.toLowerCase());
+          if (match) {
+            loadUnits(match.id, unitSelect, unit);
+          }
+        })
+        .catch(err => console.error("Failed to preload units:", err));
+    }
+  }
+
+  async function loadUnits(ingredientId, selectEl, selectedUnit = "") {
+    try {
+      const res = await fetch(`${BASE_URL}/api/entries/ingredients/${ingredientId}/information?amount=1&unit=piece`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      const units = data.possibleUnits || [];
+
+      selectEl.innerHTML = '<option value="">Select unit</option>';
+      units.forEach(unit => {
+        const opt = document.createElement("option");
+        opt.value = unit;
+        opt.textContent = unit;
+        selectEl.appendChild(opt);
+      });
+
+      if (selectedUnit) {
+        selectEl.value = selectedUnit;
+      }
+    } catch (err) {
+      console.error("Unit fetch error:", err);
+    }
   }
 
   addEditMealBtn.addEventListener("click", () => {
@@ -92,96 +150,105 @@ document.addEventListener("DOMContentLoaded", async () => {
       const res = await fetch(`${BASE_URL}/api/entries/workouts`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      if (!res.ok) throw new Error("Failed to fetch workouts");
       return await res.json();
-    } catch (err) {
-      console.error("Workout fetch error:", err);
+    } catch {
       return [];
     }
   }
 
-  async function populateWorkoutSelect() {
+  async function populateWorkoutSelect(current = "") {
     const workouts = await fetchWorkoutOptions();
-    editWorkout.innerHTML = '<option value="" disabled selected>Select a workout</option>';
+    editWorkout.innerHTML = "";
+
+    const defaultOpt = document.createElement("option");
+    defaultOpt.value = "";
+    defaultOpt.disabled = true;
+    defaultOpt.textContent = "Select workout";
+    editWorkout.appendChild(defaultOpt);
+
     workouts.forEach(w => {
       const opt = document.createElement("option");
       opt.value = w.label;
       opt.textContent = w.label;
       editWorkout.appendChild(opt);
     });
-  }
 
-  await populateWorkoutSelect();
+    if (current) {
+      const found = Array.from(editWorkout.options).find(
+        opt => opt.value.toLowerCase().trim() === current.toLowerCase().trim()
+      );
+      if (found) {
+        editWorkout.value = found.value;
+      } else {
+        editWorkout.selectedIndex = 0;
+      }
+    }
+  }
 
   async function loadEntries() {
     try {
       const res = await fetch(`${BASE_URL}/api/entries?traineeId=${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      const allEntries = await res.json();
+      const entries = await res.json();
       tableBody.innerHTML = "";
 
-      if (allEntries.length === 0) {
+      if (!entries.length) {
         tableBody.innerHTML = "<tr><td colspan='6'>No entries found.</td></tr>";
         return;
       }
 
-      allEntries.sort((a, b) => new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`));
-
-      allEntries.forEach(entry => {
+      entries.forEach(entry => {
         const row = document.createElement("tr");
-
         row.innerHTML = `
           <td>${formatDateDMY(entry.date)}</td>
-          <td>${entry.time || "—"}</td>
-          <td>${entry.meals?.map(m => `${m.name} (${m.calories?.toFixed(0) || "0"} kcal)`).join("<br>") || "—"}</td>
-          <td>${entry.workout || "—"}</td>
-          <td>${entry.calories?.toFixed(0) || 0} kcal</td>
+          <td>${entry.time}</td>
+          <td>${entry.meals.map(m => `${m.name} (${m.calories?.toFixed(0)} kcal)`).join("<br>")}</td>
+          <td>${entry.workout}</td>
+          <td>${entry.calories?.toFixed(0)} kcal</td>
           <td></td>
         `;
 
-        const actionsCell = row.querySelector("td:last-child");
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "delete-btn";
-        deleteBtn.textContent = "🗑 Delete";
-        deleteBtn.onclick = () => {
-          currentDeleteId = entry._id;
-          deleteConfirmModal.showModal();
-        };
+        const actions = row.querySelector("td:last-child");
 
         const editBtn = document.createElement("button");
-        editBtn.className = "edit-btn";
         editBtn.textContent = "✏️ Edit";
-        editBtn.onclick = () => {
+        editBtn.className = "edit-btn";
+        editBtn.onclick = async () => {
           currentEditId = entry._id;
+          clearFeedback();
           editTime.value = entry.time || "";
-          editWorkout.value = entry.workout || "";
           editMealGroup.innerHTML = "";
-          (entry.meals || []).forEach(meal => {
-            createMealInput(meal.name);
-          });
+          for (const m of entry.meals || []) {
+            createMealInput(m.name, m.amount, m.unit);
+          }
+          console.log("Workout to select:", entry.workout); // log for debugging
+          await populateWorkoutSelect(entry.workout || "");
           editModal.showModal();
         };
 
-        actionsCell.appendChild(editBtn);
-        actionsCell.appendChild(deleteBtn);
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "🗑 Delete";
+        deleteBtn.className = "delete-btn";
+        deleteBtn.onclick = () => {
+          currentDeleteId = entry._id;
+          deleteFeedbackArea.innerHTML = "";
+          deleteConfirmModal.showModal();
+        };
 
+        actions.appendChild(editBtn);
+        actions.appendChild(deleteBtn);
         tableBody.appendChild(row);
       });
     } catch (err) {
-      console.error("Error loading entries:", err);
-      tableBody.innerHTML = "<tr><td colspan='6'>Error loading entries.</td></tr>";
+      console.error("Load error:", err);
     }
   }
 
-  confirmDeleteBtn.addEventListener("click", async (e) => {
-    e.preventDefault();
+  confirmDeleteBtn.addEventListener("click", async () => {
     if (!currentDeleteId) return;
 
-    const form = document.getElementById("deleteConfirmForm");
-    const message = document.createElement("div");
-    message.className = "mt-3 fw-bold text-center";
+    deleteFeedbackArea.innerHTML = "";
 
     try {
       const res = await fetch(`${BASE_URL}/api/entries/${currentDeleteId}`, {
@@ -189,114 +256,66 @@ document.addEventListener("DOMContentLoaded", async () => {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      if (!res.ok) throw new Error();
-
-      message.textContent = "Entry deleted successfully.";
-      message.style.color = "green";
-      await loadEntries();
-    } catch {
-      message.textContent = "Failed to delete entry.";
-      message.style.color = "red";
+      if (res.ok) {
+        deleteFeedbackArea.innerHTML = `<div class="form-feedback success">Entry deleted successfully.</div>`;
+        await loadEntries();
+      } else {
+        deleteFeedbackArea.innerHTML = `<div class="form-feedback error">Failed to delete entry.</div>`;
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
+      deleteFeedbackArea.innerHTML = `<div class="form-feedback error">Delete request failed.</div>`;
     }
-
-    form.appendChild(message);
 
     setTimeout(() => {
       deleteConfirmModal.close();
-      message.remove();
     }, 2000);
   });
-
-  await loadEntries();
 
   editForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!currentEditId) return;
 
-    editForm.querySelectorAll(".meal-error").forEach(e => e.style.display = "none");
-    editForm.querySelectorAll(".meal-list-error").forEach(e => e.remove());
-    editForm.querySelectorAll(".form-feedback").forEach(e => e.remove());
-    editTime.classList.remove("is-invalid");
-    editWorkout.classList.remove("is-invalid");
-    document.querySelectorAll(".time-error, .workout-error").forEach(e => e.remove());
+    const meals = Array.from(editMealGroup.querySelectorAll(".meal-input-group")).map(group => {
+      return {
+        name: group.querySelector(".meal-input").value.trim(),
+        amount: parseFloat(group.querySelector(".amount-input").value.trim()),
+        unit: group.querySelector(".unit-input").value.trim()
+      };
+    });
 
-    let isValid = true;
-
-    if (!editTime.value) {
-      editTime.classList.add("is-invalid");
-      const msg = document.createElement("div");
-      msg.className = "invalid-feedback time-error";
-      msg.textContent = "Please enter a valid time.";
-      editTime.after(msg);
-      isValid = false;
-    }
-
-    if (!editWorkout.value.trim()) {
-      editWorkout.classList.add("is-invalid");
-      const msg = document.createElement("div");
-      msg.className = "invalid-feedback workout-error";
-      msg.textContent = "Please enter a workout.";
-      editWorkout.after(msg);
-      isValid = false;
-    }
-
-    const mealGroups = editMealGroup.querySelectorAll(".meal-input-group");
-    if (mealGroups.length === 0) {
-      const msg = document.createElement("div");
-      msg.className = "meal-list-error text-danger fw-bold mt-2";
-      msg.textContent = "Please add at least one meal.";
-      editMealGroup.appendChild(msg);
-      isValid = false;
-    }
-
-    const meals = Array.from(mealGroups).map(group => {
-      const input = group.querySelector(".meal-input");
-      const error = group.querySelector(".meal-error");
-      const value = input.value.trim();
-      if (!value) {
-        error.style.display = "block";
-        isValid = false;
-      }
-      return { name: value };
-    }).filter(m => m.name);
-
-    if (!isValid) return;
-
-    const updatedData = {
+    const body = {
       meals,
-      time: editTime.value,
-      workout: editWorkout.value.trim()
+      workout: editWorkout.value.trim(),
+      time: editTime.value
     };
 
-    const feedback = document.createElement("div");
-    feedback.className = "form-feedback mt-3 text-center fw-bold";
-
     try {
-      const response = await fetch(`${BASE_URL}/api/entries/${currentEditId}`, {
+      const res = await fetch(`${BASE_URL}/api/entries/${currentEditId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(updatedData)
+        body: JSON.stringify(body)
       });
-
-      if (!response.ok) throw new Error();
-
-      feedback.textContent = "Changes saved successfully.";
-      feedback.classList.add("success");
-      await loadEntries();
-    } catch {
-      feedback.textContent = "Failed to save changes.";
-      feedback.classList.add("error");
+      if (res.ok) {
+        await loadEntries();
+        const msg = showFeedback("Entry updated successfully.", true);
+        setTimeout(() => {
+          editModal.close();
+          msg.remove();
+        }, 2000);
+      } else {
+        const err = await res.json();
+        console.error("Update error:", err);
+        showFeedback("Failed to update entry.", false);
+      }
+    } catch (err) {
+      console.error("Update request failed:", err);
+      showFeedback("Update request failed.", false);
     }
-
-    const btnSection = editForm.querySelector(".button-row");
-    btnSection.insertAdjacentElement("beforebegin", feedback);
-
-    setTimeout(() => {
-      feedback.remove();
-      editModal.close();
-    }, 2000);
   });
+
+  await loadEntries();
 });

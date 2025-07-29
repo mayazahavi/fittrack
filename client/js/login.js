@@ -11,12 +11,36 @@ document.addEventListener("DOMContentLoaded", () => {
   const usernameError = document.getElementById("username-error");
   const passwordError = document.getElementById("password-error");
   const formFeedback = document.getElementById("form-feedback");
-  const params = new URLSearchParams(window.location.search);
-  const roleFromURL = params.get("role");
-  if (roleFromURL === "trainee" || roleFromURL === "coach") {
-    roleSelect.value = roleFromURL;
-    roleSelect.disabled = true;
-  }
+
+  // 🟢 טען תפקידים מהשרת ל־select
+  fetch(`${BASE_URL}/api/users/roles`)
+    .then(res => {
+      if (!res.ok) throw new Error("Failed to fetch roles");
+      return res.json();
+    })
+    .then(roles => {
+      roleSelect.innerHTML = `<option value="" disabled selected>Select Role</option>`;
+      roles.forEach(role => {
+        const opt = document.createElement("option");
+        opt.value = role;
+        opt.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+        roleSelect.appendChild(opt);
+      });
+
+      // שמירה על role מה־URL אם קיים
+      const roleFromURL = new URLSearchParams(window.location.search).get("role");
+      if (roleFromURL && roles.includes(roleFromURL)) {
+        roleSelect.value = roleFromURL;
+        roleSelect.disabled = true;
+      }
+    })
+    .catch(err => {
+      console.error("Error loading roles:", err);
+      roleError.textContent = "Unable to load roles. Please refresh.";
+      roleError.style.display = "block";
+    });
+
+  // פונקציות עזר
   const clearErrors = () => {
     roleError.textContent = "";
     usernameError.textContent = "";
@@ -28,11 +52,14 @@ document.addEventListener("DOMContentLoaded", () => {
     formFeedback.style.display = "none";
     formFeedback.className = "feedback-msg";
   };
+
   const showFeedback = (msg, type = "error") => {
     formFeedback.textContent = msg;
     formFeedback.classList.add(type === "success" ? "feedback-success" : "feedback-error");
     formFeedback.style.display = "block";
   };
+
+  // שליחת טופס התחברות
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     clearErrors();
@@ -75,7 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem("username", data.username); 
+      localStorage.setItem("username", data.username);
+
       showFeedback("Login successful!", "success");
 
       setTimeout(() => {

@@ -205,4 +205,31 @@ textarea.is-invalid {
   background-color: #f8d7da;
   color: #842029;
 }
+#traineeFilter {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 2px solid #14532D;
+  background-color: #F0FFF4;
+  color: #14532D;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Rubik', sans-serif;
+  outline: none;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#traineeFilter:hover,
+#traineeFilter:focus {
+  border-color: #0e3e22;
+  box-shadow: 0 0 0 4px rgba(20, 83, 45, 0.2);
+}
+
+#traineeFilter option {
+  background-color: white;
+  color: #14532D;
+  font-weight: 500;
+}
+
  
