@@ -17,7 +17,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const confirmPasswordError = document.getElementById("confirm-password-error");
   const coachCodeError = document.getElementById("coachcode-error");
 
-  // 🟢 טען תפקידים מהשרת לדפדפן
+  const registerMessage = document.getElementById("register-message");
+
+  function showMessage(text, isSuccess = true) {
+    registerMessage.textContent = text;
+    registerMessage.className = "feedback-msg " + (isSuccess ? "feedback-success" : "feedback-error");
+    registerMessage.style.display = "block";
+    setTimeout(() => {
+      registerMessage.style.display = "none";
+    }, 4000);
+  }
+
+  // 🟢 טען תפקידים מהשרת
   fetch(`${BASE_URL}/api/users/roles`)
     .then(res => {
       if (!res.ok) throw new Error("Failed to fetch roles");
@@ -38,19 +49,14 @@ document.addEventListener("DOMContentLoaded", () => {
       roleError.style.display = "block";
     });
 
-  // הצגת שדה קוד מאמן אם נבחר "coach"
   roleSelect.addEventListener("change", () => {
-    if (roleSelect.value === "coach") {
-      coachCodeContainer.style.display = "block";
-    } else {
-      coachCodeContainer.style.display = "none";
-    }
+    coachCodeContainer.style.display = roleSelect.value === "coach" ? "block" : "none";
   });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // איפוס הודעות שגיאה
+    // איפוס הודעות
     [
       roleError,
       usernameError,
@@ -62,6 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
       el.style.display = "none";
     });
 
+    registerMessage.style.display = "none";
+
     const role = roleSelect.value.trim();
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
@@ -70,7 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let hasError = false;
 
-    // ולידציות בסיסיות
     if (!role) {
       roleError.textContent = "Please select a role.";
       roleError.style.display = "block";
@@ -111,7 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (hasError) return;
 
-    // שלח בקשת הרשמה לשרת
     try {
       const res = await fetch(`${BASE_URL}/api/users/register`, {
         method: "POST",
@@ -126,16 +132,18 @@ document.addEventListener("DOMContentLoaded", () => {
           usernameError.textContent = "Username already exists for this role. Please choose another.";
           usernameError.style.display = "block";
         } else {
-          alert("Registration failed: " + (data.error || "Unknown error"));
+          showMessage("Registration failed: " + (data.error || "Unknown error"), false);
         }
         return;
       }
 
-      alert("Registration successful!");
-      window.location.href = "login.html";
+      showMessage("Registration successful! Redirecting...", true);
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 2000);
     } catch (err) {
       console.error("Register error:", err);
-      alert("Registration failed: " + err.message);
+      showMessage("Registration failed: " + err.message, false);
     }
   });
 });

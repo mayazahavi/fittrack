@@ -222,3 +222,50 @@
   background-color: #f8d7da;
   color: #842029;
 }
+#deleteConfirmForm .form-feedback {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+#deleteConfirmForm .form-feedback.success {
+  background-color: #d1e7dd;
+  color: #14532D;
+}
+#deleteConfirmForm .form-feedback.error {
+  background-color: #f8d7da;
+  color: #842029;
+}
+.meal-name-wrapper {
+  position: relative;
+}
+
+.meal-name-wrapper .suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  max-height: 150px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.meal-name-wrapper .suggestions-list li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.meal-name-wrapper .suggestions-list li:hover {
+  background-color: #e0f7fa;
+  font-weight: 600;
+}
+

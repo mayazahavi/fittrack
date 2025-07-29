@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const editMealGroup = document.getElementById("editMealGroup");
   const addEditMealBtn = document.getElementById("addEditMealBtn");
   const deleteConfirmModal = document.getElementById("deleteConfirmModal");
+  const deleteConfirmForm = document.getElementById("deleteConfirmForm");
   const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
   const deleteFeedbackArea = document.getElementById("deleteFeedbackArea");
 
@@ -53,13 +54,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     wrapper.className = "meal-wrapper";
     wrapper.innerHTML = `
       <div class="meal-input-group">
-        <input type="text" class="meal-input form-control mb-1" placeholder="Meal name" value="${name}" />
+        <div class="meal-name-wrapper">
+          <input type="text" class="meal-input form-control mb-1" placeholder="Meal name" value="${name}" />
+          <ul class="suggestions-list"></ul>
+        </div>
         <input type="number" class="amount-input form-control mb-1" placeholder="Amount" value="${amount}" />
         <select class="unit-input form-select mb-1">
           <option value="">Select unit</option>
         </select>
         <button type="button" class="remove-meal-btn" title="Remove">×</button>
-        <ul class="suggestions-list"></ul>
         <div class="meal-error text-danger small mt-1" style="display: none;">Please enter all meal details</div>
       </div>
     `;
@@ -180,7 +183,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (found) {
         editWorkout.value = found.value;
       } else {
-        editWorkout.selectedIndex = 0;
+        const customOpt = document.createElement("option");
+        customOpt.value = current;
+        customOpt.textContent = current;
+        editWorkout.appendChild(customOpt);
+        editWorkout.value = current;
       }
     }
   }
@@ -222,7 +229,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           for (const m of entry.meals || []) {
             createMealInput(m.name, m.amount, m.unit);
           }
-          console.log("Workout to select:", entry.workout); // log for debugging
           await populateWorkoutSelect(entry.workout || "");
           editModal.showModal();
         };
@@ -245,7 +251,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  confirmDeleteBtn.addEventListener("click", async () => {
+  deleteConfirmForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
     if (!currentDeleteId) return;
 
     deleteFeedbackArea.innerHTML = "";
@@ -259,6 +267,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (res.ok) {
         deleteFeedbackArea.innerHTML = `<div class="form-feedback success">Entry deleted successfully.</div>`;
         await loadEntries();
+
+        setTimeout(() => {
+          deleteConfirmModal.close();
+          deleteFeedbackArea.innerHTML = "";
+        }, 2000);
       } else {
         deleteFeedbackArea.innerHTML = `<div class="form-feedback error">Failed to delete entry.</div>`;
       }
@@ -266,10 +279,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Delete error:", err);
       deleteFeedbackArea.innerHTML = `<div class="form-feedback error">Delete request failed.</div>`;
     }
-
-    setTimeout(() => {
-      deleteConfirmModal.close();
-    }, 2000);
   });
 
   editForm.addEventListener("submit", async (e) => {
