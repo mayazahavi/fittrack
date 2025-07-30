@@ -18,6 +18,11 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ error: "Password is required" });
     }
 
+    // 🔒 בדיקת אורך מינימלי לסיסמה
+    if (password.length < 6) {
+      return res.status(400).json({ error: "Password must be at least 6 characters long" });
+    }
+
     if (!role) {
       return res.status(400).json({ error: "Role is required" });
     }
