@@ -6,7 +6,7 @@ const validRoles = ["trainee", "coach"];
 
 // ✅ הרשמה
 const registerUser = async (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password, role, secretCode } = req.body;
 
   try {
     // 🔒 בדיקה אם חסרים שדות בסיסיים
@@ -30,6 +30,18 @@ const registerUser = async (req, res) => {
     // בדיקת תפקיד חוקי
     if (!validRoles.includes(role)) {
       return res.status(400).json({ error: "Invalid role specified" });
+    }
+
+    // ✅ בדיקת קוד סודי למאמנים בלבד
+    if (role === "coach") {
+      if (!secretCode) {
+        return res.status(400).json({ error: "Secret code is required for coach registration" });
+      }
+
+      const expectedSecretCode = "123";
+      if (secretCode !== expectedSecretCode) {
+        return res.status(400).json({ error: "Invalid secret code" });
+      }
     }
 
     // ✅ בדיקה אם שם המשתמש קיים כבר עבור אותו role
