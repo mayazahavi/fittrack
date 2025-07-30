@@ -9,6 +9,19 @@ const registerUser = async (req, res) => {
   const { username, password, role } = req.body;
 
   try {
+    // 🔒 בדיקה אם חסרים שדות בסיסיים
+    if (!username) {
+      return res.status(400).json({ error: "Username is required" });
+    }
+
+    if (!password) {
+      return res.status(400).json({ error: "Password is required" });
+    }
+
+    if (!role) {
+      return res.status(400).json({ error: "Role is required" });
+    }
+
     // בדיקת תפקיד חוקי
     if (!validRoles.includes(role)) {
       return res.status(400).json({ error: "Invalid role specified" });
