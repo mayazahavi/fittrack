@@ -18,7 +18,6 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ error: "Password is required" });
     }
 
-    // 🔒 בדיקת אורך מינימלי לסיסמה
     if (password.length < 6) {
       return res.status(400).json({ error: "Password must be at least 6 characters long" });
     }
@@ -27,30 +26,31 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ error: "Role is required" });
     }
 
-    // בדיקת תפקיד חוקי
+    // 🧪 בדיקת תפקיד חוקי
     if (!validRoles.includes(role)) {
       return res.status(400).json({ error: "Invalid role specified" });
     }
 
-    // ✅ בדיקת קוד סודי למאמנים בלבד
+    // 🛡️ בדיקת קוד סודי למאמנים
     if (role === "coach") {
+      const expectedSecretCode = "123";
+
       if (!secretCode) {
-        return res.status(400).json({ error: "Secret code is required for coach registration" });
+        return res.status(403).json({ error: "Secret code is required for coach registration" });
       }
 
-      const expectedSecretCode = "123";
       if (secretCode !== expectedSecretCode) {
-        return res.status(400).json({ error: "Invalid secret code" });
+        return res.status(403).json({ error: "Invalid secret code for coach registration" });
       }
     }
 
-    // ✅ בדיקה אם שם המשתמש קיים כבר עבור אותו role
+    // 🧍 בדיקה אם שם המשתמש כבר קיים לאותו תפקיד
     const existingUser = await User.findOne({ username, role });
     if (existingUser) {
       return res.status(400).json({ error: "Username already exists for this role" });
     }
 
-    // הצפנת סיסמה ושמירה
+    // 🔐 הצפנת סיסמה ושמירה
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, password: hashedPassword, role });
     await newUser.save();
