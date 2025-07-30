@@ -68,6 +68,23 @@ const loginUser = async (req, res) => {
   console.log("Login attempt:", { username, password, role });
 
   try {
+    // 🛡️ בדיקות מקדימות לשדות חובה
+    if (!username) {
+      return res.status(400).json({ error: "Username is required" });
+    }
+
+    if (!password) {
+      return res.status(400).json({ error: "Password is required" });
+    }
+
+    if (!role) {
+      return res.status(400).json({ error: "Role is required" });
+    }
+
+    if (!validRoles.includes(role)) {
+      return res.status(400).json({ error: "Invalid role specified" });
+    }
+
     const user = await User.findOne({ username });
 
     if (!user) {
